@@ -1,0 +1,12 @@
+eddyDissipationModel/eddyDissipationModels.C
+
+/*eddyDissipationIgnModel/eddyDissipationIgnModels.C*/
+
+/*eddyDissipationDiffusionModel/eddyDissipationDiffusionModels.C*/
+/*eddyDissipationNoneStiffModel/eddyDissipationNoneStiffModels.C*/
+/*eddyDissipationDiffusionNoneStiffModel/eddyDissipationDiffusionNoneStiffModels.C*/
+
+/*infinitelyFastChemistryExplicitIgn/infinitelyFastChemistryExplicitIgn.C*/
+
+LIB = $(FOAM_USER_LIBBIN)/libcombustionModelsEDC
+

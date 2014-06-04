@@ -1,0 +1,4 @@
+reactingOneDim21/reactingOneDim21.C
+reactingOneDim21CharOxi/reactingOneDim21CharOxi.C
+
+LIB = $(FOAM_USER_LIBBIN)/libpyrolysisModels_FMG2.1

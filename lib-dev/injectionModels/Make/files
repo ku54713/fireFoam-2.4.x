@@ -1,0 +1,7 @@
+/*makeNewKinematicInjectionModels.C*/
+/*makeNewThermoInjectionModels.C*/
+/*only ReactingInjectionModels are used for fireFoam*/
+makeNewReactingInjectionModels.C
+/*makeNewReactingMultiphaseInjectionModels.C*/
+
+LIB = $(FOAM_USER_LIBBIN)/libnewInjectionModels

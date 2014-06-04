@@ -1,0 +1,13 @@
+#!/bin/sh
+cd ${0%/*} || exit 1    # run from this directory
+
+rm -fr ${FOAM_USER_LIBBIN}/lib*.so
+
+set -x
+
+./packages/Allwmake
+./lib-dev/Allwmake
+./solver/Allwmake
+
+
+# ----------------------------------------------------------------- end-of-file

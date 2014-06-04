@@ -1,0 +1,5 @@
+/*greyMeanAbsorptionEmissionSoot/greyMeanAbsorptionEmissionSoot.C*/
+/*greyMeanAbsorptionEmissionIgnSoot/greyMeanAbsorptionEmissionIgnSoot.C*/
+constRadFractionEmission/constRadFractionEmission.C
+
+LIB = $(FOAM_USER_LIBBIN)/libgreyMeanAbsorptionEmission_FMG

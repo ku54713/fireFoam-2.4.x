@@ -1,0 +1,3 @@
+greyDiffusiveRadiationFireMixedFvPatchScalarField.C
+
+LIB = $(FOAM_USER_LIBBIN)/libgreyDiffusiveRadiationFireMixed21x

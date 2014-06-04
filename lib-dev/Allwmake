@@ -1,0 +1,17 @@
+#!/bin/sh
+cd ${0%/*} || exit 1    # run from this directory
+set -x
+
+wmake libso thermophysicalModels/combustionModels
+wmake libso thermophysicalModels/radiation/submodels/absorptionEmissionModel	
+#wmake libso thermophysicalModels/solidChemistryModel_2.2.x
+wmake libso fvPatchFields
+wmake libso fvPatchFieldsPyrolysis
+wmake libso rtiProbes
+wmake libso splashingModels
+wmake libso injectionModels
+wmake libso additionalCloudFunctionObjects
+wmake libso regionCoupling
+wmake libso regionModels/pyrolysisModels
+
+# ----------------------------------------------------------------- end-of-file

@@ -1,0 +1,33 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2.0.0                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      rtisDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+// Fields to be probed. runTime modifiable!
+fields
+(
+    T
+    U
+);
+rtiLocations
+(
+    ( 0. 6.1 0.0 )
+);
+RTI                     200.0;
+C                       0.0;
+initialTemperature      298.00;
+activationTemperature   400.0;
+
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //

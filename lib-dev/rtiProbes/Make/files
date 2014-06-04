@@ -1,0 +1,6 @@
+rtis.C
+patchRtis.C
+rtisGrouping.C
+rtisFunctionObject/rtisFunctionObject.C
+
+LIB = $(FOAM_USER_LIBBIN)/librtiSampling

@@ -1,0 +1,3 @@
+find ./ -type f -name "*[CH]" -exec sh -c 'diffFire21.sh "`basename {}`"' \;
+
+directoryCompare.py --source /home/meredithk/OpenFOAM/OpenFOAM-2.1.x/./src/lagrangian/basic --dest basicNew

@@ -1,0 +1,4 @@
+faceZonesIntegration/faceZonesIntegration.C
+faceZonesIntegration/faceZonesIntegrationFunctionObject.C
+
+LIB = $(FOAM_USER_LIBBIN)/libfaceZonesIntegration

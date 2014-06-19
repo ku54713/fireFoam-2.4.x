@@ -1,3 +1,5 @@
+2014-06-19: Version 1.0.2
+	Fixed broken Allwmake and Allwclean scripts
 
 2014-06-04: Version 1.0.1
 	Renamed lib-dev to lib

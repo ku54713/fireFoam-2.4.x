@@ -6,7 +6,7 @@ rm -fr ${FOAM_USER_LIBBIN}/lib*.so
 set -x
 
 ./packages/Allwmake
-./lib-dev/Allwmake
+./lib/Allwmake
 ./solver/Allwmake
 
 

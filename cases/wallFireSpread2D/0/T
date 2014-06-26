@@ -1,0 +1,79 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2.2.x                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volScalarField;
+    location    "0";
+    object      T;
+}
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+
+dimensions      [0 0 0 1 0 0 0];
+
+internalField   uniform 293;
+
+boundaryField
+{
+    wall           
+    {
+        type            zeroGradient;
+    }
+
+    outlet          
+    {
+	type		inletOutlet;
+	inletValue	$internalField;
+	value		$internalField;
+    }
+
+    ground           
+    {
+        type            zeroGradient;
+    }
+
+    side          
+    {
+	type		inletOutlet;
+	inletValue	$internalField;
+	value		$internalField;
+    }
+
+    frontAndBack    
+    {
+        type            empty;
+    }
+   
+    burner          
+    {
+	type		fixedValue;
+	value		$internalField;
+    }
+    region0_to_panelRegion_panel
+    {
+        //type          compressible::turbulentTemperatureRadiationQinQcScaleCoupledMixed;
+        type          compressible::turbulentTemperatureRadiationQinCoupledMixed;
+        //type          compressible::turbulentTemperatureRadiationCoupledMixedST;
+        neighbourFieldName T;
+        //K               none;
+        kappa           fluidThermo;
+        kappaName       none;
+        emissivityMode  solidRadiation;
+        neighbourFieldRadiativeName none;
+        //fieldRadiativeName Qin; //Qr;
+        //cQcScale        1;
+        value           $internalField;
+    }
+}
+
+
+// ************************************************************************* //

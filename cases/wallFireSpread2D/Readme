@@ -1,0 +1,7 @@
+This case consists of a vertical panel adjacent to a gas burner.
+
+The following scripts are provided:
+    Allclean: cleans mesh and log files
+    Allrun.pre: generates mesh
+    Allrun: generates mesh and runs case
+    Allrun.para: generates mesh and runs case in parallel

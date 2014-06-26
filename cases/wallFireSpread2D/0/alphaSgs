@@ -1,0 +1,76 @@
+/*---------------------------------------------------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  1.4                                   |
+|   \\  /    A nd           | Web:      http://www.openfoam.org               |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+
+FoamFile
+{
+    version         2.0;
+    format          ascii;
+
+    root            "";
+    case            "";
+    instance        "";
+    local           "";
+
+    class           volScalarField;
+    object          alphaSgs;
+}
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+
+dimensions      [1 -1 -1 0 0 0 0];
+
+internalField   uniform 0;
+
+boundaryField
+{
+    wall           
+    {
+        //type            zeroGradient;
+        //type            alphaSgsWallFunction;
+        //type            fixedValue;
+        type            alphaSgsFireWallFunction;
+        QcFlame         20000.0;
+        QcThreshold     2000.0;
+	value		uniform 0;
+    }
+    outlet      
+    {
+        type            zeroGradient;
+    }
+    ground           
+    {
+        type            zeroGradient;
+    }
+    frontAndBack
+    {
+        type            empty;
+    }
+    side
+    {
+        type            zeroGradient;
+    }
+    burner          
+    {
+        type            zeroGradient;
+    }
+    region0_to_panelRegion_panel
+    {
+        //type            zeroGradient;
+        //type            alphaSgsWallFunction;
+        //type            fixedValue;
+        type            alphaSgsFireWallFunction;
+        QcFlame         20000.0;
+        QcThreshold     2000.0;
+	value		uniform 0;
+    }
+
+}
+
+
+// ************************************************************************* //

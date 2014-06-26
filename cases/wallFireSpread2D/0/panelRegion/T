@@ -1,0 +1,89 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2.2.x                                 |
+|   \\  /    A nd           | Web:      http://www.OpenFOAM.com               |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volScalarField;
+    location    "0";
+    object      T;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [0 0 0 1 0 0 0];
+
+internalField   uniform 293;
+
+boundaryField
+{
+    panel_top
+    {
+//        type            zeroGradient;
+        type            constHTemperature;
+        value           uniform 293;
+        Tinf            uniform 293;
+        h               uniform 0;  
+    }
+
+    region0_to_panelRegion_panel
+    {
+        //type          compressible::turbulentTemperatureCoupledBaffleMixed;
+        //type          compressible::turbulentTemperatureRadiationCoupledMixed;
+        //type          compressible::turbulentTemperatureRadiationQinQcScaleCoupledMixed;
+        type          compressible::turbulentTemperatureRadiationQinCoupledMixed;
+        //type          compressible::turbulentTemperatureRadiationCoupledMixedST;
+        neighbourFieldName T;
+//        K               K;
+        //K               kappa;
+        kappa           solidThermo;
+        kappaName       none;
+        //neighbourFieldRadiativeName Qr;
+        neighbourFieldRadiativeName Qin;
+        emissivityMode  solidRadiation;
+//        fieldRadiativeName none;
+//        cQcScale        1;
+        value           uniform 293;
+
+/*
+        type            compressible::turbulentTemperatureRadCoupledMixed;
+        Tnbr            T;
+        kappa           solidThermo;
+        kappaName       none;
+        QrNbr           Qr;
+        Qr              none;
+        value           uniform 298.15;
+*/
+
+/*
+        type                fixedIncidentRadiation;
+        kappa               solidThermo;
+        kappaName           none;
+        QrIncident          uniform 100000.0;   //W
+        value               uniform 298.15;
+        emissivity          solidRadiation;
+*/
+
+/*
+        type          compressible::fixedIncidentRadiationCoupledMixed;
+        neighbourFieldName T;
+        // K               K;
+        K               solidThermo;
+        neighbourFieldRadiativeName Qr;
+        fieldRadiativeName none;
+        QrIncident      100000.0;
+        emissivityMode solidRadiation;
+        //epsilon      0.3;
+        value           uniform 298.15;
+*/
+
+    }
+
+}
+
+
+// ************************************************************************* //

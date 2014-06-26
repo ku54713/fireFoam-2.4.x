@@ -1,0 +1,23 @@
+species
+(
+    O2
+    H2O
+    //CH4
+    C3H8
+    //CORRUGATED
+    //CH2O
+    CO2
+    N2
+);
+
+reactions
+{
+    propaneReaction
+    {
+        type irreversibleinfiniteReaction;
+        //CH4 + 2O2 + 7.52N2 = CO2 + 2H2O + 7.52N2
+        reaction "C3H8 + 5O2 + 18.8N2 = 3CO2 + 4H2O + 18.8N2";
+        //CORRUGATED + 5O2 + 18.8N2 = 3CO2 + 4H2O + 18.8N2
+        //CH2O + O2 + 3.76N2 = CO2 + H2O + 3.76N2
+    }
+}

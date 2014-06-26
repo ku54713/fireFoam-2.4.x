@@ -1,0 +1,482 @@
+/*---------------------------------------------------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  1.4                                   |
+|   \\  /    A nd           | Web:      http://www.openfoam.org               |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+
+// FoamX Case Dictionary.
+
+FoamFile
+{
+    version         2.0;
+    format          ascii;
+
+    root            "";
+    case            "";
+    instance        "";
+    local           "";
+
+    class           dictionary;
+    object          controlDict;
+}
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+application     fireFoam;
+
+startFrom       startTime;
+
+startTime       0;
+
+stopAt          endTime;
+
+endTime         3; //35;
+
+deltaT          0.01; //0.001;
+
+writeControl    adjustableRunTime;
+
+writeInterval   0.2; //1;
+
+purgeWrite      0;
+
+writeFormat     ascii;
+
+writePrecision  6;
+
+writeCompression uncompressed;
+
+timeFormat      general;
+
+timePrecision   6;
+
+graphFormat     raw;
+
+runTimeModifiable yes;
+
+adjustTimeStep  yes;
+
+maxCo           5; //1;
+
+maxDi           0.25;
+
+maxDeltaT       0.01;
+
+libs
+(
+    "libfvPatchFieldsPyrolysis.so"
+);
+
+functions
+(
+/*
+    partialWriteRegion0
+    {
+        type            partialWrite;
+        // Where to load it from
+        functionObjectLibs ("libIOFunctionObjects.so");
+        outputControl   outputTime;
+        objectNames    (T ft);   // write specified objects every outputTime
+        writeInterval   5;      // write all objects every writeInterval
+    }
+
+    partialWritePyrolysisRegion
+    {
+        type            partialWrite;
+        // Where to load it from
+        functionObjectLibs ("libIOFunctionObjects.so");
+	region		panelRegion;
+        outputControl   outputTime;
+        objectNames    (T);   // write specified objects every outputTime
+        writeInterval   5;      // write all objects every writeInterval
+    }
+*/
+    probes
+    {
+        type            probes;
+        functionObjectLibs ("libsampling.so");
+        outputControl   timeStep;
+        //outputInterval  10;
+        outputInterval  1;
+        probeLocations
+        (
+            ( 0.0001 0.1 0.8 )
+            ( 0.0001 0.1 1.0 )
+            ( 0.0001 0.1 1.5 )
+            ( 0.1 0.1 0.8 )
+            ( 0.1 0.1 1.0 )
+            ( 0.1 0.1 1.5 )
+        );
+        fields
+        (
+            T
+            hs
+            //cp
+        );
+    }
+
+    probes
+    {
+        type            probes;
+        functionObjectLibs ("libsampling.so");
+        outputControl   timeStep;
+        outputInterval  1;
+        region        panelRegion;
+        probeLocations
+        (
+            ( -0.0001 0.1 0.225 )
+        );
+        fields
+        (
+            T
+            hs
+        );
+    }
+
+    patchProbes
+    {
+        type            patchProbes;
+        functionObjectLibs ("libsampling.so");
+        outputControl   timeStep;
+        outputInterval  1;
+        region        panelRegion;
+        patchName      region0_to_panelRegion_panel;
+        probeLocations
+        (
+            ( 0 0.1 0.225 )
+            ( 0 0.1 0.325 )
+            ( 0 0.1 0.425 )
+            ( 0 0.1 0.525 )
+        );
+        fields
+        (
+            T
+            emissivity
+        );
+    }
+
+    patchProbes
+    {
+        type            patchProbes;
+        functionObjectLibs ("libsampling.so");
+        outputControl   timeStep;
+        outputInterval  1;
+        patchName      region0_to_panelRegion_panel;
+        probeLocations
+        (
+            ( 0 0.1 0.225 )
+            ( 0 0.1 0.325 )
+            ( 0 0.1 0.425 )
+            ( 0 0.1 0.525 )
+        );
+        fields
+        (
+            T
+            Qr
+            Qin
+            Qem
+            //wallConvectiveHeatFlux
+            convectiveHeatFlux_L
+            convectiveHeatFlux_T
+            QcWallFunction
+            hs
+            phi
+        );
+    }
+
+    HRR
+    {
+        type            cellSource;
+        functionObjectLibs ("libfieldFunctionObjects.so");
+        enabled         true;
+        outputControl   timeStep;  //outputTime;
+        outputInterval  1;
+        log             false;     
+        valueOutput     false;
+        source          all;       //cellZone;
+        sourceName      c0;
+        operation       volIntegrate;
+        fields
+        (
+            dQ
+        );
+    }
+
+    patchBurner 
+    {
+        type            faceSource;
+        functionObjectLibs ("libfieldFunctionObjects.so");
+        enabled         true;
+        outputControl   timeStep; 
+        outputInterval  1;
+        log             false;
+        valueOutput     false;
+        source          patch;
+        sourceName      burner;
+        operation       sum;
+        fields
+        (
+            phi
+            HRR_fu
+        );
+    }
+
+    patchPanel 
+    {
+        type            faceSource;
+        functionObjectLibs ("libfieldFunctionObjects.so");
+        enabled         true;
+        outputControl   timeStep;  
+        outputInterval  1;
+        log             false;
+        valueOutput     false;
+        source          patch;
+        sourceName      region0_to_panelRegion_panel;
+        operation       sum;
+        fields
+        (
+            phi
+            HRR_fu
+        );
+    }
+
+    patchOutlet 
+    {
+        type            faceSource;
+        functionObjectLibs ("libfieldFunctionObjects.so");
+        enabled         true;
+        outputControl   timeStep; 
+        outputInterval  1;
+        log             false;
+        valueOutput     false;
+        source          patch;
+        sourceName      outlet;
+        operation       sum;
+        fields
+        (
+            phi
+            HRR_fu
+        );
+    }
+
+    patchPanelSolidRegion 
+    {
+        type            faceSource;
+        functionObjectLibs ("libfieldFunctionObjects.so");
+        enabled         true;
+        region          panelRegion;
+        outputControl   timeStep;  
+        outputInterval  1;
+        log             false;
+        valueOutput     false;
+        source          patch;
+        sourceName      region0_to_panelRegion_panel;
+        operation       sum;
+        fields
+        (
+            phiGas
+        );
+    }
+
+    patchPanelQr
+    {
+        type            faceSource;
+        functionObjectLibs ("libfieldFunctionObjects.so");
+        enabled         true;
+        outputControl   timeStep;  
+        outputInterval  1;
+        log             false;
+        valueOutput     false;
+        source          patch;
+        sourceName      region0_to_panelRegion_panel;
+        operation       areaIntegrate;
+        fields
+        (
+            Qr
+        );
+    }
+
+    patchWallQr
+    {
+        type            faceSource;
+        functionObjectLibs ("libfieldFunctionObjects.so");
+        enabled         true;
+        outputControl   timeStep;  
+        outputInterval  1;
+        log             false;
+        valueOutput     false;
+        source          patch;
+        sourceName      wall;
+        operation       areaIntegrate;
+        fields
+        (
+            Qr
+        );
+    }
+
+    patchSideQr
+    {
+        type            faceSource;
+        functionObjectLibs ("libfieldFunctionObjects.so");
+        enabled         true;
+        outputControl   timeStep;  
+        outputInterval  1;
+        log             false;
+        valueOutput     false;
+        source          patch;
+        sourceName      side;
+        operation       areaIntegrate;
+        fields
+        (
+            Qr
+        );
+    }
+
+    patchBurnerQr
+    {
+        type            faceSource;
+        functionObjectLibs ("libfieldFunctionObjects.so");
+        enabled         true;
+        outputControl   timeStep;  
+        outputInterval  1;
+        log             false;
+        valueOutput     false;
+        source          patch;
+        sourceName      burner;
+        operation       areaIntegrate;
+        fields
+        (
+            Qr
+        );
+    }
+
+    patchOutletQr
+    {
+        type            faceSource;
+        functionObjectLibs ("libfieldFunctionObjects.so");
+        enabled         true;
+        outputControl   timeStep;  
+        outputInterval  1;
+        log             false;
+        valueOutput     false;
+        source          patch;
+        sourceName      outlet;
+        operation       areaIntegrate;
+        fields
+        (
+            Qr
+        );
+    }
+
+    patchGroundQr
+    {
+        type            faceSource;
+        functionObjectLibs ("libfieldFunctionObjects.so");
+        enabled         true;
+        outputControl   timeStep;  
+        outputInterval  1;
+        log             false;
+        valueOutput     false;
+        source          patch;
+        sourceName      ground;
+        operation       areaIntegrate;
+        fields
+        (
+            Qr
+        );
+    }
+
+    patchPanelQin
+    {
+        type            faceSource;
+        functionObjectLibs ("libfieldFunctionObjects.so");
+        enabled         true;
+        outputControl   timeStep;  
+        outputInterval  1;
+        log             false;
+        valueOutput     false;
+        source          patch;
+        sourceName      region0_to_panelRegion_panel;
+        operation       areaIntegrate;
+        fields
+        (
+            Qin
+        );
+    }
+
+    patchPanelConvectiveHeatFlux
+    {
+        type            faceSource;
+        functionObjectLibs ("libfieldFunctionObjects.so");
+        enabled         true;
+        outputControl   timeStep;  
+        outputInterval  1;
+        log             false;
+        valueOutput     false;
+        source          patch;
+        sourceName      region0_to_panelRegion_panel;
+        operation       areaIntegrate;
+        fields
+        (
+            //wallConvectiveHeatFlux
+            convectiveHeatFlux_L
+            convectiveHeatFlux_T
+            QcWallFunction
+        );
+    }
+
+    fieldMinMax
+    {
+        type            fieldMinMax;
+        functionObjectLibs ("libfieldFunctionObjects.so");
+        enabled         true;
+        outputControl   timeStep;
+        outputInterval  1;
+	mode            magnitude;
+        log             true; //false; //true;
+        valueOutput     false;
+        fields
+        (
+            T
+        );
+    }
+
+    patchSamplingGas
+    {
+        type surfaces;
+
+        functionObjectLibs ("libsampling.so");
+        enabled         true;
+        outputControl   adjustableTime; //outputTime;
+        outputInterval  1;
+        writeInterval   0.2;  //(adjustableTime, runTime, clockTime, cpuTime)
+        interpolationScheme cellPoint;
+        surfaceFormat vtk;
+        //region          panelRegion;
+
+
+        // Fields to be sampled
+        fields
+        (
+            //wallConvectiveHeatFlux
+            convectiveHeatFlux_L
+            convectiveHeatFlux_T
+            Qin
+            Qr
+            Qem
+            QcWallFunction
+        );
+
+        surfaces
+        (
+            pyrolysisPatch
+            {
+                type            patch;
+                patches         (region0_to_panelRegion_panel);
+            }
+        );
+    }
+);
+// ************************************************************************* //

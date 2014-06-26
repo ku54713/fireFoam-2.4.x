@@ -1,0 +1,85 @@
+/*---------------------------------------------------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  1.4                                   |
+|   \\  /    A nd           | Web:      http://www.openfoam.org               |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+
+FoamFile
+{
+    version         2.0;
+    format          ascii;
+
+    root            "";
+    case            "";
+    instance        "";
+    local           "";
+
+    class           volVectorField;
+    object          U;
+}
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+
+dimensions      [0 1 -1 0 0 0 0];
+
+internalField   uniform (0 0 0);
+
+boundaryField
+{
+    wall           
+    {
+        type            fixedValue;
+        value           $internalField;
+    }
+
+    outlet         
+    {
+        type            inletOutlet;
+        inletValue      $internalField;
+        value           $internalField;
+    } 
+
+    ground          
+    {
+        type            fixedValue;
+        value           $internalField;
+    }
+
+    side          
+    {
+        type            pressureInletOutletVelocity;
+	phi		phi;
+        value           $internalField;
+    }
+
+    frontAndBack
+    {
+        type            empty;
+    }
+
+    burner          
+    {
+        type            flowRateInletVelocity;
+        massFlowRate        0.002;    
+        value           uniform (0 0 0);
+    }
+    region0_to_panelRegion_panel
+    {
+        //type            flowRateInletVelocityCoupled;
+        //type            flowRateInletVelocityFuelConvertCoupled;
+        type            flowRateInletVelocityPyrolysisCoupled;
+        phi             phi;
+        nbrPhi          phiGas;
+        rho             rho;
+        //hocPyr          1.765e7;  //heat of combustion per unit of pyrolysate, need to be converted from hoc per unit of virgin solid material 
+        //hocSolid        19168962.510897995;        
+        hocSolid          1.66e7;  //Hoc for virgin material, doubleWall 
+        value           uniform (0 0 0);
+    }
+}
+
+
+// ************************************************************************* //

@@ -1,6 +1,9 @@
-#!/bin/sh
+#!/bin/sh -u
 cd ${0%/*} || exit 1    # run from this directory
 set -x
+
+rm -f $FOAM_USER_LIBBIN/lib?* 
+rm -f $FOAM_USER_LIBBIN/fireFoam
 
 ./packages/Allwclean
 ./lib/Allwclean

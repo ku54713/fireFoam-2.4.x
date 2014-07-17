@@ -486,6 +486,70 @@ void Foam::ParticleCollectorFmg<CloudType>::write()
                 << tab << faceMassFlowRate[faceI]
                 << endl;
         }
+
+        if (sampleParticles_)
+        {
+            // gather particle statistics onto master
+
+            Pstream::gatherList(diameters_);
+            Pstream::gatherList(velocityMagnitudes_);
+            Pstream::gatherList(numberParticles_);
+
+            Info << "master: " << Pstream::master() << endl;
+
+            if (Pstream::master())
+            {
+                // create a single list of each property
+                scalarList localDiameters;
+                scalarList localVelocityMagnitudes;
+                scalarList localNumberParticles;
+                for(label proc=0;proc<Pstream::nProcs();proc++)
+                {
+                    localDiameters.append(diameters_[proc]); 
+                    localVelocityMagnitudes.append(velocityMagnitudes_[proc]); 
+                    localNumberParticles.append(numberParticles_[proc]); 
+                }
+
+
+                fileName  basedir(this->outputDir()/time.timeName());
+                fileName  filename(basedir/"parcels.dat");
+
+                mkDir(basedir);
+
+                OFstream os(filename);
+
+                if (!os.good())
+                {
+                    FatalErrorIn
+                        (
+                         "ParticleCollectorFmg::write()"
+                        )
+                        << "Cannot open file for writing " 
+                        << filename
+                        << exit(FatalError);
+                }
+
+                os
+                    << "# d(m) u(m/s) nP\n";
+
+                forAll(localDiameters,d)
+                {
+                    os
+                        << localDiameters[d]
+                        << " "
+                        << localVelocityMagnitudes[d]
+                        << " "
+                        << localNumberParticles[d]
+                        << nl;
+                }
+                os << endl;
+
+            }
+            // reset particle statistics
+            diameters_[Pstream::myProcNo()].clear();
+            velocityMagnitudes_[Pstream::myProcNo()].clear();
+            numberParticles_[Pstream::myProcNo()].clear();
+        }
     }
 
     Info<< "    sum(total mass) = " << sumTotalMass << nl
@@ -579,6 +643,10 @@ Foam::ParticleCollectorFmg<CloudType>::ParticleCollectorFmg
     mass_(),
     massTotal_(),
     massFlowRate_(),
+    diameters_(),
+    velocityMagnitudes_(),
+    numberParticles_(),
+    sampleParticles_(this->coeffDict().lookupOrDefault("sampleParticles",false)),
     log_(this->coeffDict().lookup("log")),
     outputFilePtr_(),
     timeOld_(owner.mesh().time().value())
@@ -614,6 +682,12 @@ Foam::ParticleCollectorFmg<CloudType>::ParticleCollectorFmg
     massFlowRate_.setSize(faces_.size(), 0.0);
 
     makeLogFile(faces_, points_, area_);
+
+
+    diameters_.setSize(Pstream::nProcs());
+    velocityMagnitudes_.setSize(Pstream::nProcs());
+    numberParticles_.setSize(Pstream::nProcs());
+
 }
 
 
@@ -641,6 +715,10 @@ Foam::ParticleCollectorFmg<CloudType>::ParticleCollectorFmg
     mass_(pc.mass_),
     massTotal_(pc.massTotal_),
     massFlowRate_(pc.massFlowRate_),
+    diameters_(pc.diameters_),
+    velocityMagnitudes_(pc.velocityMagnitudes_),
+    numberParticles_(pc.numberParticles_),
+    sampleParticles_(pc.sampleParticles_),
     log_(pc.log_),
     outputFilePtr_(),
     timeOld_(0.0)
@@ -696,6 +774,15 @@ void Foam::ParticleCollectorFmg<CloudType>::postMove
     if (faceI != -1)
     {
         scalar m = p.nParticle()*p.mass();
+        scalar d = p.d();
+        scalar u = mag(p.U());
+        scalar np = p.nParticle();
+
+        // cout << "diameter " << d << " velocity " << u << " nParticle " << np << "\n";
+
+        diameters_[Pstream::myProcNo()].append(d);
+        velocityMagnitudes_[Pstream::myProcNo()].append(u);
+        numberParticles_[Pstream::myProcNo()].append(np);
 
         if (negateParcelsOppositeNormal_)
         {

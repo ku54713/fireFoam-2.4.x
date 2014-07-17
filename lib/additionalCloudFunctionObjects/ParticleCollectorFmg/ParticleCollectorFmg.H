@@ -137,6 +137,13 @@ private:
         //- Mass flow rate storage
         List<scalar> massFlowRate_;
 
+        //- particle sampling
+        List<scalarList> diameters_;
+        List<scalarList> velocityMagnitudes_;
+        List<scalarList> numberParticles_;
+        //- Flag for sampling particle diameter, velocity, etc.
+        Switch sampleParticles_;
+
         //- Flag to indicate whether data should be written to file
         Switch log_;
 

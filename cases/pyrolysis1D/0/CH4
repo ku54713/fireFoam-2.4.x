@@ -1,0 +1,67 @@
+/*---------------------------------------------------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  1.4                                   |
+|   \\  /    A nd           | Web:      http://www.openfoam.org               |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+
+FoamFile
+{
+    version         2.0;
+    format          ascii;
+
+    root            "";
+    case            "";
+    instance        "";
+    local           "";
+
+    class           volScalarField;
+    object          CH4;
+}
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+
+dimensions      [0 0 0 0 0 0 0];
+
+internalField   uniform 0;
+
+boundaryField
+{
+    outlet      
+    {
+        type            inletOutlet;
+        inletValue      $internalField;
+        value           $internalField;
+    }
+
+    ground           
+    {
+        type            zeroGradient;
+    }
+
+    side          
+    {
+        type            inletOutlet;
+        inletValue      $internalField;
+        value           $internalField;
+    }
+
+    frontAndBack
+    {
+        type            empty;
+    }
+
+    region0_to_panelRegion_panel
+    {
+        type                totalFlowRateAdvectiveDiffusive;
+        massFluxFraction    1;
+        phi                 phi;
+        rho                 rho;
+        value               uniform 1;
+    }
+}
+
+
+// ************************************************************************* //

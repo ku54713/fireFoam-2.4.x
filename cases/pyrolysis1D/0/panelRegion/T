@@ -1,0 +1,61 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2.2.x                                 |
+|   \\  /    A nd           | Web:      http://www.OpenFOAM.com               |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volScalarField;
+    location    "0";
+    object      T;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [0 0 0 1 0 0 0];
+
+internalField   uniform 298.15;
+
+boundaryField
+{
+    panel_top
+    {
+        //type            zeroGradient;
+        type            constHTemperature;
+        value           uniform 298.15;
+        Tinf            uniform 298.15;
+        h               uniform 0; //40;
+    }
+    panel_side
+    {
+	type empty;
+    }
+
+    region0_to_panelRegion_panel
+    {
+/*
+        type          compressible::fixedIncidentRadiationCoupledMixed;
+        neighbourFieldName T;
+//        K               K;
+        K               solidThermo;
+        neighbourFieldRadiativeName Qr;
+        fieldRadiativeName none;
+        QrIncident      60000.0;
+        emissivityMode solidRadiation;
+        //epsilon      0.3;
+        value           uniform 298.15;
+*/
+        type                fixedIncidentRadiation;
+        kappa               solidThermo;
+        kappaName           none;
+        QrIncident          uniform 60000.0;   //W
+        value               uniform 298.15;
+    }
+
+}
+
+
+// ************************************************************************* //

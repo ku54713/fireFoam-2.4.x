@@ -43,6 +43,7 @@ SourceFiles
 #include "face.H"
 #include "Switch.H"
 #include "OFstream.H"
+#include "vectorList.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -141,6 +142,7 @@ private:
         List<scalarList> diameters_;
         List<scalarList> velocityMagnitudes_;
         List<scalarList> numberParticles_;
+        List<vectorList> positions_;
         //- Flag for sampling particle diameter, velocity, etc.
         Switch sampleParticles_;
 

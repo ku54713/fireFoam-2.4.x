@@ -55,7 +55,7 @@ int main(int argc, char *argv[])
     #include "readGravitationalAcceleration.H"
     #include "initContinuityErrs.H"
     #include "createFields.H"
-//    #include "createFieldsSoot.H" 
+//    #include "createFieldsSoot.H"
     #include "createPyrolysisModel.H"
     #include "createRadiationModel.H"
     #include "createClouds.H"
@@ -94,11 +94,11 @@ int main(int argc, char *argv[])
             for (int oCorr=0; oCorr<nOuterCorr; oCorr++)
             {
                 #include "UEqn.H"
-                /*if (solveSoot) 
+                /*if (solveSoot)
                 {
-                    #include "computeQr.H"      
+                    #include "computeQr.H"
                 }*/
-		        #include "mvConvection.H"
+                #include "mvConvection.H"
                 #include "YhsEqn.H"
 
                 // --- PISO loop
@@ -113,9 +113,9 @@ int main(int argc, char *argv[])
                  {
                      #include "infoOutput.H"
 
-                     /*if (solveSoot) 
+                     /*if (solveSoot)
                      {
-                         #include "computeHp.H"      
+                         #include "computeHp.H"
                      }*/
                  }
 
@@ -135,7 +135,7 @@ int main(int argc, char *argv[])
         else
         {
             if(solvePyrolysisRegion){
-            	pyrolysis.evolve();
+                pyrolysis.evolve();
             }
             runTime.write();
         }
@@ -153,7 +153,7 @@ int main(int argc, char *argv[])
 
     Info<< "End\n" << nl;
 
-    // explicit abort necessary to keep solver from hanging on 
+    // explicit abort necessary to keep solver from hanging on
     // double-linked list error
     if(Pstream::parRun()){
         Foam::sleep(1);

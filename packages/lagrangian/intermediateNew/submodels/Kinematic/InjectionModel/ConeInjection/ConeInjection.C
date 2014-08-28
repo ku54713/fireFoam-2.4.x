@@ -271,10 +271,40 @@ void Foam::ConeInjection<CloudType>::setProperties
     scalar ti = thetaInner_.value(t);
     scalar to = thetaOuter_.value(t);
     scalar coneAngle = degToRad(rnd.position<scalar>(ti, to));
+    scalar beta = twoPi*rnd.sample01<scalar>();
+
+    // Info << "coneAngle1 " << radToDeg(coneAngle) << nl;
+    // Info << "beta1 " << radToDeg(beta) << nl;
+
+    // uniform spherical sampling
+    Switch uniform = true;
+    if(uniform)
+    {
+        const scalar radPerDeg = pi/180.0;
+        // theta == azimuthal angle
+        scalar theta;
+        do{
+            scalar u = rnd.sample01<scalar>();
+            theta = 2.0*pi*u/radPerDeg;
+            // theta = round(theta);
+        }while(theta>=360.0);
+    
+        // phi == elevation angle
+        scalar phi;
+        do{
+            scalar v = rnd.sample01<scalar>();
+            phi = acos(2.0*v-1.0)/radPerDeg;
+        }while(phi>to || phi<ti);
+    
+        // coneAngle == phi, beta == theta
+        coneAngle = degToRad(phi);
+        beta = degToRad(theta);
+        // Info << "coneAngle2 " << radToDeg(coneAngle) << nl;
+        // Info << "beta2 " << radToDeg(beta) << nl;
+    }
 
     scalar alpha = sin(coneAngle);
     scalar dcorr = cos(coneAngle);
-    scalar beta = twoPi*rnd.sample01<scalar>();
 
     vector normal = alpha*(tanVec1_[i]*cos(beta) + tanVec2_[i]*sin(beta));
     vector dirVec = dcorr*positionAxis_[i].second();

@@ -1,3 +1,6 @@
+2014-08-28: Version 1.0.5
+	Various bug fixes for sprinkler/nozzle injection models
+
 2014-07-17: Version 1.0.4
 	Added pyrolysis1D example to case directory
 

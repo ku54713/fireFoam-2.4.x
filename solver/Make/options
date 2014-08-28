@@ -43,7 +43,8 @@ EXE_LIBS = \
          -lgreyMeanAbsorptionEmission_FMG  \
          -ladditionalCloudFunctionObjects22x \
          -lsplashingModels \
-	    -lrtiSampling \
+	     -lrtiSampling \
+         -lfvPatchFieldsPyrolysis \
     -lfiniteVolume \
     -lfvOptions \
     -lmeshTools \
@@ -67,6 +68,7 @@ EXE_LIBS = \
     -lODE \
     -lregionModels \
     -lpyrolysisModels \
+    -lfieldFunctionObjects \
     -L$(FOAM_USER_LIBBIN) \
         -lsurfaceFilmModels22x \
         /*-lsolidChemistryModel_FMG*/ \

@@ -1,7 +1,7 @@
 DEV_PATH=./../../packages
 
 EXE_INC = \
-    /*-DFULLDEBUG -g -O0 \*/ \
+    /* -DFULLDEBUG -g -O0 */ \
     /*-I$(DEV_PATH)/regionModels/pyrolysisModels/lnInclude*/ \
     -I$(DEV_PATH)/regionModels/surfaceFilmModels/lnInclude \
     \

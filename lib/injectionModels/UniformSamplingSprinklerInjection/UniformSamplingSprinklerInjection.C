@@ -106,12 +106,12 @@ Foam::UniformSamplingSprinklerInjection<CloudType>::UniformSamplingSprinklerInje
             "U"
             )
         ),
-	activeLinks_(this->coeffDict().subDict("rtiCoeffs"). template lookupOrDefault<Switch>("active",false)),
+    activeLinks_(this->coeffDict().subDict("rtiCoeffs"). template lookupOrDefault<Switch>("active",false)),
     RTI_(this->coeffDict().subDict("rtiCoeffs").template lookupOrDefault<scalar>("RTI",200.0)),
     C_(this->coeffDict().subDict("rtiCoeffs").template lookupOrDefault<scalar>("C",0.0)),
     initialTemperatureList_(nSprinklers_,298.15),
     activationTemperature_(this->coeffDict().subDict("rtiCoeffs").template lookupOrDefault<scalar>("activationTemperature",432.0)),
-	// have Andy implement this for Switch in SubModelBase.C
+    // have Andy implement this for Switch in SubModelBase.C
     // activated_(this->template getBaseProperty<Switch>("activated")),
     activatedList_(nSprinklers_,false),
     linkTemperatureList_(nSprinklers_,298.15),
@@ -146,7 +146,7 @@ Foam::UniformSamplingSprinklerInjection<CloudType>::UniformSamplingSprinklerInje
     sampleAzi_(),
     sampleParcelParticles_()
 {
-    
+
     readTableData();
 
     idealFlowRate_ = computeIdealFlowRate(); // L/s
@@ -157,7 +157,7 @@ Foam::UniformSamplingSprinklerInjection<CloudType>::UniformSamplingSprinklerInje
 
     // scalar injectionDeltaT = 0.001;
     // sampleInjectionTable(injectionDeltaT);
-    
+
     treatSprinklerActivation();
 
     // Normalise direction vector
@@ -169,6 +169,18 @@ Foam::UniformSamplingSprinklerInjection<CloudType>::UniformSamplingSprinklerInje
 
     tanVec1_ = armDirection_;
     tanVec2_ = direction_^tanVec1_;
+
+    if(tanVec2_ == vector::zero)
+    {
+        FatalErrorIn
+        (
+            "UniformSamplingSprinklerInjection()"
+        )
+            << "Sprinkler orientation " << direction_ << nl
+            << "and arm orientation " << armDirection_ << nl
+            << "are not consistent!" << nl
+            << exit(FatalError);
+    }
 
     // Set total volume to inject, gets overwritten later
     // this->volumeTotal_ = flowRateProfile_.integrate(0.0, duration_); // m3
@@ -211,7 +223,7 @@ Foam::UniformSamplingSprinklerInjection<CloudType>::UniformSamplingSprinklerInje
     C_(im.C_),
     initialTemperatureList_(im.initialTemperatureList_),
     activationTemperature_(im.activationTemperature_),
-	activatedList_(im.activatedList_),
+    activatedList_(im.activatedList_),
     linkTemperatureList_(im.linkTemperatureList_),
     activationTimeList_(im.activationTimeList_),
     filePtr_(im.filePtr_),
@@ -258,7 +270,7 @@ Foam::UniformSamplingSprinklerInjection<CloudType>::~UniformSamplingSprinklerInj
 template<class CloudType>
 Foam::scalar Foam::UniformSamplingSprinklerInjection<CloudType>::timeEnd() const
 {
-	return this->SOI_ + duration_;
+    return this->SOI_ + duration_;
 }
 
 template<class CloudType>
@@ -327,7 +339,7 @@ Foam::label Foam::UniformSamplingSprinklerInjection<CloudType>::parcelsToInject
 
     if ((time0 >= 0.0) && (time0 < duration_))
     {
-        label numberparcels = 
+        label numberparcels =
             round((time1 - time0)*(parcelsPerSecond_*nActivatedSprinklers_));
         // if(numberparcels == 0)
         //    {return numberparcels;}
@@ -356,7 +368,7 @@ Foam::scalar Foam::UniformSamplingSprinklerInjection<CloudType>::volumeToInject
 {
     if ((time0 >= 0.0) && (time0 < duration_))
     {
-        if(time1>time0){ 
+        if(time1>time0){
             // return flowRateProfile_.integrate(time0, time1)*nActivatedSprinklers_;
             return this->volumeTotal_/duration_ * (time1 - time0) * nActivatedSprinklers_;
         }
@@ -372,7 +384,7 @@ Foam::scalar Foam::UniformSamplingSprinklerInjection<CloudType>::volumeToInject
 template<class CloudType>
 void Foam::UniformSamplingSprinklerInjection<CloudType>::setParcelDirVec
 (
-    scalar elevationAngle, 
+    scalar elevationAngle,
     scalar azimuthalAngle
     )
 {
@@ -384,7 +396,7 @@ void Foam::UniformSamplingSprinklerInjection<CloudType>::setParcelDirVec
     parcelDirVec_ = dCorr*direction_;
     parcelDirVec_ += normal;
     parcelDirVec_ /= mag(parcelDirVec_);
-    
+
     return;
 }
 
@@ -416,7 +428,7 @@ void Foam::UniformSamplingSprinklerInjection<CloudType>::setPositionAndCell
     }
 
     // set local parcelI on a per sprinkler basis
-    label whichActiveSprinkler=parcelI_global/totalParcels_; 
+    label whichActiveSprinkler=parcelI_global/totalParcels_;
     // If sprinklerIndex = 1, then the second active sprinkler should activate.
     // If sprinklerIndex = 2, then the third active sprinkler should activate.
 
@@ -454,7 +466,7 @@ void Foam::UniformSamplingSprinklerInjection<CloudType>::setPositionAndCell
     setParcelDirVec(elevationAngle,azimuthalAngle);
 
     position = positionList_[activeSprinklerIndex_]+radiusToSprinkler_*parcelDirVec_;
- 
+
     this->findCellAtPosition
         (
          // the first four arguments are returned to InjectionModel::inject()
@@ -493,13 +505,13 @@ void Foam::UniformSamplingSprinklerInjection<CloudType>::setParticleVelocity
 (
     typename CloudType::parcelType& parcel
 )
-{    
+{
     // DEBUG("enter setParticleVelocity");
 
     parcel.U() = sampleAvgVelMag_[parcelIndex_] * parcelDirVec_;
 
     parcel.typeId() = activeSprinklerIndex_; // eventually gets overwritten
-    
+
     // tmp<DimensionedField<scalar, volMesh> > sprinklerId (
     //     new DimensionedField<scalar, volMesh>
     //     (
@@ -516,8 +528,8 @@ void Foam::UniformSamplingSprinklerInjection<CloudType>::setParticleVelocity
     //         )
     //     );
     // sprinklerId->write();
-    
-        
+
+
     // DEBUG("exit setParticleVelocity");
 
     return;
@@ -541,7 +553,7 @@ void Foam::UniformSamplingSprinklerInjection<CloudType>::setProperties
     setParticleVelocity(parcel);
 
     // DEBUG("exit setProperties");
-    
+
     return;
 }
 
@@ -580,9 +592,9 @@ void Foam::UniformSamplingSprinklerInjection<CloudType>::computeLinkTemperature
     const label sprinklerIndex
 )
 {
- 
-    scalar To = initialTemperatureList_[sprinklerIndex]; 
-    // scalar Tg = 408.0; 
+
+    scalar To = initialTemperatureList_[sprinklerIndex];
+    // scalar Tg = 408.0;
     // scalar U = 1.0;
     // scalar dTg = 110.0;
     // scalar dt = 1.0;
@@ -605,7 +617,7 @@ void Foam::UniformSamplingSprinklerInjection<CloudType>::computeLinkTemperature
         scalar dTe = sqrt(U)/RTI_*(dTg-(1+C_/(sqrt(U)+SMALL))*dTeOld[sprinklerIndex])*deltaT+dTeOld[sprinklerIndex];
 
         linkTemperature[sprinklerIndex]=initialTemperatureList_[sprinklerIndex]+dTe;
-  
+
 
         dTeOld[sprinklerIndex]=dTe;
     }
@@ -623,7 +635,7 @@ void Foam::UniformSamplingSprinklerInjection<CloudType>::computeLinkTemperature
         Info << "Sprinkler " << sprinklerIndex << " Activated!\n";
         activatedList_[sprinklerIndex] = true;
         activationTimeList_[sprinklerIndex] = this->owner().time().value();
-        this->SOI_ = this->owner().time().value();  
+        this->SOI_ = this->owner().time().value();
     }
 
     return;
@@ -647,7 +659,7 @@ void Foam::UniformSamplingSprinklerInjection<CloudType>::cacheInjectorCells()
                 );
 
     }
-    
+
     return;
 }
 
@@ -656,7 +668,7 @@ template<class CloudType>
 void Foam::UniformSamplingSprinklerInjection<CloudType>::writeVolumeFluxSprinklerInjectionProfile()
 {
     // OFstream osP("sprinklerInjectionProfile");
-    
+
     // osP << "#cell " << "\t";
     // osP << "e1 "    << "\t";
     // osP << "e2 "    << "\t";
@@ -667,7 +679,7 @@ void Foam::UniformSamplingSprinklerInjection<CloudType>::writeVolumeFluxSprinkle
     // osP << "vfr "   << "\t";
     // osP << "npc "   << "\t";
     // osP << endl;
-    
+
     // for(label iCell = 0; iCell < numberCells; iCell++){
     //     osP << iCell << "\t";
     //     osP << areaEachCell[iCell]  << "\t";
@@ -683,11 +695,11 @@ void Foam::UniformSamplingSprinklerInjection<CloudType>::writeVolumeFluxSprinkle
 template<class CloudType>
 void Foam::UniformSamplingSprinklerInjection<CloudType>::treatSprinklerActivation()
 {
-	if(activeLinks_){
+    if(activeLinks_){
         //sprinkler to be activated via RTI calculation
-		this->SOI_=GREAT;
+        this->SOI_=GREAT;
         scalar currentTime = this->owner().time().value();
-        
+
         // read restart properties from <time>/uniform/lagrangian/reactingCloud1/reactingCloud1OutputProperties
         Switch atLeastOneActivated=false;
         for(label i=0;i<nSprinklers_;i++)
@@ -695,7 +707,7 @@ void Foam::UniformSamplingSprinklerInjection<CloudType>::treatSprinklerActivatio
             std::ostringstream buf;
             buf.precision(2);
             buf << i;
-            
+
             activatedList_[i] = this->template getBaseProperty<  bool  >
                 (word("activated")+buf.str());
             if(activatedList_[i] == true){
@@ -712,7 +724,7 @@ void Foam::UniformSamplingSprinklerInjection<CloudType>::treatSprinklerActivatio
         {
             this->SOI_ = min(activationTimeList_);
         }
-        
+
         for(label i=0;i<nSprinklers_;i++){
             if(initialTemperatureList_[i]==0e0){
                 // if linkTemperature not found in reactingCloud1OutputProperties then read from controlDict
@@ -722,13 +734,13 @@ void Foam::UniformSamplingSprinklerInjection<CloudType>::treatSprinklerActivatio
                 activationTimeList_[i] = GREAT;
             }
         }
-	}
+    }
     else{
         for(label i=0;i<nSprinklers_;i++){
             activatedList_[i] = true;
         }
     }
- 
+
     return;
 }
 
@@ -801,27 +813,27 @@ void Foam::UniformSamplingSprinklerInjection<CloudType>::readTableData()
     tableDirectory_ = this->coeffDict().subDict("lookupTableCoeffs").template lookupOrDefault< word >("tableDirectory","");
     fileName dirName;
     if(Pstream::parRun()){
-        dirName = 
+        dirName =
             ".."/this->owner().db().time().constant()/tableDirectory_;
     }
     else{
         Info << "tableDirectory_: " << tableDirectory_ << endl;
-        dirName = 
+        dirName =
             this->owner().db().time().constant()/tableDirectory_;
     }
 
     {
-        IOdictionary dict    
-            (        
-                IOobject        
-                (            
-                    "lookup.foam.header",            
+        IOdictionary dict
+            (
+                IOobject
+                (
+                    "lookup.foam.header",
                     dirName,
                     // this->owner().db().time().constant()+"/"+tableDirectory_,
                     this->owner().db(),
-                    IOobject::MUST_READ_IF_MODIFIED,            
-                    IOobject::NO_WRITE        
-                    )    
+                    IOobject::MUST_READ_IF_MODIFIED,
+                    IOobject::NO_WRITE
+                    )
                 );
         nEle_ = readLabel(dict.lookup("nEle"));
         nAzi_ = readLabel(dict.lookup("nAzi"));
@@ -832,103 +844,103 @@ void Foam::UniformSamplingSprinklerInjection<CloudType>::readTableData()
     }
 
     {
-        IOdictionary dict    
-            (        
-                IOobject        
-                (            
-                    "lookup.foam.avgFlux",            
+        IOdictionary dict
+            (
+                IOobject
+                (
+                    "lookup.foam.avgFlux",
                     dirName,
                     // this->owner().db().time().constant()/tableDirectory_,
                     // this->owner().db().time().constant(),
                     this->owner().db(),
-                    IOobject::MUST_READ_IF_MODIFIED,            
-                    IOobject::NO_WRITE        
-                    )    
+                    IOobject::MUST_READ_IF_MODIFIED,
+                    IOobject::NO_WRITE
+                    )
                 );
         dict.lookup("avgFlux") >> avgFlux_;
     }
-     
-//    {   
-//        IOdictionary dict    
-//            (        
-//                IOobject        
-//                (            
-//                    "lookup.foam.dv50",            
+
+//    {
+//        IOdictionary dict
+//            (
+//                IOobject
+//                (
+//                    "lookup.foam.dv50",
 //                    dirName,
 //                    // this->owner().db().time().constant()/tableDirectory_,
 //                    // this->owner().db().time().constant(),
 //                    this->owner().db(),
-//                    IOobject::MUST_READ_IF_MODIFIED,            
-//                    IOobject::NO_WRITE        
-//                    )    
+//                    IOobject::MUST_READ_IF_MODIFIED,
+//                    IOobject::NO_WRITE
+//                    )
 //                );
 //        dict.lookup("dv50") >> dv50_;
 //    }
 
     {
-        IOdictionary dict    
-            (        
-                IOobject        
-                (            
-                    "lookup.foam.area",            
+        IOdictionary dict
+            (
+                IOobject
+                (
+                    "lookup.foam.area",
                     dirName,
                     // this->owner().db().time().constant()/tableDirectory_,
                     // this->owner().db().time().constant(),
                     this->owner().db(),
-                    IOobject::MUST_READ_IF_MODIFIED,            
-                    IOobject::NO_WRITE        
-                    )    
+                    IOobject::MUST_READ_IF_MODIFIED,
+                    IOobject::NO_WRITE
+                    )
                 );
         dict.lookup("area") >> area_;
     }
 
 //    {
-//        IOdictionary dict    
-//            (        
-//                IOobject        
-//                (            
-//                    "lookup.foam.avgVelMag",            
+//        IOdictionary dict
+//            (
+//                IOobject
+//                (
+//                    "lookup.foam.avgVelMag",
 //                    dirName,
 //                    // this->owner().db().time().constant()/tableDirectory_,
 //                    // this->owner().db().time().constant(),
 //                    this->owner().db(),
-//                    IOobject::MUST_READ_IF_MODIFIED,            
-//                    IOobject::NO_WRITE        
-//                    )    
+//                    IOobject::MUST_READ_IF_MODIFIED,
+//                    IOobject::NO_WRITE
+//                    )
 //                );
 //        dict.lookup("avgVelMag") >> avgVelMag_;
 //    }
 
     {
-        IOdictionary dict    
-            (        
-                IOobject        
-                (            
-                    "lookup.foam.ele",            
+        IOdictionary dict
+            (
+                IOobject
+                (
+                    "lookup.foam.ele",
                     dirName,
                     // this->owner().db().time().constant()/tableDirectory_,
                     // this->owner().db().time().constant(),
                     this->owner().db(),
-                    IOobject::MUST_READ_IF_MODIFIED,            
-                    IOobject::NO_WRITE        
-                    )    
+                    IOobject::MUST_READ_IF_MODIFIED,
+                    IOobject::NO_WRITE
+                    )
                 );
         dict.lookup("ele") >> ele_;
     }
 
     {
-        IOdictionary dict    
-            (        
-                IOobject        
-                (            
-                    "lookup.foam.azi",            
+        IOdictionary dict
+            (
+                IOobject
+                (
+                    "lookup.foam.azi",
                     dirName,
                     // this->owner().db().time().constant()/tableDirectory_,
                     // this->owner().db().time().constant(),
                     this->owner().db(),
-                    IOobject::MUST_READ_IF_MODIFIED,            
-                    IOobject::NO_WRITE        
-                    )    
+                    IOobject::MUST_READ_IF_MODIFIED,
+                    IOobject::NO_WRITE
+                    )
                 );
         dict.lookup("azi") >> azi_;
     }
@@ -942,10 +954,10 @@ void Foam::UniformSamplingSprinklerInjection<CloudType>::computeInjectionPropert
 {
 
     // compute sprinker orifice diameter
-    // K = 29.83 c D^2 
+    // K = 29.83 c D^2
     // where D is in inches, K in british units
     scalar Cd = 0.93; // tapered orifice, orifice coeficient
-    scalar conversionKFactor = 14.464; //  gpm/psi^0.5 per lpm/bar^0.5    
+    scalar conversionKFactor = 14.464; //  gpm/psi^0.5 per lpm/bar^0.5
     scalar conversionMeterPerInch = 0.0254; //  meter per inch
     scalar factor = 29.83/pow(conversionMeterPerInch,2)*conversionKFactor; // L/min per m2
     Info << "factor: " << factor << endl;
@@ -959,11 +971,11 @@ void Foam::UniformSamplingSprinklerInjection<CloudType>::computeInjectionPropert
     velMag_ = uJet*0.8; // account for momentum loss during atomization process
 
     // compute dv50
-    scalar C = 1.9; // sprinkler specific empirical factor for determining dv50 
+    scalar C = 1.9; // sprinkler specific empirical factor for determining dv50
     scalar sigmaw = 72.8e-3; // N/m @ 20 deg C
     scalar We = rhow*uJet*uJet*orificeDiameter/sigmaw;
     Info << "We: " << We << endl;
-    
+
     dv50_ = C*orificeDiameter/pow(We,0.33333); // m
     Info << "dv50: " << dv50_ << endl;
 
@@ -979,7 +991,7 @@ void Foam::UniformSamplingSprinklerInjection<CloudType>::computeInjectionPropert
         scalar singleVolume = 4./3.*pi*pow(radius,3); // m3
         parcelParticles_[nc] = volumeToInject/singleVolume; // None
     }
-    
+
     return;
 }
 
@@ -1005,18 +1017,18 @@ void Foam::UniformSamplingSprinklerInjection<CloudType>::sampleInjectionTable
                 theta = 2.0*pi*u/radPerDeg;
                 theta = round(theta);
             }while(theta>=360.0);
-    
+
             // phi == elevation angle
             scalar phi;
             do{
                 scalar v = rndGen_.scalar01();
                 phi = acos(2.0*v-1.0)/radPerDeg;
             }while(phi>90.0);
-    
+
             // invert phi to range from 0 to 90
             phi = 90.0 - phi;
             phi = round(phi);
-    
+
             scalar aziSkip = 360./scalar(nAzi_);
             sampleAziIndicies[i] = label(theta)/aziSkip;
             scalar eleSkip = 90./(scalar(nEle_)-1.);
@@ -1047,7 +1059,7 @@ void Foam::UniformSamplingSprinklerInjection<CloudType>::sampleInjectionTable
         // sampleD_[nc] = dv50_; // m
         sampleD_[nc] = sampleRosinRammler(); // m
         // sampleAvgVelMag_[nc] = avgVelMag_[linearIndex]; // m/s
-        sampleAvgVelMag_[nc] = velMag_; // m/s 
+        sampleAvgVelMag_[nc] = velMag_; // m/s
 
         scalar volumetricFlowRate = sampleAvgFlux_[nc]*sampleArea_[nc];
         sumVolumetricFlowRate += volumetricFlowRate; // L/s
@@ -1069,7 +1081,7 @@ void Foam::UniformSamplingSprinklerInjection<CloudType>::sampleInjectionTable
         sampleParcelParticles_[nc] = volumeToInject/singleVolume; // None
         // sumParcelParticles += sampleParcelParticles_[nc];
     }
-        
+
     return;
 }
 
@@ -1078,7 +1090,7 @@ template<class CloudType>
 Foam::scalar Foam::UniformSamplingSprinklerInjection<CloudType>::computeIdealFlowRate()
 {
     scalar secondsPerMinute = 60.0;
-    
+
     scalar idealFlowRate = kFactor_*sqrt(pressure_); // L/min
     idealFlowRate /= secondsPerMinute; // L/s
     Info << "idealFlowRate " << (idealFlowRate) << " L/s " << nl;
@@ -1097,7 +1109,7 @@ void Foam::UniformSamplingSprinklerInjection<CloudType>::setSampleSizes()
     sampleEle_.resize(sampleSize_);
     sampleAzi_.resize(sampleSize_);
     sampleParcelParticles_.resize(sampleSize_);
-    
+
     return;
 }
 
@@ -1112,7 +1124,7 @@ Foam::scalar Foam::UniformSamplingSprinklerInjection<CloudType>::sampleRosinRamm
     scalar minValue_ = 0.1*d_*pow(0.1054,1./n_); // 0.1*D_{0.1}
     /*Info << "minValue_ " << minValue_ << endl;*/
     scalar K = 1.0 - exp(-pow((maxValue_ - minValue_)/d_, n_));
-    // why cached?  
+    // why cached?
     scalar y = cachedRndGen_.sample01<scalar>();
     // scalar y = rndGen_.scalar01();
     scalar x = minValue_ + d_*::pow(-log(1.0 - y*K), 1.0/n_);

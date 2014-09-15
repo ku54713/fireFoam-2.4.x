@@ -1,0 +1,590 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2.2.x                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      controlDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+application     fireFoam;
+
+startFrom       startTime;
+
+startTime       0;
+
+stopAt          endTime;
+
+endTime         10;
+
+deltaT          5e-02;
+
+writeControl    adjustableRunTime;
+
+writeInterval   2;
+
+purgeWrite      0;
+
+writeFormat     ascii;
+
+writePrecision  8;
+
+writeCompression uncompressed;
+
+timeFormat      general;
+
+timePrecision   6;
+
+graphFormat     raw;
+
+runTimeModifiable yes;
+
+adjustTimeStep  yes;
+
+maxCo           0.8;
+
+maxDi           0.25;
+
+maxDeltaT       0.1;
+
+libs
+(
+    "libfvPatchFieldsPyrolysis.so"
+);
+
+functions
+(
+
+    HRR
+    {
+        type            cellSource;
+        functionObjectLibs ("libfieldFunctionObjects.so");
+        enabled         true;
+        outputControl   timeStep;  //outputTime;
+        outputInterval  1;
+        log             false;     
+        valueOutput     false;
+        source          all;       //cellZone;
+        sourceName      c0;
+        operation       volIntegrate;
+        fields
+        (
+            dQ
+        );
+    }
+
+    // patch integration of phi, and HRR: panel
+    patchPanel_xnorm_p 
+    {
+        type            faceSource;
+        functionObjectLibs ("libfieldFunctionObjects.so");
+        enabled         true;
+        outputControl   timeStep;  
+        outputInterval  10;
+        log             false;
+        valueOutput     false;
+        source          patch;
+        sourceName      region0_to_pyrolysisRegion_box_xnorm_p;
+        operation       sum;
+        fields
+        (
+            phi
+            HRR_fu
+        );
+    }
+
+    patchPanel_xnorm_m 
+    {
+        type            faceSource;
+        functionObjectLibs ("libfieldFunctionObjects.so");
+        enabled         true;
+        outputControl   timeStep;  
+        outputInterval  10;
+        log             false;
+        valueOutput     false;
+        source          patch;
+        sourceName      region0_to_pyrolysisRegion_box_xnorm_m;
+        operation       sum;
+        fields
+        (
+            phi
+            HRR_fu
+        );
+    }
+
+    patchPanel_ynorm_p 
+    {
+        type            faceSource;
+        functionObjectLibs ("libfieldFunctionObjects.so");
+        enabled         true;
+        outputControl   timeStep;  
+        outputInterval  10;
+        log             false;
+        valueOutput     false;
+        source          patch;
+        sourceName      region0_to_pyrolysisRegion_box_ynorm_p;
+        operation       sum;
+        fields
+        (
+            phi
+            HRR_fu
+        );
+    }
+
+    patchPanel_ynorm_m 
+    {
+        type            faceSource;
+        functionObjectLibs ("libfieldFunctionObjects.so");
+        enabled         true;
+        outputControl   timeStep;  
+        outputInterval  10;
+        log             false;
+        valueOutput     false;
+        source          patch;
+        sourceName      region0_to_pyrolysisRegion_box_ynorm_m;
+        operation       sum;
+        fields
+        (
+            phi
+            HRR_fu
+        );
+    }
+
+    patchPanel_znorm_p 
+    {
+        type            faceSource;
+        functionObjectLibs ("libfieldFunctionObjects.so");
+        enabled         true;
+        outputControl   timeStep;  
+        outputInterval  10;
+        log             false;
+        valueOutput     false;
+        source          patch;
+        sourceName      region0_to_pyrolysisRegion_box_znorm_p;
+        operation       sum;
+        fields
+        (
+            phi
+            HRR_fu
+        );
+    }
+
+    patchPanel_znorm_m 
+    {
+        type            faceSource;
+        functionObjectLibs ("libfieldFunctionObjects.so");
+        enabled         true;
+        outputControl   timeStep;  
+        outputInterval  10;
+        log             false;
+        valueOutput     false;
+        source          patch;
+        sourceName      region0_to_pyrolysisRegion_box_znorm_m;
+        operation       sum;
+        fields
+        (
+            phi
+            HRR_fu
+        );
+    }
+
+//    // cube01
+//    cube01_side1_sample1
+//    {
+//        type            faceSource;
+//        region          wallFilmRegion;
+//        functionObjectLibs ("libfieldFunctionObjects.so");
+//        enabled         true;
+//        outputControl   outputTime;
+//        log             false;
+//        valueOutput     false;
+//        source          faceZone;
+//        sourceName      cube01_side1_sample1;
+//        operation       sum;
+//        fields
+//        (
+//            phi
+//        );
+//    }
+//
+//    cube01_side1_sample2
+//    {
+//        type            faceSource;
+//        region          wallFilmRegion;
+//        functionObjectLibs ("libfieldFunctionObjects.so");
+//        enabled         true;
+//        outputControl   outputTime;
+//        log             false;
+//        valueOutput     false;
+//        source          faceZone;
+//        sourceName      cube01_side1_sample2;
+//        operation       sum;
+//        fields
+//        (
+//            phi
+//        );
+//    }
+//
+//    cube01_side1_sample3
+//    {
+//        type            faceSource;
+//        region          wallFilmRegion;
+//        functionObjectLibs ("libfieldFunctionObjects.so");
+//        enabled         true;
+//        outputControl   outputTime;
+//        log             false;
+//        valueOutput     false;
+//        source          faceZone;
+//        sourceName      cube01_side1_sample3;
+//        operation       sum;
+//        fields
+//        (
+//            phi
+//        );
+//    }
+//
+//    cube01_side1_sample4
+//    {
+//        type            faceSource;
+//        region          wallFilmRegion;
+//        functionObjectLibs ("libfieldFunctionObjects.so");
+//        enabled         true;
+//        outputControl   outputTime;
+//        log             false;
+//        valueOutput     false;
+//        source          faceZone;
+//        sourceName      cube01_side1_sample4;
+//        operation       sum;
+//        fields
+//        (
+//            phi
+//        );
+//    }
+//
+//    cube01_side2_sample1
+//    {
+//        type            faceSource;
+//        region          wallFilmRegion;
+//        functionObjectLibs ("libfieldFunctionObjects.so");
+//        enabled         true;
+//        outputControl   outputTime;
+//        log             false;
+//        valueOutput     false;
+//        source          faceZone;
+//        sourceName      cube01_side2_sample1;
+//        operation       sum;
+//        fields
+//        (
+//            phi
+//        );
+//    }
+//
+//    cube01_side2_sample2
+//    {
+//        type            faceSource;
+//        region          wallFilmRegion;
+//        functionObjectLibs ("libfieldFunctionObjects.so");
+//        enabled         true;
+//        outputControl   outputTime;
+//        log             false;
+//        valueOutput     false;
+//        source          faceZone;
+//        sourceName      cube01_side2_sample2;
+//        operation       sum;
+//        fields
+//        (
+//            phi
+//        );
+//    }
+//
+//    cube01_side2_sample3
+//    {
+//        type            faceSource;
+//        region          wallFilmRegion;
+//        functionObjectLibs ("libfieldFunctionObjects.so");
+//        enabled         true;
+//        outputControl   outputTime;
+//        log             false;
+//        valueOutput     false;
+//        source          faceZone;
+//        sourceName      cube01_side2_sample3;
+//        operation       sum;
+//        fields
+//        (
+//            phi
+//        );
+//    }
+//
+//    cube01_side2_sample4
+//    {
+//        type            faceSource;
+//        region          wallFilmRegion;
+//        functionObjectLibs ("libfieldFunctionObjects.so");
+//        enabled         true;
+//        outputControl   outputTime;
+//        log             false;
+//        valueOutput     false;
+//        source          faceZone;
+//        sourceName      cube01_side2_sample4;
+//        operation       sum;
+//        fields
+//        (
+//            phi
+//        );
+//    }
+//
+//    cube01_side3_sample1
+//    {
+//        type            faceSource;
+//        region          wallFilmRegion;
+//        functionObjectLibs ("libfieldFunctionObjects.so");
+//        enabled         true;
+//        outputControl   outputTime;
+//        log             false;
+//        valueOutput     false;
+//        source          faceZone;
+//        sourceName      cube01_side3_sample1;
+//        operation       sum;
+//        fields
+//        (
+//            phi
+//        );
+//    }
+//
+//    cube01_side3_sample2
+//    {
+//        type            faceSource;
+//        region          wallFilmRegion;
+//        functionObjectLibs ("libfieldFunctionObjects.so");
+//        enabled         true;
+//        outputControl   outputTime;
+//        log             false;
+//        valueOutput     false;
+//        source          faceZone;
+//        sourceName      cube01_side3_sample2;
+//        operation       sum;
+//        fields
+//        (
+//            phi
+//        );
+//    }
+//
+//    cube01_side3_sample3
+//    {
+//        type            faceSource;
+//        region          wallFilmRegion;
+//        functionObjectLibs ("libfieldFunctionObjects.so");
+//        enabled         true;
+//        outputControl   outputTime;
+//        log             false;
+//        valueOutput     false;
+//        source          faceZone;
+//        sourceName      cube01_side3_sample3;
+//        operation       sum;
+//        fields
+//        (
+//            phi
+//        );
+//    }
+//
+//    cube01_side3_sample4
+//    {
+//        type            faceSource;
+//        region          wallFilmRegion;
+//        functionObjectLibs ("libfieldFunctionObjects.so");
+//        enabled         true;
+//        outputControl   outputTime;
+//        log             false;
+//        valueOutput     false;
+//        source          faceZone;
+//        sourceName      cube01_side3_sample4;
+//        operation       sum;
+//        fields
+//        (
+//            phi
+//        );
+//    }
+//
+//    cube01_side4_sample1
+//    {
+//        type            faceSource;
+//        region          wallFilmRegion;
+//        functionObjectLibs ("libfieldFunctionObjects.so");
+//        enabled         true;
+//        outputControl   outputTime;
+//        log             false;
+//        valueOutput     false;
+//        source          faceZone;
+//        sourceName      cube01_side4_sample1;
+//        operation       sum;
+//        fields
+//        (
+//            phi
+//        );
+//    }
+//
+//    cube01_side4_sample2
+//    {
+//        type            faceSource;
+//        region          wallFilmRegion;
+//        functionObjectLibs ("libfieldFunctionObjects.so");
+//        enabled         true;
+//        outputControl   outputTime;
+//        log             false;
+//        valueOutput     false;
+//        source          faceZone;
+//        sourceName      cube01_side4_sample2;
+//        operation       sum;
+//        fields
+//        (
+//            phi
+//        );
+//    }
+//
+//    cube01_side4_sample3
+//    {
+//        type            faceSource;
+//        region          wallFilmRegion;
+//        functionObjectLibs ("libfieldFunctionObjects.so");
+//        enabled         true;
+//        outputControl   outputTime;
+//        log             false;
+//        valueOutput     false;
+//        source          faceZone;
+//        sourceName      cube01_side4_sample3;
+//        operation       sum;
+//        fields
+//        (
+//            phi
+//        );
+//    }
+//
+//    cube01_side4_sample4
+//    {
+//        type            faceSource;
+//        region          wallFilmRegion;
+//        functionObjectLibs ("libfieldFunctionObjects.so");
+//        enabled         true;
+//        outputControl   outputTime;
+//        log             false;
+//        valueOutput     false;
+//        source          faceZone;
+//        sourceName      cube01_side4_sample4;
+//        operation       sum;
+//        fields
+//        (
+//            phi
+//        );
+//    }
+
+    fieldMinMax
+    {
+        type            fieldMinMax;
+        functionObjectLibs ("libfieldFunctionObjects.so");
+        enabled         true;
+        outputControl   timeStep;
+        outputInterval  1;
+        mode            magnitude;
+        log             true;
+        valueOutput     false;
+        fields
+        (
+            T
+            dQ
+            qrflamelet
+        );
+    }
+
+//    surfaceSampling
+//    {
+//        type surfaces;
+//
+//        functionObjectLibs ("libsampling.so");
+//        enabled         true;
+//        outputControl   adjustableTime;
+//        writeInterval   5;
+//        interpolationScheme cellPoint;
+//        surfaceFormat vtk;
+//
+//        // Fields to be sampled
+//        fields
+//        (
+//            //T
+//        );
+//
+//        surfaces
+//        (
+//            flame
+//            {
+//            // Iso surface for constant values.
+//            // Triangles guaranteed not to cross cells.
+//            type            isoSurfaceCell; //isoSurface;
+//            isoField        ft;
+//            isoValue        0.05;
+//            interpolate     true; //false;
+//            regularise      false;              // do not simplify  // more stable
+//            // mergeTol        1e-10;    // Optional: fraction of mesh bounding box
+//                                         // to merge points (default=1e-6)
+//            }
+//
+//            flame2
+//            {
+//            // Iso surface for constant values.
+//            // Triangles guaranteed not to cross cells.
+//            type            isoSurfaceCell; //isoSurface;
+//            isoField        ft;
+//            isoValue        0.07;
+//            interpolate     true; //false;
+//            regularise      false;              // do not simplify  // more stable
+//            // mergeTol        1e-10;    // Optional: fraction of mesh bounding box
+//                                         // to merge points (default=1e-6)
+//            }
+//        );
+//    }
+//
+//    patchSamplingFilm
+//    {
+//        type surfaces;
+//
+//        functionObjectLibs ("libsampling.so");
+//        enabled         true;
+//        outputControl   adjustableTime;
+//        writeInterval   1;
+//        interpolationScheme cellPoint;
+//        surfaceFormat   vtk;
+//        region          filmRegion;
+//
+//        // Fields to be sampled
+//        fields
+//        (
+//           deltaf
+//        );
+//
+//        surfaces
+//        (
+//            boxes
+//            {
+//                type            patch;
+//                patches         (
+//                                    box_xnorm_p
+//                                    box_xnorm_m
+//                                    box_ynorm_p
+//                                    box_ynorm_m
+//                                    box_znorm_p
+//                                    box_znorm_m
+//                                );
+//            }
+//        );
+//
+//    }
+
+);
+// ************************************************************************* //

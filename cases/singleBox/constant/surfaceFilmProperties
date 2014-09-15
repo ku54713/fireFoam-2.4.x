@@ -1,0 +1,165 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2.2.x                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "constant";
+    object      SurfaceFilmProperties;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+active           true;
+
+surfaceFilmModel thermoSingleLayer;
+
+regionName       filmRegion;
+
+thermoSingleLayerCoeffs
+{
+    pyrolysisCoupled true;
+    thermoModel singleComponent; // constant
+    liquid      H2O;
+
+    Tmax 500.0;
+    Tmin 200.0;
+
+    Cf          0.005;
+
+    forces ( 
+            surfaceShear 
+            thermocapillary 
+            contactAngle
+           );
+
+    contactAngleCoeffs
+    {
+        Ccf             0.016;//0.001;
+        contactAngleDistribution
+        {
+            type            normal;
+            normalDistribution
+            {
+                minValue        50;
+                maxValue        100;
+                expectation     75;
+                variance        10;//100;
+            }
+        }
+        timeIntervalDistribution
+        {
+            type            normal;
+            normalDistribution
+            {
+                minValue        100;
+                maxValue        101;
+                expectation     100.5;
+                variance        0.2;
+            }
+        }
+    }
+
+    surfaceShearCoeffs
+    {
+        Cf          0.005;
+    }
+
+    deltaWet 0.0002;
+    hydrophilic true;
+    hydrophilicDryScale       0.02;
+    hydrophilicWetScale       0.5;
+
+    trappedMassModel false;
+    trappedMassModelCoeffs{
+        fraction 0.002;
+        profileFactor 4;
+        trapMax trapMax [1 0 0 0 0] 1;
+        boxes 1;
+        tiers 1;
+    }
+
+    partialWetting true;
+    partialWettingCoeffs{
+        hydrophilic true;
+        wetToggle                 0.5;
+        dryToggle                 0.001;
+        contactAngleMean          75;
+        contactAngleStdDev        10;
+        contactAngleMax           100;
+        contactAngleMin           50;
+        contactAngleCoefficient   1.000;
+        criticalFilmThickness   criticalFilmThickness [ 0 1 0 0 0 ] 0.00020;
+    }
+
+    radiationModel standardRadiation;//none;//
+    standardRadiationCoeffs
+    {
+        deltaMin 1e-6;
+        beta     0.75;
+        kappaBar 0.25;
+    }
+
+
+    phaseChangeModel standardPhaseChange;//none;//
+    standardPhaseChangeCoeffs 
+    { 
+        Tb               374.8; 
+        deltaMin         1e-6; // mass transfer turned off when film thickness below this value 
+        L                1; // length scale used in mean Nusselt and Sherwood correlation 
+    } 
+
+    massAbsorptionModel standardMassAbsorption;//none;//
+    standardMassAbsorptionCoeffs 
+    { 
+        deltaMin         1e-6; // mass absorption turned off when film thickness below this value 
+    } 
+
+    injectionModels (drippingInjection); 
+
+    drippingInjectionCoeffs
+    {
+        cloudName    reactingCloud1;
+
+        deltaStable  0.001;
+
+        particlesPerParcel 100.0;
+
+        parcelDistribution
+        {        
+            type         uniform;
+            uniformDistribution              
+            {                            
+                minValue        0.001;   
+                maxValue        0.002;  
+                d               ( 7.5e-05 );
+                n               ( 0.5 );    
+            }                               
+        }                                   
+    }
+
+    upperSurfaceModels
+    {
+        heatTransferModel constant;
+        constantCoeffs
+        {
+            c0                10;
+        }
+    }
+
+    lowerSurfaceModels
+    {
+        heatTransferModel constant;
+        constantCoeffs
+        {
+            c0                500;
+        }
+    }
+    
+}
+

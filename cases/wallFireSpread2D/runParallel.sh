@@ -3,8 +3,8 @@
 # Source tutorial run functions
 . $WM_PROJECT_DIR/bin/tools/RunFunctions
 
-./Allclean
-./Allrun.pre
+./clean.sh
+./mesh.sh
 
 # Set application name
 application="fireFoam"

@@ -1,0 +1,124 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2.2.x                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volScalarField;
+    location    "0/filmRegion";
+    object      Tf;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [0 0 0 1 0 0 0];
+
+internalField   uniform  300;
+
+boundaryField
+{
+    // cyclic boundaries between film patches
+    "(box_[xyz]norm_[mp]_to_box_[xyz]norm_[mp])"
+    {
+        type            nonuniformTransformCyclic;
+    }
+
+    // top film surface
+    "(.*_top)"
+    {
+        type            zeroGradient;
+    }
+
+    // mapped boundaries
+    box_xnorm_p
+    {
+//        type zeroGradient;
+        type            mappedField; // 
+        sampleRegion    pyrolysisRegion;
+        sampleMode      nearestPatchFaceAMI;
+        samplePatch     region0_to_pyrolysisRegion_box_xnorm_p; // panel;
+        flipNormals     yes;
+        offset          (0 0 0);
+        fieldName       T;
+        setAverage      no;
+        average         0;
+        value           $internalField;
+    }
+    box_xnorm_m
+    {
+//        type zeroGradient;
+        type            mappedField; // 
+        sampleRegion    pyrolysisRegion;
+        sampleMode      nearestPatchFaceAMI;
+        samplePatch     region0_to_pyrolysisRegion_box_xnorm_m; // panel;
+        flipNormals     yes;
+        offset          (0 0 0);
+        fieldName       T;
+        setAverage      no;
+        average         0;
+        value           $internalField;
+    }
+    box_ynorm_p
+    {
+//        type zeroGradient;
+        type            mappedField; // 
+        sampleRegion    pyrolysisRegion;
+        sampleMode      nearestPatchFaceAMI;
+        samplePatch     region0_to_pyrolysisRegion_box_ynorm_p; // panel;
+        flipNormals     yes;
+        offset          (0 0 0);
+        fieldName       T;
+        setAverage      no;
+        average         0;
+        value           $internalField;
+    }
+    box_ynorm_m
+    {
+//        type zeroGradient;
+        type            mappedField; // 
+        sampleRegion    pyrolysisRegion;
+        sampleMode      nearestPatchFaceAMI;
+        samplePatch     region0_to_pyrolysisRegion_box_ynorm_m; // panel;
+        flipNormals     yes;
+        offset          (0 0 0);
+        fieldName       T;
+        setAverage      no;
+        average         0;
+        value           $internalField;
+    }
+    box_znorm_p
+    {
+//        type zeroGradient;
+        type            mappedField; // 
+        sampleRegion    pyrolysisRegion;
+        sampleMode      nearestPatchFaceAMI;
+        samplePatch     region0_to_pyrolysisRegion_box_znorm_p; // panel;
+        flipNormals     yes;
+        offset          (0 0 0);
+        fieldName       T;
+        setAverage      no;
+        average         0;
+        value           $internalField;
+    }
+    box_znorm_m
+    {
+//        type zeroGradient;
+        type            mappedField; // 
+        sampleRegion    pyrolysisRegion;
+        sampleMode      nearestPatchFaceAMI;
+        samplePatch     region0_to_pyrolysisRegion_box_znorm_m; // panel;
+        flipNormals     yes;
+        offset          (0 0 0);
+        fieldName       T;
+        setAverage      no;
+        average         0;
+        value           $internalField;
+    }
+
+}
+
+// ************************************************************************* //

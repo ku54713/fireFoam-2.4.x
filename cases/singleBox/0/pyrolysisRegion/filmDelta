@@ -1,0 +1,45 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  1.7.x                                 |
+|   \\  /    A nd           | Web:      http://www.OpenFOAM.com               |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volScalarField;
+    location    "0/pyrolysisRegion";
+    object      delta;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [0 1 0 0 0 0 0];
+
+internalField   uniform 0;
+
+boundaryField
+{
+    "(.*top)"
+    {
+        type            zeroGradient;
+    }
+
+    "(region0_to.*)"
+    {
+        type            mappedField; // map to pyrolysis region temp field
+        sampleRegion    filmRegion;
+        sampleMode      nearestPatchFaceAMI;
+        samplePatch     coupledWall;
+        flipNormals     no;
+        offset          (0 0 0);
+        fieldName       deltaf;
+        setAverage      no;
+        average         0;
+        value           uniform 0;
+    }
+}
+
+
+// ************************************************************************* //

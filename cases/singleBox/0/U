@@ -1,0 +1,67 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2.2.x                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volVectorField;
+    location    "0";
+    object      U;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [0 1 -1 0 0 0 0];
+
+internalField   uniform (0 0 0);
+
+boundaryField
+{
+    top
+    {
+        type            inletOutlet;
+        inletValue      $internalField;
+        value           $internalField;
+    }
+    sides
+    {
+        type            pressureInletOutletVelocity;
+        value           $internalField;
+        phi             phi;
+    }
+    base
+    {
+        type            fixedValue;
+        value           $internalField;
+    }
+    burner          
+    {
+        type flowRateInletVelocity;
+        massFlowRate table
+        (
+            (   0  0.03 )
+            (  60  0.03 )
+            ( 100  0.03 )
+        );
+        value           $internalField;
+    }
+    "(region0_to.*)"
+    {
+        //type            flowRateInletVelocityCoupled;
+        //type            flowRateInletVelocityFuelConvertCoupled;
+        type            flowRateInletVelocityPyrolysisCoupled;
+        phi             phi;
+        nbrPhi          phiGas;
+        rho             rho;
+        // hocPyr          2.0229e+07; // DeltaHcVirgin = 1.767e+07 J/kg // (rhoVirgin*DeltaHcVirgin)/(rhoVirgin - rhoChar) //HEAT OF COMBUSTION OF PYROLYSATE IS IN J/kg. 
+        hocSolid          1.66e7;  //Hoc for virgin material, doubleWall, make Hoc of volatile to be 1.42e7
+        value           uniform (0 0 0);
+    }
+}
+
+
+// ************************************************************************* //

@@ -12,10 +12,10 @@
     volScalarField dEff
     (
         "dEff",
-        turbulence->alphaEff() 
+        turbulence->alphaEff()
     );
-   
-    if (!constD) 
+
+    if (!constD)
     {
         dEff -= turbulence->alpha()*(1-1.0/lewisNo);
     }
@@ -27,7 +27,7 @@
     combustion->correct();
 
     // dQ is only for diagnostic purposes.
-    // TODO: set dQ = combustoin->dQ(); once OpenCFD updates 
+    // TODO: set dQ = combustoin->dQ(); once OpenCFD updates
     //       greyAbsorptionEmission model in OpenFOAM source
     dQ = combustion->Sh();
 
@@ -50,8 +50,8 @@
                         phi,
                         fvc::flux
                         (
-                        		phi,
-                        		Yi
+                                phi,
+                                Yi
                         )(),
                         zeroField(),
                         zeroField(),
@@ -63,7 +63,7 @@
                         fvm::ddt(rho, Yi) - fvc::ddt(rho, Yi)
                       //- fvm::laplacian(turbulence->alphaEff(), Yi)
                         - fvm::laplacian(dEff, Yi)
-                        == 
+                        ==
                         //parcels.Srho(i)
                         parcels.SYi(i, Yi)
                         + surfaceFilm.Srho(i)
@@ -115,10 +115,10 @@
     //Y[inertIndex].max(0.0);
 
     forAll(Y, i){
-        Info << setw(8) << Y[i].name() << "\tmin/ave/max "<< " =\t" 
-             << setw(12) << gMin(Y[i]) << "\t" 
-             << setw(12) << gAverage(Y[i]) << "\t" 
-             << setw(12) << gMax(Y[i]) << nl;
+        Info << setw(8) << Y[i].name() << "\tmin/ave/max "<< " =\t"
+             << setw(12) << setprecision(5) << gMin(Y[i]) << "\t"
+             << setw(12) << setprecision(5) << gAverage(Y[i]) << "\t"
+             << setw(12) << setprecision(5) << gMax(Y[i]) << nl;
     }
 
     radiation->correct();
@@ -134,7 +134,7 @@
                 DpDt
                 + parcels.Sh(hs)
                 + surfaceFilm.Sh()
-                // TODO: revert to using combustion->Sh() once 
+                // TODO: revert to using combustion->Sh() once
                 //       greyMeanAbsorptionEmission updated
                 // + combustion->Sh()
                 + XEff*dQ

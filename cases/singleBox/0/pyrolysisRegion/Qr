@@ -1,0 +1,46 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  1.7.x                                 |
+|   \\  /    A nd           | Web:      http://www.OpenFOAM.com               |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volScalarField;
+    location    "0";
+    object      Qr;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [1 0 -3 0 0 0 0];
+
+internalField   uniform 0;
+
+boundaryField
+{
+    "(box_.*_top)"
+    {
+        type            zeroGradient;
+    }
+
+    "(region0_to_pyrolysisRegion_box_.*)"
+    {
+        // type            zeroGradient;
+        type            mappedField;
+        sampleRegion    filmRegion;
+        sampleMode      nearestPatchFaceAMI;
+        samplePatch     region0_to_panelRegion_panel;
+        flipNormals     yes;
+        offset          (0 0 0);
+        fieldName       QrNet;
+        setAverage      no;
+        average         0;
+        value           uniform 0;
+    }
+}
+
+
+// ************************************************************************* //

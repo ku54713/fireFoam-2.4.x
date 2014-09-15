@@ -140,17 +140,17 @@ private:
 
         //- Emission constant coefficient
         const scalar EhrrCoeff_;
-        
+
         //- Switch for scaling radiant fraction
         Switch radScaling;
-        
+
         //- Radiant fraction for fuel from patch 1 and 2
-        scalar Ehrr1_;      
-        scalar Ehrr2_;  
-        
+        scalar Ehrr1_;
+        scalar Ehrr2_;
+
         //- patch names for patches 1 and 2
-        word patchName1_;      
-        word patchName2_;          
+        wordList patchName1_;
+        wordList patchName2_;
 
         //- Pointer list of species in the registry involved in the absorption
 //        UPtrList<volScalarField> Yj_;

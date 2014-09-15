@@ -67,10 +67,10 @@ Foam::radiation::constRadFractionEmission::constRadFractionEmission
 //    Yj_(nSpecies_)
     EhrrCoeff_(readScalar(coeffsDict_.lookup("EhrrCoeff"))),
     radScaling(coeffsDict_.lookupOrDefault<Switch>("radScaling",false)),
-    Ehrr1_(coeffsDict_.lookupOrDefault<scalar>("Ehrr1",0.3)),  
-    Ehrr2_(coeffsDict_.lookupOrDefault<scalar>("Ehrr2",0.3)),       
-    patchName1_(coeffsDict_.lookupOrDefault<word>("patch1", "patch1")),  
-    patchName2_(coeffsDict_.lookupOrDefault<word>("patch2", "patch2"))  
+    Ehrr1_(coeffsDict_.lookupOrDefault<scalar>("Ehrr1",0.3)),
+    Ehrr2_(coeffsDict_.lookupOrDefault<scalar>("Ehrr2",0.3)),
+    patchName1_(coeffsDict_.lookup("patch1")),
+    patchName2_(coeffsDict_.lookup("patch2"))
 {
 
 }
@@ -101,7 +101,7 @@ Foam::radiation::constRadFractionEmission::aCont(const label bandI) const
             ),
             mesh(),
             dimensionedScalar("a", dimless/dimLength, 0.0),
-            zeroGradientFvPatchVectorField::typeName            
+            zeroGradientFvPatchVectorField::typeName
         )
     );
 
@@ -158,29 +158,49 @@ Foam::radiation::constRadFractionEmission::ECont(const label bandI) const
 
     if (radScaling)
     {
-        const label patch1I = mesh_.boundaryMesh().findPatchID(patchName1_);
-        if(patch1I<0)
-        {
-            FatalErrorIn("radScaling.H")   
-                << "patch " << patchName1_ << " not found" << nl
-                << abort(FatalError);
-        }       
-        const label patch2I = mesh_.boundaryMesh().findPatchID(patchName2_);      
-        if(patch2I<0)
-        {
-            FatalErrorIn("radScaling.H")   
-                << "patch " << patchName2_ << " not found" << nl
-                << abort(FatalError);
-        }       
-          
+
+        //TODO: this doesn't need to be recomputed for each ILambda solve
+
         const surfaceScalarField& phi = mesh_.lookupObject<surfaceScalarField>("phi");
-        scalar mlr1 = -gSum(phi.boundaryField()[patch1I]);
-        scalar mlr2 = -gSum(phi.boundaryField()[patch2I]);    
-        Info << "mlr for patch " << patchName1_ << " is " << mlr1 << endl;  
-        Info << "mlr for patch " << patchName2_ << " is " << mlr2 << endl;                   
-  
+
+        scalar mlr1(0.0);
+
+        // kvm added this ....
+
+        forAll(patchName1_,i)
+        {
+            const label patchI = mesh_.boundaryMesh().findPatchID(patchName1_[i]);
+            if(patchI<0)
+            {
+                FatalErrorIn("radScaling.H")
+                    << "patch " << patchName1_[i] << " not found" << nl
+                    << abort(FatalError);
+            }
+            mlr1 += -gSum(phi.boundaryField()[patchI]);
+        }
+
+        scalar mlr2(0.0);
+
+        forAll(patchName2_,i)
+        {
+            const label patchI = mesh_.boundaryMesh().findPatchID(patchName2_[i]);
+            if(patchI<0)
+            {
+                FatalErrorIn("radScaling.H")
+                    << "patch " << patchName2_[i] << " not found" << nl
+                    << abort(FatalError);
+            }
+            mlr2 += -gSum(phi.boundaryField()[patchI]);
+        }
+
+        if(debug)
+        {
+            Info << "mlr for patches " << patchName1_ << " is " << mlr1 << endl;
+            Info << "mlr for patches " << patchName2_ << " is " << mlr2 << endl;
+        }
+
         RadFraction = (mlr1*Ehrr1_ + mlr2*Ehrr2_)
-                    / max(SMALL, (mlr1 + mlr2));        
+                    / max(SMALL, (mlr1 + mlr2));
     }
     else
     {
@@ -192,7 +212,7 @@ Foam::radiation::constRadFractionEmission::ECont(const label bandI) const
         const volScalarField& dQ =
             mesh_.lookupObject<volScalarField>("dQ");
         E().internalField() = RadFraction*dQ;
-        
+
         Info << "Radiant Fraction is " << RadFraction << endl;
     }
 

@@ -230,8 +230,8 @@ tmp<fvVectorMatrix> contactAngleForce::correct(volVectorField& U)
         scalar f = (time - timeOld_[cellI])/(timeInterval_[cellI]);
         contactAngle_[cellI] = (1.0-f)*contactAngleOld_[cellI]+f*contactAngleNew_[cellI];
     }
-    
-    
+
+
     contactAngleNew_.correctBoundaryConditions();
     contactAngleOld_.correctBoundaryConditions();
     contactAngle_.correctBoundaryConditions();
@@ -275,7 +275,7 @@ tmp<fvVectorMatrix> contactAngleForce::correct(volVectorField& U)
         }
 
         // const scalar dxInverse = film.regionMesh().deltaCoeffs()[faceI];
-        // const scalar area = film.regionMesh().magSf()[faceI]; 
+        // const scalar area = film.regionMesh().magSf()[faceI];
         if (cellI != -1)
         {
             // is this the right length to be using?
@@ -318,7 +318,7 @@ tmp<fvVectorMatrix> contactAngleForce::correct(volVectorField& U)
                     gradAlpha[cellO]/(mag(gradAlpha[cellO]) + ROOTVSMALL);
                 // scalar theta = cos(degToRad(distribution_->sample()));
                 // ratio is important for code stability
-                // when alpha=1 and deltaf is very small, the contact angle force 
+                // when alpha=1 and deltaf is very small, the contact angle force
                 // can be so large as to cause instabilities in the velocity.
                 scalar ratio = min(deltaf[cellO]/deltaf0,1.0);
                 scalar theta = cos(contactAngle_[cellO]);

@@ -1,0 +1,6 @@
+# Create cell set for all fim region cells
+cellSet allCells clear
+cellSet allCells invert
+#faceSet coupledWall new patchToFace filmWalls
+#faceZoneSet coupledWall new setToFaceZone coupledWall
+

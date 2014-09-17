@@ -1,0 +1,86 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2.2.x                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volScalarField;
+    location    "0";
+    object      T;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [0 0 0 1 0 0 0];
+
+internalField   uniform 298.15;
+
+boundaryField
+{
+    top
+    {
+        type            inletOutlet;
+        inletValue      uniform 298.15;
+        value           uniform 298.15;
+    }
+    sides
+    {
+        type            inletOutlet;
+        inletValue      uniform 298.15;
+        value           uniform 298.15;
+    }
+    base
+    {
+        type            fixedValue;
+        value           uniform 298.15;
+    }
+    burner
+    {
+        type            fixedValue;
+        value           uniform 298.15;
+    }
+    floor
+    {
+        type            fixedValue;
+        value           uniform 298.15;
+    }
+    baffle1DWall_master
+    {
+        type            compressible::thermalBaffle1D<hConstSolidThermoPhysics>;
+        samplePatch     baffle1DWall_slave;
+        thickness       uniform 0.005;
+        Qs              uniform 100;
+        specie
+        {
+            nMoles          1;
+            molWeight       20;
+        }
+        transport
+        {
+            kappa           1;
+        }
+        thermodynamics
+        {
+            Hf              0;
+            Cp              10;
+        }
+        equationOfState
+        {
+            rho             10;
+        }
+        value           uniform 300;
+    }
+    baffle1DWall_slave
+    {
+        type            compressible::thermalBaffle1D<hConstSolidThermoPhysics>;
+        samplePatch     baffle1DWall_master;
+        value           uniform 300;
+    }
+}
+
+
+// ************************************************************************* //

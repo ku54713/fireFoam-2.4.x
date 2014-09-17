@@ -73,8 +73,8 @@ constRadFractionEmissionCoeffs
     radScaling		true;  //false;
     Ehrr1               0.6;
     Ehrr2		0.3;
-    patch1		"burner";
-    patch2		"region0_to_panelRegion_panel";
+    patch1		(burner);
+    patch2		(region0_to_panelRegion_panel);
 }
 
 scatterModel    constantScatter;

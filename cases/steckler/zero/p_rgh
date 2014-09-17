@@ -1,0 +1,70 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2.2.x                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volScalarField;
+    location    "0";
+    object      p_rgh;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [1 -1 -2 0 0 0 0];
+
+internalField   uniform 101325;
+
+boundaryField
+{
+    top
+    {
+        type            zeroGradient;
+    }
+    sides
+    {
+        type            totalPressure;
+        rho             rho;
+        psi             none;
+        gamma           0;
+        p0              uniform 101325;
+        value           uniform 101325;
+    }
+    base
+    {
+        type            buoyantPressure;
+        gradient        uniform 0;
+        value           uniform 101325;
+    }
+    burner
+    {
+        type            buoyantPressure;
+        gradient        uniform 0;
+        value           uniform 101325;
+    }
+    floor
+    {
+        type            buoyantPressure;
+        gradient        uniform 0;
+        value           uniform 101325;
+    }
+    baffle1DWall_master
+    {
+        type            buoyantPressure;
+        gradient        uniform 0;
+        value           uniform 101325;
+    }
+    baffle1DWall_slave
+    {
+        type            buoyantPressure;
+        gradient        uniform 0;
+        value           uniform 101325;
+    }
+}
+
+
+// ************************************************************************* //

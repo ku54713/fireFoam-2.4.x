@@ -1,0 +1,226 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2.2.x                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "constant";
+    object      reactingCloud1Properties;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+solution
+{
+    active          false;
+    coupled         true;
+    transient       yes;
+    cellValueSourceCorrection on;
+
+    sourceTerms
+    {
+        schemes
+        {
+            rho             explicit 1;
+            U               explicit 1;
+            Yi              explicit 1;
+            h               explicit 1;
+            radiation       explicit 1;
+        }
+    }
+
+    interpolationSchemes
+    {
+        rho             cell;
+        U               cellPoint;
+        thermo:mu       cell;
+        T               cell;
+        Cp              cell;
+        kappa           cell;
+        p               cell;
+    }
+
+    integrationSchemes
+    {
+        U               Euler;
+        T               analytical;
+    }
+}
+
+constantProperties
+{
+    parcelTypeId    1;
+
+    rhoMin          1e-15;
+    TMin            200;
+    pMin            1000;
+    minParticleMass 1e-15;
+
+    rho0            1000;
+    T0              298.15;
+    Cp0             4187;
+
+    youngsModulus   1e9;
+    poissonsRatio   0.35;
+
+    epsilon0        1;
+    f0              0.5;
+    Pr              0.7;
+    Tvap            273;
+    Tbp             373;
+
+    constantVolume  false;
+}
+
+subModels
+{
+    particleForces
+    {
+        sphereDrag;
+        gravity;
+    }
+
+    injectionModels
+    {
+        coneInjection
+        {
+            type coneInjection;
+            SOI             5.000;
+            duration        1000.000;
+            positionAxis        
+            (
+
+                ((    -0.30480    1.5748    -0.30480 )  (    0    -1    0 )) 
+                ((    -0.30480    1.5748     0.30480 )  (    0    -1    0 ))
+
+                ((     0.30480    1.5748    -0.30480 )  (    0    -1    0 ))
+                ((     0.30480    1.5748     0.30480 )  (    0    -1    0 ))
+
+            );
+    
+            // massTotal       400.944; //kg over 1000 seconds for 4 nozzles (~ 0.4 gpm/ft2)     
+            massTotal       100.944; //kg over 1000 seconds for 4 nozzles (~ 0.1 gpm/ft2)     
+            massFlowRate      0.0;
+
+            parcelsPerInjector 300000;
+            parcelsPerSecond 5000;
+            parcelBasisType mass;
+            flowRateProfile  constant 0.1;
+            Umag            constant 4.0;
+            thetaInner      constant 0;
+            thetaOuter      constant 90;
+
+            sizeDistribution
+            {
+                type         uniform;
+                uniformDistribution
+                {
+                    minValue        0.001;
+                    maxValue        0.002;
+                    d               ( 7.5e-05 );
+                    n               ( 0.5 );
+                }
+            }
+        }
+    }
+
+    dispersionModel none;
+
+    patchInteractionModel standardWallInteraction;
+
+    heatTransferModel none;
+
+    compositionModel singlePhaseMixture;
+
+    phaseChangeModel none;
+
+    surfaceFilmModel thermoSurfaceFilm;
+
+    radiation       off;
+
+    standardWallInteractionCoeffs
+    {
+        type            escape;//stick;//rebound;
+    }
+
+    RanzMarshallCoeffs
+    {
+        // thermal shielding
+        BirdCorrection  true;
+    }
+
+    singlePhaseMixtureCoeffs
+    {
+        phases
+        (
+            liquid
+            {
+                H2O 1;
+            }
+        );
+    }
+
+    liquidEvaporationCoeffs
+    {
+        enthalpyTransfer enthalpyDifference;
+
+        activeLiquids
+        (
+            H2O
+        );
+    }
+
+    thermoSurfaceFilmCoeffs
+    {
+        interactionType splashBai; // absorb;
+        deltaWet        0.0002;
+        Adry            2630;
+        Awet            1320;
+        Cf              0.6;
+        ejectedParcelType 10;
+    }
+
+}
+
+cloudFunctions
+{
+    addPans1
+    {
+        type            particleCollectorFmg;
+        mode            polygon;
+        polygons
+            (
+             //          (( lowestX  Y  lowestZ) (lowestX  Y  highestZ) (highestX Y  highestZ) (highestX  Y  lowestZ))
+             ((    -2    1.5    -2 )    (    -2    1.5    2 )    (    2    1.5    2 )    (    2    1.5    -2 ))  // pan01
+             ((    -2    0.3    -2 )    (    -2    0.3    2 )    (    2    0.3    2 )    (    2    0.3    -2 ))  // pan02
+            );
+
+        normal          (0 -1 0);
+        negateParcelsOppositeNormal no;
+        // surfaceFormat   none;
+        surfaceFormat   vtk;
+        resetOnWrite    yes;
+        outputControl   timeStep;
+        log             yes;
+        removeCollected no;
+    }
+    // {
+    //     type facePostProcessing;
+    //     surfaceFormat   vtk; // raw, ...
+    //     resetOnWrite    true; // restart flux averaging on write?
+    //     outputControl timeStep;
+    //     log             yes;
+    //     faceZones       
+    //         (
+    //          sampleFaces1
+    //          sampleFaces2
+    //         );
+    // }
+}
+
+// ************************************************************************* //

@@ -44,7 +44,7 @@
     const volScalarField& psi = thermo.psi();
 
     Info<< "Reading field p_rgh\n" << endl;
-    
+
     volScalarField p_rgh
     (
         IOobject
@@ -57,9 +57,9 @@
         ),
         mesh
     );
-    
+
     Info<< "Reading field U\n" << endl;
-    
+
     volVectorField U
     (
         IOobject
@@ -134,7 +134,7 @@ volScalarField gh("gh", g & mesh.C());
     p_rgh = p - rho*gh;
 
     dimensionedScalar initialMass = fvc::domainIntegrate(rho);
-    
+
     multivariateSurfaceInterpolationScheme<scalar>::fieldTable fields;
 
     forAll(Y, i)
@@ -177,7 +177,7 @@ volScalarField gh("gh", g & mesh.C());
         ),
         thermo.Cp()*thermo.alpha()
     );
-    
+
     volScalarField cp
     (
         IOobject
@@ -190,4 +190,4 @@ volScalarField gh("gh", g & mesh.C());
         ),
         thermo.Cp()
     );
-    
+

@@ -1,0 +1,104 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2.2.x                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      controlDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+application     fireFoam;
+
+startFrom       startTime;
+
+startTime       0;
+
+stopAt          endTime;
+
+endTime         2;
+
+deltaT          5e-02;
+
+writeControl    adjustableRunTime;
+
+writeInterval   1;
+
+purgeWrite      0;
+
+writeFormat     ascii;
+
+writePrecision  8;
+
+writeCompression uncompressed;
+
+timeFormat      general;
+
+timePrecision   6;
+
+graphFormat     raw;
+
+runTimeModifiable yes;
+
+adjustTimeStep  yes;
+
+maxCo           0.9;
+
+maxDi           0.25;
+
+maxDeltaT       0.1;
+
+libs
+(
+    "libfvPatchFieldsPyrolysis.so"
+);
+
+functions
+(
+
+    HRR
+    {
+        type            cellSource;
+        functionObjectLibs ("libfieldFunctionObjects.so");
+        enabled         true;
+        outputControl   timeStep;  //outputTime;
+        outputInterval  1;
+        log             false;     
+        valueOutput     false;
+        source          all;       //cellZone;
+        sourceName      c0;
+        operation       volIntegrate;
+        fields
+        (
+            dQ
+        );
+    }
+
+    fieldMinMax
+    {
+        type            fieldMinMax;
+        functionObjectLibs ("libfieldFunctionObjects.so");
+        enabled         true;
+        outputControl   timeStep;
+        outputInterval  1;
+        mode            magnitude;
+        log             true;
+        valueOutput     false;
+        fields
+        (
+            T
+            dQ
+            qrflamelet
+        );
+    }
+
+
+);
+// ************************************************************************* //

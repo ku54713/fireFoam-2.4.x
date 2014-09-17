@@ -1,0 +1,88 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2.2.x                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+
+IDefault
+{
+        type            greyDiffusiveRadiation;
+        T               T;
+        emissivityMode  lookup;
+        emissivity      uniform 1;
+        value           uniform 0;
+}
+
+Ydefault
+{
+    type            zeroGradient;
+}
+
+C3H8
+{
+    type            zeroGradient;
+}
+
+H2O
+{
+    type            zeroGradient;
+}
+
+O2
+{
+    type            fixedValue;
+    value           uniform 0.232;
+}
+
+N2
+{
+    type            fixedValue;
+    value           uniform 0.768;
+}
+
+alphat
+{
+    type            compressible::alphatWallFunction;
+    value           uniform 0;
+}
+
+epsilon
+{
+    type            compressible::epsilonWallFunction;
+    value           uniform 0.01;
+}
+
+k
+{
+    type            compressible::kqRWallFunction;
+    value           uniform 0.01;
+}
+
+mut
+{
+    type            mutkWallFunction;
+    value           uniform 0;
+}
+
+p
+{
+    type            calculated;
+    value           uniform 101325;
+}
+
+p_rgh
+{
+    type            buoyantPressure;
+    gradient        uniform 0;
+    value           uniform 101325;
+}
+
+U
+{
+    type            fixedValue;
+    value           uniform (0 0 0);
+}
+
+// ************************************************************************* //

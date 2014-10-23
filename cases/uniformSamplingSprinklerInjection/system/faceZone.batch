@@ -1,0 +1,312 @@
+cellSet f1SlaveCells new cylinderToCell (0 0 0) (0 0.1001 0) 10
+faceSet f0 new cellToFace f1SlaveCells all
+cellSet f1SlaveCells invert 
+faceSet f1 new cellToFace f1SlaveCells all
+faceSet f1 subset faceToFace f0
+cellSet f1SlaveCells invert 
+faceSet f0 clear
+
+cellSet f2SlaveCells new cylinderToCell (0 0 0) (0 0.2001 0) 10
+faceSet f0 new cellToFace f2SlaveCells all
+cellSet f2SlaveCells invert 
+faceSet f2 new cellToFace f2SlaveCells all
+faceSet f2 subset faceToFace f0 
+cellSet f2SlaveCells invert 
+faceSet f0 clear
+
+cellSet f3SlaveCells new cylinderToCell (0 0 0) (0 0.3001 0) 10
+faceSet f0 new cellToFace f3SlaveCells all
+cellSet f3SlaveCells invert 
+faceSet f3 new cellToFace f3SlaveCells all
+faceSet f3 subset faceToFace f0 
+cellSet f3SlaveCells invert 
+faceSet f0 clear
+
+cellSet f4SlaveCells new cylinderToCell (0 0 0) (0 0.4001 0) 10
+faceSet f0 new cellToFace f4SlaveCells all
+cellSet f4SlaveCells invert 
+faceSet f4 new cellToFace f4SlaveCells all
+faceSet f4 subset faceToFace f0 
+cellSet f4SlaveCells invert 
+faceSet f0 clear
+
+cellSet f5SlaveCells new cylinderToCell (0 0 0) (0 0.5001 0) 10
+faceSet f0 new cellToFace f5SlaveCells all
+cellSet f5SlaveCells invert 
+faceSet f5 new cellToFace f5SlaveCells all
+faceSet f5 subset faceToFace f0 
+cellSet f5SlaveCells invert 
+faceSet f0 clear
+
+cellSet f6SlaveCells new cylinderToCell (0 0 0) (0 0.6001 0) 10
+faceSet f0 new cellToFace f6SlaveCells all
+cellSet f6SlaveCells invert 
+faceSet f6 new cellToFace f6SlaveCells all
+faceSet f6 subset faceToFace f0 
+cellSet f6SlaveCells invert 
+faceSet f0 clear
+
+cellSet f7SlaveCells new cylinderToCell (0 0 0) (0 0.7001 0) 10
+faceSet f0 new cellToFace f7SlaveCells all
+cellSet f7SlaveCells invert 
+faceSet f7 new cellToFace f7SlaveCells all
+faceSet f7 subset faceToFace f0 
+cellSet f7SlaveCells invert 
+faceSet f0 clear
+
+cellSet f8SlaveCells new cylinderToCell (0 0 0) (0 0.8001 0) 10
+faceSet f0 new cellToFace f8SlaveCells all
+cellSet f8SlaveCells invert 
+faceSet f8 new cellToFace f8SlaveCells all
+faceSet f8 subset faceToFace f0 
+cellSet f8SlaveCells invert 
+faceSet f0 clear
+
+cellSet f9SlaveCells new cylinderToCell (0 0 0) (0 0.9001 0) 10
+faceSet f0 new cellToFace f9SlaveCells all
+cellSet f9SlaveCells invert 
+faceSet f9 new cellToFace f9SlaveCells all
+faceSet f9 subset faceToFace f0 
+cellSet f9SlaveCells invert 
+faceSet f0 clear
+
+cellSet f10SlaveCells new cylinderToCell (0 0 0) (0 1.0001 0) 10
+faceSet f0 new cellToFace f10SlaveCells all
+cellSet f10SlaveCells invert 
+faceSet f10 new cellToFace f10SlaveCells all
+faceSet f10 subset faceToFace f0 
+cellSet f10SlaveCells invert 
+faceSet f0 clear
+
+cellSet f11SlaveCells new cylinderToCell (0 0 0) (0 1.1001 0) 10
+faceSet f0 new cellToFace f11SlaveCells all
+cellSet f11SlaveCells invert 
+faceSet f11 new cellToFace f11SlaveCells all
+faceSet f11 subset faceToFace f0 
+cellSet f11SlaveCells invert 
+faceSet f0 clear
+
+cellSet f12SlaveCells new cylinderToCell (0 0 0) (0 1.2001 0) 10
+faceSet f0 new cellToFace f12SlaveCells all
+cellSet f12SlaveCells invert 
+faceSet f12 new cellToFace f12SlaveCells all
+faceSet f12 subset faceToFace f0 
+cellSet f12SlaveCells invert 
+faceSet f0 clear
+
+cellSet f13SlaveCells new cylinderToCell (0 0 0) (0 1.3001 0) 10
+faceSet f0 new cellToFace f13SlaveCells all
+cellSet f13SlaveCells invert 
+faceSet f13 new cellToFace f13SlaveCells all
+faceSet f13 subset faceToFace f0 
+cellSet f13SlaveCells invert 
+faceSet f0 clear
+
+cellSet f14SlaveCells new cylinderToCell (0 0 0) (0 1.4001 0) 10
+faceSet f0 new cellToFace f14SlaveCells all
+cellSet f14SlaveCells invert 
+faceSet f14 new cellToFace f14SlaveCells all
+faceSet f14 subset faceToFace f0 
+cellSet f14SlaveCells invert 
+faceSet f0 clear
+
+cellSet f15SlaveCells new cylinderToCell (0 0 0) (0 1.5001 0) 10
+faceSet f0 new cellToFace f15SlaveCells all
+cellSet f15SlaveCells invert 
+faceSet f15 new cellToFace f15SlaveCells all
+faceSet f15 subset faceToFace f0 
+cellSet f15SlaveCells invert 
+faceSet f0 clear
+
+cellSet f16SlaveCells new cylinderToCell (0 0 0) (0 1.6001 0) 10
+faceSet f0 new cellToFace f16SlaveCells all
+cellSet f16SlaveCells invert 
+faceSet f16 new cellToFace f16SlaveCells all
+faceSet f16 subset faceToFace f0 
+cellSet f16SlaveCells invert 
+faceSet f0 clear
+
+cellSet f17SlaveCells new cylinderToCell (0 0 0) (0 1.7001 0) 10
+faceSet f0 new cellToFace f17SlaveCells all
+cellSet f17SlaveCells invert 
+faceSet f17 new cellToFace f17SlaveCells all
+faceSet f17 subset faceToFace f0 
+cellSet f17SlaveCells invert 
+faceSet f0 clear
+
+cellSet f18SlaveCells new cylinderToCell (0 0 0) (0 1.8001 0) 10
+faceSet f0 new cellToFace f18SlaveCells all
+cellSet f18SlaveCells invert 
+faceSet f18 new cellToFace f18SlaveCells all
+faceSet f18 subset faceToFace f0 
+cellSet f18SlaveCells invert 
+faceSet f0 clear
+
+cellSet f19SlaveCells new cylinderToCell (0 0 0) (0 1.9001 0) 10
+faceSet f0 new cellToFace f19SlaveCells all
+cellSet f19SlaveCells invert 
+faceSet f19 new cellToFace f19SlaveCells all
+faceSet f19 subset faceToFace f0 
+cellSet f19SlaveCells invert 
+faceSet f0 clear
+
+cellSet f20SlaveCells new cylinderToCell (0 0 0) (0 2.0001 0) 10
+faceSet f0 new cellToFace f20SlaveCells all
+cellSet f20SlaveCells invert 
+faceSet f20 new cellToFace f20SlaveCells all
+faceSet f20 subset faceToFace f0 
+cellSet f20SlaveCells invert 
+faceSet f0 clear
+
+cellSet f21SlaveCells new cylinderToCell (0 0 0) (0 2.1001 0) 10
+faceSet f0 new cellToFace f21SlaveCells all
+cellSet f21SlaveCells invert 
+faceSet f21 new cellToFace f21SlaveCells all
+faceSet f21 subset faceToFace f0
+cellSet f21SlaveCells invert 
+faceSet f0 clear
+
+cellSet f22SlaveCells new cylinderToCell (0 0 0) (0 2.2001 0) 10
+faceSet f0 new cellToFace f22SlaveCells all
+cellSet f22SlaveCells invert 
+faceSet f22 new cellToFace f22SlaveCells all
+faceSet f22 subset faceToFace f0 
+cellSet f22SlaveCells invert 
+faceSet f0 clear
+
+cellSet f23SlaveCells new cylinderToCell (0 0 0) (0 2.3001 0) 10
+faceSet f0 new cellToFace f23SlaveCells all
+cellSet f23SlaveCells invert 
+faceSet f23 new cellToFace f23SlaveCells all
+faceSet f23 subset faceToFace f0 
+cellSet f23SlaveCells invert 
+faceSet f0 clear
+
+cellSet f24SlaveCells new cylinderToCell (0 0 0) (0 2.4001 0) 10
+faceSet f0 new cellToFace f24SlaveCells all
+cellSet f24SlaveCells invert 
+faceSet f24 new cellToFace f24SlaveCells all
+faceSet f24 subset faceToFace f0 
+cellSet f24SlaveCells invert 
+faceSet f0 clear
+
+cellSet f25SlaveCells new cylinderToCell (0 0 0) (0 2.5001 0) 10
+faceSet f0 new cellToFace f25SlaveCells all
+cellSet f25SlaveCells invert 
+faceSet f25 new cellToFace f25SlaveCells all
+faceSet f25 subset faceToFace f0 
+cellSet f25SlaveCells invert 
+faceSet f0 clear
+
+cellSet f26SlaveCells new cylinderToCell (0 0 0) (0 2.6001 0) 10
+faceSet f0 new cellToFace f26SlaveCells all
+cellSet f26SlaveCells invert 
+faceSet f26 new cellToFace f26SlaveCells all
+faceSet f26 subset faceToFace f0 
+cellSet f26SlaveCells invert 
+faceSet f0 clear
+
+cellSet f27SlaveCells new cylinderToCell (0 0 0) (0 2.7001 0) 10
+faceSet f0 new cellToFace f27SlaveCells all
+cellSet f27SlaveCells invert 
+faceSet f27 new cellToFace f27SlaveCells all
+faceSet f27 subset faceToFace f0 
+cellSet f27SlaveCells invert 
+faceSet f0 clear
+
+cellSet f28SlaveCells new cylinderToCell (0 0 0) (0 2.8001 0) 10
+faceSet f0 new cellToFace f28SlaveCells all
+cellSet f28SlaveCells invert 
+faceSet f28 new cellToFace f28SlaveCells all
+faceSet f28 subset faceToFace f0 
+cellSet f28SlaveCells invert 
+faceSet f0 clear
+
+cellSet f29SlaveCells new cylinderToCell (0 0 0) (0 2.9001 0) 10
+faceSet f0 new cellToFace f29SlaveCells all
+cellSet f29SlaveCells invert 
+faceSet f29 new cellToFace f29SlaveCells all
+faceSet f29 subset faceToFace f0 
+cellSet f29SlaveCells invert 
+faceSet f0 clear
+
+cellSet f30SlaveCells new cylinderToCell (0 0 0) (0 3.0001 0) 10
+faceSet f0 new cellToFace f30SlaveCells all
+cellSet f30SlaveCells invert 
+faceSet f30 new cellToFace f30SlaveCells all
+faceSet f30 subset faceToFace f0 
+cellSet f30SlaveCells invert 
+faceSet f0 clear
+
+cellSet f31SlaveCells new cylinderToCell (0 0 0) (0 3.1001 0) 10
+faceSet f0 new cellToFace f31SlaveCells all
+cellSet f31SlaveCells invert 
+faceSet f31 new cellToFace f31SlaveCells all
+faceSet f31 subset faceToFace f0
+cellSet f31SlaveCells invert 
+faceSet f0 clear
+
+cellSet f32SlaveCells new cylinderToCell (0 0 0) (0 3.2001 0) 10
+faceSet f0 new cellToFace f32SlaveCells all
+cellSet f32SlaveCells invert 
+faceSet f32 new cellToFace f32SlaveCells all
+faceSet f32 subset faceToFace f0 
+cellSet f32SlaveCells invert 
+faceSet f0 clear
+
+cellSet f33SlaveCells new cylinderToCell (0 0 0) (0 3.3001 0) 10
+faceSet f0 new cellToFace f33SlaveCells all
+cellSet f33SlaveCells invert 
+faceSet f33 new cellToFace f33SlaveCells all
+faceSet f33 subset faceToFace f0 
+cellSet f33SlaveCells invert 
+faceSet f0 clear
+
+cellSet f34SlaveCells new cylinderToCell (0 0 0) (0 3.4001 0) 10
+faceSet f0 new cellToFace f34SlaveCells all
+cellSet f34SlaveCells invert 
+faceSet f34 new cellToFace f34SlaveCells all
+faceSet f34 subset faceToFace f0 
+cellSet f34SlaveCells invert 
+faceSet f0 clear
+
+cellSet f35SlaveCells new cylinderToCell (0 0 0) (0 3.5001 0) 10
+faceSet f0 new cellToFace f35SlaveCells all
+cellSet f35SlaveCells invert 
+faceSet f35 new cellToFace f35SlaveCells all
+faceSet f35 subset faceToFace f0 
+cellSet f35SlaveCells invert 
+faceSet f0 clear
+
+cellSet f36SlaveCells new cylinderToCell (0 0 0) (0 3.6001 0) 10
+faceSet f0 new cellToFace f36SlaveCells all
+cellSet f36SlaveCells invert 
+faceSet f36 new cellToFace f36SlaveCells all
+faceSet f36 subset faceToFace f0 
+cellSet f36SlaveCells invert 
+faceSet f0 clear
+
+cellSet f37SlaveCells new cylinderToCell (0 0 0) (0 3.7001 0) 10
+faceSet f0 new cellToFace f37SlaveCells all
+cellSet f37SlaveCells invert 
+faceSet f37 new cellToFace f37SlaveCells all
+faceSet f37 subset faceToFace f0 
+cellSet f37SlaveCells invert 
+faceSet f0 clear
+
+cellSet f38SlaveCells new cylinderToCell (0 0 0) (0 3.8001 0) 10
+faceSet f0 new cellToFace f38SlaveCells all
+cellSet f38SlaveCells invert 
+faceSet f38 new cellToFace f38SlaveCells all
+faceSet f38 subset faceToFace f0 
+cellSet f38SlaveCells invert 
+faceSet f0 clear
+
+cellSet f39SlaveCells new cylinderToCell (0 0 0) (0 3.9001 0) 10
+faceSet f0 new cellToFace f39SlaveCells all
+cellSet f39SlaveCells invert 
+faceSet f39 new cellToFace f39SlaveCells all
+faceSet f39 subset faceToFace f0 
+cellSet f39SlaveCells invert 
+faceSet f0 clear
+

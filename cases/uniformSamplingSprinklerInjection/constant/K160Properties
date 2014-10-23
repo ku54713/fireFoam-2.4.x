@@ -1,0 +1,48 @@
+/*--------------------------------*- C++ -*----------------------------------*/
+
+    lookupTableSprinklerInjectionCoeffs // K160
+    {
+        lookupTableCoeffs
+        {
+            // sample size should ideally not be larger than the number of elements in the lookup table
+            sampleSize      40; // per sprinkler, per injection time
+            // tableDirectory  table_K160_0.76bar;
+            tableDirectory  table_K160_1.31bar;
+        }
+
+        SOI             0.0;
+        duration        100; //0.005;
+        parcelsPerSecond 30000;  // per one sprinkler
+
+        positionList
+            ( 
+                (  2.5 7.1 0.0) 
+                ( -2.5 7.1 0.0) 
+            );
+        direction       ( 0 -1 0 );
+        armDirection    ( 1  0  0);
+
+
+        radiusToSprinkler 0.076; //m
+
+        rtiCoeffs
+        {
+            active                false;
+            RTI                   27.604; // (m s)^0.5  // average of 45-55 (ft s)^0.5
+			C                     0.692; // (m/s)^0.5  // average of 0.7-1.81 (ft / s)^0.5
+            initialTemperature    298.15;
+            activationTemperature 344.26; // K  // average of 155-165 deg F
+
+			// to convert RTI from (ft s )^0.5 to (m s)^0.5 square the value, multiply by 0.3048, and take the sqrt
+			// to convert C from (ft / s)^0.5 to (m/s)^0.5 square the value, multiply by 0.3048, and take the sqrt
+        }
+
+
+
+        // begin section not used anywhere
+            massTotal       -1; 
+            parcelBasisType mass;
+        // end section not used anywhere
+
+    
+    }

@@ -1,0 +1,49 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2.2.x                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "constant";
+    object      combustionProperties;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+active true;
+
+/*combustionModel    eddyDissipationExplicitModel;*/
+//combustionModel  infinitelyFastChemistry<psiCombustionModel,gasThermoPhysics>;
+combustionModel  eddyDissipationModel<psiThermoCombustion,gasHThermoPhysics>;
+
+eddyDissipationModelCoeffs
+{
+    //C       4.0;
+    semiImplicit no;
+    C_EDC       4.0;
+    //C_Diff      0.5e-10; //0.5; 
+    C_Diff      0; //0.5; 
+    C_Stiff     0.5e-10; //1;
+}
+
+eddyDissipationExplicitModelCoeffs
+{
+    C       4.0;
+}
+
+infinitelyFastChemistryCoeffs
+{
+    C       10.0;
+}
+
+noCombustionCoeffs
+{
+}
+
+
+// ************************************************************************* //

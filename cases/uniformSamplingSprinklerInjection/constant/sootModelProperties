@@ -1,0 +1,48 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2.2.x                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "constant";
+    object      sootModelProperties;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+solveSoot false;
+
+OiM true;
+
+Ceta 0.01;
+
+constSR false;
+
+constHP false;
+
+radScaling false;
+
+radSc_Xr_f 0.3;
+radSc_Ys_f 0.02;
+radSc_Xr_p 0.2;
+radSc_Ys_p 0.01;
+
+radSc_fPatch 
+(
+	"burner"
+);
+
+radSc_pPatch
+(
+	"region0_to_panelRegion_panel"
+);
+
+sootTransport true;
+sootParticipate false;
+
+// ************************************************************************* //

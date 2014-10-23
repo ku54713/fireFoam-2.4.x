@@ -1,0 +1,37 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  1.7.0                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      binary;
+    class       dictionary;
+    location    "constant";
+    object      pyrolysisProperties;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+active	    false;
+
+pyrolysisModel none;
+
+regionName  none;
+
+noneCoeffs
+{
+}
+
+reactingOneDimCoeffs
+{
+    radFluxFieldName    Qr;
+    massContinuity      false;
+    minimumDelta        1e-8;
+}
+
+infoOutput      false; //true;
+
+// ************************************************************************* //

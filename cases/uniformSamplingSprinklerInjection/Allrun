@@ -1,0 +1,28 @@
+#!/bin/sh
+#set -x 
+
+# Source tutorial run functions
+. $WM_PROJECT_DIR/bin/tools/RunFunctions
+
+# Set application name
+application="reactingParcelFilmPyrolysisFoam20x"
+application="fireFoam"
+
+rm -f log.* 
+
+./Allclean
+
+runApplication blockMesh
+
+# create faceZones
+#setSet -batch system/faceZone.batch
+#rm constant/polyMesh/sets/f0
+#setsToZones  
+
+echo "setSet -batch createSamplePlane.setSet"
+runApplication setSet -batch system/createSamplePlane.setSet -time 0 -noZero -constant
+
+# Run
+runApplication $application 2> log.error  
+
+# -----------------------------------------------------------------------------

@@ -1,0 +1,33 @@
+#faceSet sampleFaces1 new boxToFace (-100 4.25 -100) (100 4.3 100)
+#cellSet sampleCells1 new faceToCell sampleFaces1 owner
+#faceZoneSet sampleFaces1 new setsToFaceZone sampleFaces1 sampleCells1
+#
+#faceSet sampleFaces2 new boxToFace (-100 0.85 -100) (100 0.9 100)
+#cellSet sampleCells2 new faceToCell sampleFaces2 owner
+#faceZoneSet sampleFaces2 new setsToFaceZone sampleFaces2 sampleCells2
+#
+
+cellSet f1Slave new boxToCell (-100 0 -100) (100 0.5 100)
+faceSet f0 new cellToFace f1Slave all
+cellSet f1Slave invert
+faceSet f1 new cellToFace f1Slave all
+faceSet f1 subset faceToFace f0
+faceSet f0 remove
+cellSet c0 new faceToCell f1 owner
+faceZoneSet sampleFaces2 new setsToFaceZone f1 c0
+cellSet f1Slave remove
+cellSet c0 remove
+faceSet f1 remove
+
+cellSet f1Slave new boxToCell (-100 0 -100) (100 5.5 100)
+faceSet f0 new cellToFace f1Slave all
+cellSet f1Slave invert
+faceSet f1 new cellToFace f1Slave all
+faceSet f1 subset faceToFace f0
+faceSet f0 remove
+cellSet c0 new faceToCell f1 owner
+faceZoneSet sampleFaces1 new setsToFaceZone f1 c0
+cellSet f1Slave remove
+cellSet c0 remove
+faceSet f1 remove
+

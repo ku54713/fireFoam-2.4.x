@@ -1,0 +1,14 @@
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "constant";
+    object      LookupTableInjection;
+}
+pressure    1.03796; // pressure (bar),   15.05440 (psi)
+kFactor  361.60000; // kFactor (lpm/bar^0.5),   25.00000 (gpm/psi^0.5)
+radius    0.25400; // radius (m),   10.00000 (in)
+nAzi   360; // azimuthal angles
+nEle    91; // elevation angles
+flowRate    6.11975; // (L/s),   97.00000 (gpm)

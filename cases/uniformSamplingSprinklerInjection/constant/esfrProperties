@@ -1,0 +1,148 @@
+/*--------------------------------*- C++ -*----------------------------------*/
+
+    esfrSprinkler // ESFR
+    {
+        type            sprinklerInjection;
+        massTotal       639.2; //=volumeFlowRate*duration*Rho, here Rho=1000 kg/m^3, per one sprinkler
+        parcelBasisType mass;
+        SOI             0.0;
+        duration        100; //0.005;
+        operatingPressure 3.5; //[bar], used for getting fit-coefficients
+        multipleParcelsPerCell    true; //index=1: one parcel at each cell; index=0: parcel number change with flow rate, max 20
+        position        ( 0.0 6.1 0.0 );
+        // position        ( -0.0422496 6.00402 0.752731 );
+        // position           ( 0.0094490558 6.0359545791 0.7572376770 );
+        direction       ( 0 -1 0 );
+        armDirection    ( 1  0  0);
+        parcelsPerSecond 3000;  // there is a max of 121 per time step, per one sprinkler
+        //volumeFlowRate  Constant 0.01;
+        // 14.2 * sqrt(deltaP) = 100.4 gpm
+        flowRateProfile  constant 0.006392; //m^3/s 15850.2 gal*s/m3/min, per one sprinkler
+
+        radiusToSprinkler 0.76; //m
+    //parcel injection cells decided by azimuthal angles and elevation angles
+    //horizontal 0-deg, vertical downward 90-deg
+    //azimuthal angle from one frame-arm 0-deg
+    //  cell number    1   2   3   4   5   6   7   8   9   10  11  12  13  14  15  16  17  18  19  20 ......
+        cellEleAngle1 (0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 
+                       9   9   9   9   9   9   9   9   9   9   9   9   9   9   9   9   9   9   9   9 
+                       23  23  23  23  23  23  23  23  23  23  23  23  23  23  23  23  23  23  23  23
+                       38  38  38  38  38  38  38  38  38  38  38  38  38  38  38  38  38  38  38  38 
+                       53  53  53  53  53  53  53  53  53  53  53  53  53  53  53  53  53  53  53  53 
+                       68  68  68  68  68  68  68  68  68  68  68  68  68  68  68  68  68  68  68  68 
+                       85 );
+        cellEleAngle2 (9   9   9   9   9   9   9   9   9   9   9   9   9   9   9   9   9   9   9   9 
+                       23  23  23  23  23  23  23  23  23  23  23  23  23  23  23  23  23  23  23  23
+                       38  38  38  38  38  38  38  38  38  38  38  38  38  38  38  38  38  38  38  38 
+                       53  53  53  53  53  53  53  53  53  53  53  53  53  53  53  53  53  53  53  53 
+                       68  68  68  68  68  68  68  68  68  68  68  68  68  68  68  68  68  68  68  68 
+                       85  85  85  85  85  85  85  85  85  85  85  85  85  85  85  85  85  85  85  85
+                       90);
+        cellAziAngle1 (-8  8   31  48  65  81  99  115 132 149 172 188 211 228 245 261 279 295 312 329
+                       -8  8   31  48  65  81  99  115 132 149 172 188 211 228 245 261 279 295 312 329
+                       -8  8   31  48  65  81  99  115 132 149 172 188 211 228 245 261 279 295 312 329
+                       -8  8   31  48  65  81  99  115 132 149 172 188 211 228 245 261 279 295 312 329
+                       -8  8   31  48  65  81  99  115 132 149 172 188 211 228 245 261 279 295 312 329
+                       -8  8   31  48  65  81  99  115 132 149 172 188 211 228 245 261 279 295 312 329
+                       0   );  
+        cellAziAngle2 (8   31  48  65  81  99  115 132 149 172 188 211 228 245 261 279 295 312 329 352 
+                       8   31  48  65  81  99  115 132 149 172 188 211 228 245 261 279 295 312 329 352 
+                       8   31  48  65  81  99  115 132 149 172 188 211 228 245 261 279 295 312 329 352 
+                       8   31  48  65  81  99  115 132 149 172 188 211 228 245 261 279 295 312 329 352 
+                       8   31  48  65  81  99  115 132 149 172 188 211 228 245 261 279 295 312 329 352 
+                       8   31  48  65  81  99  115 132 149 172 188 211 228 245 261 279 295 312 329 352 
+                       360 ) ;
+    
+    //kFactor of operating sprinkler
+        kFactor      205;  //lpm/bar^0.5 (14.2 gpm/psi^0.5)
+    // defined range of pressure[bar] for fitting correlations
+        fitPressureRange  (3.5 5.2 ); // 50 psi - 75 psi
+    // defined range of speed standard deviation
+        fitVelocityStdevRange  (1.7 2.3 );
+    // defined azimuthal angles for fitting correlations
+        fitAzimuthalAngle  (0 23 40 57 73 90 )  ;
+    //fitting coefficients of volume flux along the elevation angle for the K-205 sprinkler at 3.5 bar
+        fitCoeFluxLowPres (0 449.3 18.8 39.9  1226  //                  0-deg
+                           0 20.7  35.9 51.9  1626  //                  23-deg
+                           0 125.5 81.7 231.9 2326  //                  40-deg
+                           0 177.4 -1.7 59.8  2326  //                  57-deg
+                           0 241.7 47.3 220.6 2326  //                  73-deg
+                           0 179.4 44.9 124.5 2326); //at azimuthal_angle 90-deg
+    //fitting coefficients of volume flux along the elevation angle for the K-205 sprinkler at 5.2 bar
+        fitCoeFluxHighPres (0 671.6 31.9 51.2  2776  //                  0-deg
+                           0 22.4  52.0 61.7  2776  //                  23-deg
+                           0 28.4  98.5 261.2 2776  //                  40-deg
+                           0 26.6  27.7 139.5 2776  //                  57-deg
+                           0 207.1 101.7 287.5 2776 //                  73-deg
+                           0 113.9 40.3 147.8 2781); //at azimuthal_angle 90-deg
+    //fitting coefficients of volume-median diameter along the elevation angle for the K-205 sprinkler at 3.5 bar
+        fitCoeDv50LowPres (0.426 0.555 -0.178 -0.125 1.988  //                  0-deg
+                           0.419 0.29  -0.141 -0.132 2.008  //                  23-deg
+                           0.299 0.471  0.045  0.293 2.127  //                  40-deg
+                           0.486 0.328 -0.28  -0.062 1.948  //                  57-deg
+                           0.516 0.216 -0.176  0.051 1.921  //                  73-deg
+                           0.563 0.208 -0.387 -0.039 1.867 ); //at azimuthal_angle 90-deg
+    //fitting coefficients of volume-median diameter along the elevation angle for the K-205 sprinkler at 5.2 bar
+        fitCoeDv50HighPres (0.395 0.387 -0.127 -0.157 1.442 //                  0-deg
+                            0.377 0.249 -0.072 -0.11  1.466 //                  23-deg
+                            0.253 0.421 -0.049  0.507 1.583 //                  40-deg
+                            0.37  0.228 -0.15  -0.074 1.488 //                  57-deg
+                            0.397 0.191 -0.076  0.088 1.462 //                  73-deg
+                            0.455 0.154 -0.243 -0.11  1.402 ); //at azimuthal_angle 90-deg
+    //fitting coefficients of parameter sigma along the elevation angle for the K-205 sprinkler at 3.5 bar
+        fitCoeSigmaLowPres (0.573 -0.007 -0.061 0.152 0.358  //                  0-deg
+                           0.640 -0.197 -0.220 0.006 0.297  //                  23-deg
+                           0.543  0.180  0.129 0.185 0.387  //                  40-deg
+                           0.602 -0.135 0.078  0.119 0.321  //                  57-deg
+                           0.566  0.129 0.221  0.191 0.362  //                  73-deg
+                           0.648 -0.253 -0.02  0.099 0.282 ); //at azimuthal_angle 90-deg
+    //fitting coefficients of parameter sigma along the elevation angle for the K-205 sprinkler at 5.2 bar
+        fitCoeSigmaHighPres (0.422 0.218 0.062 0.094 0.748 //                  0-deg
+                            0.586 0.437 -0.21 -0.087 0.575 //                  23-deg
+                            0.414 -0.046 0.207 0.344 0.754 //                  40-deg
+                            0.48  -0.091 -0.085 0.194 0.697 //                  57-deg
+                            0.528 -0.198 0.122  0.178 0.652 //                  73-deg
+                            0.514 -0.131 -0.209 0.227 0.667 ); //at azimuthal_angle 90-deg
+    //fitting coefficients of gamma along the elevation angle for the K-205 sprinkler at 3.5 bar
+        fitCoeGammaLowPres (0. 0. 0.0 0.0 0. //                  0-deg
+                            0. 0. 0. 0.0 0. //                  23-deg
+                            0. 0. 0. 0. 0. //                  40-deg
+                            0. 0. 0. 0. 0. //                  57-deg
+                            0. 0. 0.  0. 0. //                  73-deg
+                            0. 0. 0. 0. 0. ); //at azimuthal_angle 90-deg
+    //fitting coefficients of gamma along the elevation angle for the K-205 sprinkler at 5.2 bar
+        fitCoeGammaHighPres (0. 0. 0.0 0.0 0. //                  0-deg
+                            0. 0. 0. 0.0 0. //                  23-deg
+                            0. 0. 0. 0. 0. //                  40-deg
+                            0. 0. 0. 0. 0. //                  57-deg
+                            0. 0. 0.  0. 0. //                  73-deg
+                            0. 0. 0. 0. 0. ); //at azimuthal_angle 90-deg
+    //fitting coefficients of drop size-speed along the elevation angle for the K-205 sprinkler at 3.5 bar
+        fitCoeVelocityLowPres (8.011 2.802 5.717  0.  0.  //                  0-deg
+                            9.741 -1.063 4.102 0.  0.  //                  23-deg
+                            9.468 -0.162 6.315 0.  0.  //                  40-deg
+                            9.344 0.532 5.619  0.  0.  //                  57-deg
+                            9.026 -0.896 7.546 0.  0.  //                  73-deg
+                            8.152 -0.251 8.348 0.  0. ); //at azimuthal_angle 90-deg
+    //fitting coefficients of drop size-speed along the elevation angle for the K-205 sprinkler at 5.2 bar
+        fitCoeVelocityHighPres (7.673 5.7 9.299 0. 0. //                  0-deg
+                             4.243 1.072 10.533 0. 0. //                  23-deg
+                             5.314 1.464 15.023 0. 0. //                  40-deg
+                             6.846 0.047 10.6   0. 0. //                  57-deg
+                             5.818 0.436 14.748 0. 0. //                  73-deg
+                             6.669 1.958 10.709 0. 0. ); //at azimuthal_angle 90-deg
+    
+
+        rtiCoeffs
+        {
+            active                false;
+            RTI                   27.604; // (m s)^0.5  // average of 45-55 (ft s)^0.5
+			C                     0.692; // (m/s)^0.5  // average of 0.7-1.81 (ft / s)^0.5
+            initialTemperature    298.15;
+            activationTemperature 344.26; // K  // average of 155-165 deg F
+
+			// to convert RTI from (ft s )^0.5 to (m s)^0.5 square the value, multiply by 0.3048, and take the sqrt
+			// to convert C from (ft / s)^0.5 to (m/s)^0.5 square the value, multiply by 0.3048, and take the sqrt
+        }
+    
+    }

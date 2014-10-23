@@ -1,0 +1,1027 @@
+/*---------------------------------------------------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2.2.x                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+Build  : 2.2.x-61b850bc107b
+Exec   : fireFoam
+Date   : Sep 23 2014
+Time   : 13:38:47
+Host   : "Selene"
+PID    : 23956
+Case   : /fmhome/meredithk/fireFoam-2.2.x/fireFoam/cases/steckler
+nProcs : 1
+sigFpe : Enabling floating point exception trapping (FOAM_SIGFPE).
+fileModificationChecking : Monitoring run-time modified files using timeStampMaster
+allowSystemOperations : Disallowing user-supplied system call operations
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+FireFOAM Build Version:  d031026fce8c9b2b3f4058898ec922e7a949e409
+FireFOAM Build Time Stamp:  Tue Sep 23 12:23:50 EDT 2014
+****************************************************
+Create time
+
+Create mesh for time = 0
+
+
+Reading g
+Creating combustion model
+
+Selecting combustion model eddyDissipationModel<psiThermoCombustion,gasHThermoPhysics>
+Selecting thermodynamics package 
+{
+    type            hePsiThermo;
+    mixture         singleStepReactingMixture;
+    transport       sutherland;
+    thermo          janaf;
+    energy          sensibleEnthalpy;
+    equationOfState perfectGas;
+    specie          specie;
+}
+
+Selecting chemistryReader foamChemistryReader
+Fuel heat of combustion :46357151
+stoichiometric air-fuel ratio :15.571544
+stoichiometric oxygen-fuel ratio :3.6282945
+Maximum products mass concentrations:
+    H2O: 0.098613587
+    CO2: 0.18067909
+    N2: 0.72070733
+Combustion mode: explicit
+Reading thermophysical properties
+
+Creating component thermo properties:
+    multi-component carrier - 5 species
+    liquids - 1 components
+    solids - 0 components
+Creating field rho
+
+Reading field p_rgh
+
+Reading field U
+
+Reading/calculating face flux field phi
+
+Creating turbulence model
+
+Selecting turbulence model type LESModel
+Selecting LES turbulence model oneEqEddy
+Selecting LES delta type cubeRootVol
+oneEqEddyCoeffs
+{
+    ck              0.03;
+    Prt             1;
+    ce              1.048;
+}
+
+stoichiometric mixture fraction is = 0.060344407
+Creating field DpDt
+
+Calculating field g.h
+
+Creating pyrolysis model collection
+Selecting pyrolysisModel none
+Selecting radiationModel fvDOM
+Selecting absorptionEmissionModel constRadFractionEmission
+Selecting scatterModel constantScatter
+fvDOM : Allocated 32 rays with average orientation:
+	I0 : omega : 	0.2300378
+	I1 : omega : 	0.2300378
+	I2 : omega : 	0.2300378
+	I3 : omega : 	0.2300378
+	I4 : omega : 	0.2300378
+	I5 : omega : 	0.2300378
+	I6 : omega : 	0.2300378
+	I7 : omega : 	0.2300378
+	I8 : omega : 	0.55536037
+	I9 : omega : 	0.55536037
+	I10 : omega : 	0.55536037
+	I11 : omega : 	0.55536037
+	I12 : omega : 	0.55536037
+	I13 : omega : 	0.55536037
+	I14 : omega : 	0.55536037
+	I15 : omega : 	0.55536037
+	I16 : omega : 	0.55536037
+	I17 : omega : 	0.55536037
+	I18 : omega : 	0.55536037
+	I19 : omega : 	0.55536037
+	I20 : omega : 	0.55536037
+	I21 : omega : 	0.55536037
+	I22 : omega : 	0.55536037
+	I23 : omega : 	0.55536037
+	I24 : omega : 	0.2300378
+	I25 : omega : 	0.2300378
+	I26 : omega : 	0.2300378
+	I27 : omega : 	0.2300378
+	I28 : omega : 	0.2300378
+	I29 : omega : 	0.2300378
+	I30 : omega : 	0.2300378
+	I31 : omega : 	0.2300378
+
+
+Constructing reacting cloud
+Constructing particle injection models
+Creating injector: coneInjection
+Selecting injection model coneInjection
+    Constructing 3-D injection
+Selecting distribution model uniform
+
+Constructing surface film model
+Selecting surfaceFilmModel none
+    Selecting region model functions
+    none
+Courant Number mean: 0 max: 0
+
+Starting time loop
+
+cellSource HRR:all(c0):
+    total cells  = 9000
+    total volume = 72
+
+
+
+Courant Number mean: 0 max: 0
+deltaT = 0.058823529
+Time = 0.0588235
+
+diagonal:  Solving for rho, Initial residual = 0, Final residual = 0, No Iterations 0
+DILUPBiCG:  Solving for Ux, Initial residual = 1, Final residual = 2.8336359e-08, No Iterations 1
+DILUPBiCG:  Solving for Uy, Initial residual = 1, Final residual = 2.714747e-08, No Iterations 1
+DILUPBiCG:  Solving for Uz, Initial residual = 1, Final residual = 2.8078454e-08, No Iterations 1
+DILUPBiCG:  Solving for O2, Initial residual = 0.9999952, Final residual = 3.5911354e-08, No Iterations 1
+DILUPBiCG:  Solving for H2O, Initial residual = 0, Final residual = 0, No Iterations 0
+DILUPBiCG:  Solving for C3H8, Initial residual = 0.9999975, Final residual = 5.8917963e-08, No Iterations 1
+DILUPBiCG:  Solving for CO2, Initial residual = 0, Final residual = 0, No Iterations 0
+      O2	min/ave/max  =	     0.23301	     0.23301	     0.23301
+     H2O	min/ave/max  =	           0	           0	           0
+    C3H8	min/ave/max  =	 2.8676e-196	  2.7713e-18	  6.2332e-15
+     CO2	min/ave/max  =	           0	           0	           0
+      N2	min/ave/max  =	     0.76699	     0.76699	     0.76699
+Radiation solver iter: 0
+Radiant Fraction is 0
+GAMG:  Solving for ILambda_0_0, Initial residual = 1, Final residual = 7.609e-16, No Iterations 1
+Radiant Fraction is 0
+GAMG:  Solving for ILambda_1_0, Initial residual = 1, Final residual = 7.7244e-16, No Iterations 1
+Radiant Fraction is 0
+GAMG:  Solving for ILambda_2_0, Initial residual = 1, Final residual = 5.2176e-05, No Iterations 1
+Radiant Fraction is 0
+GAMG:  Solving for ILambda_3_0, Initial residual = 1, Final residual = 4.3622e-05, No Iterations 1
+Radiant Fraction is 0
+GAMG:  Solving for ILambda_4_0, Initial residual = 1, Final residual = 5.4587e-05, No Iterations 1
+Radiant Fraction is 0
+GAMG:  Solving for ILambda_5_0, Initial residual = 1, Final residual = 8.2257e-05, No Iterations 1
+Radiant Fraction is 0
+GAMG:  Solving for ILambda_6_0, Initial residual = 1, Final residual = 5.4024e-06, No Iterations 2
+Radiant Fraction is 0
+GAMG:  Solving for ILambda_7_0, Initial residual = 1, Final residual = 7.8427e-05, No Iterations 1
+Radiant Fraction is 0
+GAMG:  Solving for ILambda_8_0, Initial residual = 1, Final residual = 8.7827e-16, No Iterations 1
+Radiant Fraction is 0
+GAMG:  Solving for ILambda_9_0, Initial residual = 1, Final residual = 9.9368e-16, No Iterations 1
+Radiant Fraction is 0
+GAMG:  Solving for ILambda_10_0, Initial residual = 1, Final residual = 8.0412e-06, No Iterations 2
+Radiant Fraction is 0
+GAMG:  Solving for ILambda_11_0, Initial residual = 1, Final residual = 7.6403e-06, No Iterations 2
+Radiant Fraction is 0
+GAMG:  Solving for ILambda_12_0, Initial residual = 1, Final residual = 1.3077e-06, No Iterations 2
+Radiant Fraction is 0
+GAMG:  Solving for ILambda_13_0, Initial residual = 1, Final residual = 4.3627e-06, No Iterations 2
+Radiant Fraction is 0
+GAMG:  Solving for ILambda_14_0, Initial residual = 1, Final residual = 2.8645e-05, No Iterations 2
+Radiant Fraction is 0
+GAMG:  Solving for ILambda_15_0, Initial residual = 1, Final residual = 4.8272e-06, No Iterations 2
+Radiant Fraction is 0
+GAMG:  Solving for ILambda_16_0, Initial residual = 1, Final residual = 4.9563e-05, No Iterations 2
+Radiant Fraction is 0
+GAMG:  Solving for ILambda_17_0, Initial residual = 1, Final residual = 1.2838e-05, No Iterations 3
+Radiant Fraction is 0
+GAMG:  Solving for ILambda_18_0, Initial residual = 1, Final residual = 2.7608e-05, No Iterations 2
+Radiant Fraction is 0
+GAMG:  Solving for ILambda_19_0, Initial residual = 1, Final residual = 7.5106e-05, No Iterations 1
+Radiant Fraction is 0
+GAMG:  Solving for ILambda_20_0, Initial residual = 1, Final residual = 8.9291e-16, No Iterations 1
+Radiant Fraction is 0
+GAMG:  Solving for ILambda_21_0, Initial residual = 1, Final residual = 9.4014e-16, No Iterations 1
+Radiant Fraction is 0
+GAMG:  Solving for ILambda_22_0, Initial residual = 1, Final residual = 5.0361e-06, No Iterations 2
+Radiant Fraction is 0
+GAMG:  Solving for ILambda_23_0, Initial residual = 1, Final residual = 1.6201e-05, No Iterations 2
+Radiant Fraction is 0
+GAMG:  Solving for ILambda_24_0, Initial residual = 1, Final residual = 1.284e-05, No Iterations 2
+Radiant Fraction is 0
+GAMG:  Solving for ILambda_25_0, Initial residual = 1, Final residual = 2.0954e-05, No Iterations 2
+Radiant Fraction is 0
+GAMG:  Solving for ILambda_26_0, Initial residual = 1, Final residual = 6.8514e-06, No Iterations 2
+Radiant Fraction is 0
+GAMG:  Solving for ILambda_27_0, Initial residual = 1, Final residual = 2.0295e-05, No Iterations 1
+Radiant Fraction is 0
+GAMG:  Solving for ILambda_28_0, Initial residual = 1, Final residual = 7.9506e-16, No Iterations 1
+Radiant Fraction is 0
+GAMG:  Solving for ILambda_29_0, Initial residual = 1, Final residual = 9.1112e-16, No Iterations 1
+Radiant Fraction is 0
+GAMG:  Solving for ILambda_30_0, Initial residual = 1, Final residual = 5.8114e-05, No Iterations 1
+Radiant Fraction is 0
+GAMG:  Solving for ILambda_31_0, Initial residual = 1, Final residual = 6.3866e-06, No Iterations 2
+Radiant Fraction is 0
+DILUPBiCG:  Solving for h, Initial residual = 1, Final residual = 3.5984e-08, No Iterations 1
+GAMG:  Solving for p_rgh, Initial residual = 0.63836, Final residual = 0.0033551, No Iterations 4
+diagonal:  Solving for rho, Initial residual = 0, Final residual = 0, No Iterations 0
+time step continuity errors : sum local = 7.6979e-07, global = 4.0285e-07, cumulative = 4.0285e-07
+GAMG:  Solving for p_rgh, Initial residual = 0.0087082, Final residual = 3.8804e-07, No Iterations 9
+diagonal:  Solving for rho, Initial residual = 0, Final residual = 0, No Iterations 0
+time step continuity errors : sum local = 1.4625e-09, global = 7.9522e-10, cumulative = 4.0365e-07
+DILUPBiCG:  Solving for k, Initial residual = 1, Final residual = 5.8988e-07, No Iterations 1
+ExecutionTime = 0.7 s  ClockTime = 1 s
+
+fieldMinMax fieldMinMax output:
+    min(T) = 298.15 at position (-1.9 0.1 -1.9)
+    max(T) = 300.49 at position (-1.3 0.1 -1.4)
+    min(dQ) = 0 at position (-1.9 0.1 -1.9)
+    max(dQ) = 0 at position (-1.9 0.1 -1.9)
+
+Courant Number mean: 0.00069685 max: 0.047654
+deltaT = 0.067227
+Time = 0.12605
+
+diagonal:  Solving for rho, Initial residual = 0, Final residual = 0, No Iterations 0
+DILUPBiCG:  Solving for Ux, Initial residual = 0.35201, Final residual = 4.4346e-11, No Iterations 2
+DILUPBiCG:  Solving for Uy, Initial residual = 0.33496, Final residual = 4.8161e-11, No Iterations 2
+DILUPBiCG:  Solving for Uz, Initial residual = 0.36349, Final residual = 4.1629e-11, No Iterations 2
+DILUPBiCG:  Solving for O2, Initial residual = 0.99299, Final residual = 4.4659e-09, No Iterations 2
+DILUPBiCG:  Solving for H2O, Initial residual = 0.99988, Final residual = 2.5521e-09, No Iterations 2
+DILUPBiCG:  Solving for C3H8, Initial residual = 1, Final residual = 2.5555e-09, No Iterations 2
+DILUPBiCG:  Solving for CO2, Initial residual = 0.99993, Final residual = 2.5522e-09, No Iterations 2
+      O2	min/ave/max  =	     0.22109	       0.233	     0.23301
+     H2O	min/ave/max  =	 1.2236e-161	  6.4094e-20	  1.3795e-16
+    C3H8	min/ave/max  =	 4.4329e-147	  2.3754e-05	    0.051142
+     CO2	min/ave/max  =	 2.2419e-161	  1.1743e-19	  2.5275e-16
+      N2	min/ave/max  =	     0.72776	     0.76697	     0.76699
+Radiant Fraction is 0.36
+DILUPBiCG:  Solving for h, Initial residual = 0.71465, Final residual = 1.1732e-06, No Iterations 1
+GAMG:  Solving for p_rgh, Initial residual = 0.005159, Final residual = 3.7734e-05, No Iterations 5
+diagonal:  Solving for rho, Initial residual = 0, Final residual = 0, No Iterations 0
+time step continuity errors : sum local = 2.8038e-07, global = -1.5519e-07, cumulative = 2.4846e-07
+GAMG:  Solving for p_rgh, Initial residual = 0.0067674, Final residual = 5.9059e-07, No Iterations 10
+diagonal:  Solving for rho, Initial residual = 0, Final residual = 0, No Iterations 0
+time step continuity errors : sum local = 1.1678e-09, global = -5.7391e-10, cumulative = 2.4789e-07
+DILUPBiCG:  Solving for k, Initial residual = 0.98149, Final residual = 2.654e-07, No Iterations 1
+ExecutionTime = 0.96 s  ClockTime = 1 s
+
+fieldMinMax fieldMinMax output:
+    min(T) = 298.15 at position (-1.9 3 -1.9)
+    max(T) = 300.99 at position (-1.3 2.2 -1.3)
+    min(dQ) = 3.2579e-189 at position (-1.9 0.7 -1.3)
+    max(dQ) = 7.1735e-08 at position (0.1 0.1 0.1)
+
+Courant Number mean: 0.00060627 max: 0.044456
+deltaT = 0.07945
+Time = 0.2055
+
+diagonal:  Solving for rho, Initial residual = 0, Final residual = 0, No Iterations 0
+DILUPBiCG:  Solving for Ux, Initial residual = 0.2021, Final residual = 5.9724e-12, No Iterations 2
+DILUPBiCG:  Solving for Uy, Initial residual = 0.29677, Final residual = 1.2792e-11, No Iterations 2
+DILUPBiCG:  Solving for Uz, Initial residual = 0.23275, Final residual = 9.7186e-12, No Iterations 2
+DILUPBiCG:  Solving for O2, Initial residual = 0.26, Final residual = 9.9016e-11, No Iterations 2
+DILUPBiCG:  Solving for H2O, Initial residual = 1, Final residual = 3.7702e-10, No Iterations 2
+DILUPBiCG:  Solving for C3H8, Initial residual = 0.21924, Final residual = 8.34e-11, No Iterations 2
+DILUPBiCG:  Solving for CO2, Initial residual = 1, Final residual = 3.7702e-10, No Iterations 2
+      O2	min/ave/max  =	     0.20526	       0.233	     0.23301
+     H2O	min/ave/max  =	 6.1476e-145	  6.3871e-07	   0.0013192
+    C3H8	min/ave/max  =	 3.1471e-143	  4.9984e-05	     0.10572
+     CO2	min/ave/max  =	 1.1264e-144	  1.1702e-06	    0.002417
+      N2	min/ave/max  =	     0.68528	     0.76695	     0.76699
+Radiant Fraction is 0.36
+DILUPBiCG:  Solving for h, Initial residual = 0.97415, Final residual = 3.6312e-10, No Iterations 2
+GAMG:  Solving for p_rgh, Initial residual = 0.028228, Final residual = 0.00025037, No Iterations 5
+diagonal:  Solving for rho, Initial residual = 0, Final residual = 0, No Iterations 0
+time step continuity errors : sum local = 5.306e-07, global = 2.9219e-07, cumulative = 5.4007e-07
+GAMG:  Solving for p_rgh, Initial residual = 0.00026069, Final residual = 5.4533e-07, No Iterations 5
+diagonal:  Solving for rho, Initial residual = 0, Final residual = 0, No Iterations 0
+time step continuity errors : sum local = 5.0077e-09, global = 2.5333e-09, cumulative = 5.4261e-07
+DILUPBiCG:  Solving for k, Initial residual = 0.98227, Final residual = 2.9543e-06, No Iterations 1
+ExecutionTime = 1.21 s  ClockTime = 2 s
+
+fieldMinMax fieldMinMax output:
+    min(T) = 298.15 at position (-0.3 0.5 -0.3)
+    max(T) = 320.18 at position (0.1 0.1 0.1)
+    min(dQ) = 5.0207e-140 at position (-1.9 2.9 -1.9)
+    max(dQ) = 6.0078e+05 at position (0.1 0.1 0.1)
+
+Courant Number mean: 0.0018055 max: 0.094386
+deltaT = 0.088278
+Time = 0.293778
+
+diagonal:  Solving for rho, Initial residual = 0, Final residual = 0, No Iterations 0
+DILUPBiCG:  Solving for Ux, Initial residual = 0.24037, Final residual = 8.3342e-10, No Iterations 2
+DILUPBiCG:  Solving for Uy, Initial residual = 0.23735, Final residual = 1.5273e-09, No Iterations 2
+DILUPBiCG:  Solving for Uz, Initial residual = 0.25354, Final residual = 9.7968e-10, No Iterations 2
+DILUPBiCG:  Solving for O2, Initial residual = 0.15934, Final residual = 4.6135e-09, No Iterations 2
+DILUPBiCG:  Solving for H2O, Initial residual = 0.25498, Final residual = 7.1935e-09, No Iterations 2
+DILUPBiCG:  Solving for C3H8, Initial residual = 0.1449, Final residual = 3.3453e-09, No Iterations 2
+DILUPBiCG:  Solving for CO2, Initial residual = 0.25498, Final residual = 7.1935e-09, No Iterations 2
+      O2	min/ave/max  =	     0.18787	     0.23299	     0.23301
+     H2O	min/ave/max  =	 1.4136e-136	  1.5511e-06	   0.0028088
+    C3H8	min/ave/max  =	 4.8196e-135	  8.5825e-05	     0.16523
+     CO2	min/ave/max  =	   2.59e-136	  2.8419e-06	   0.0051462
+      N2	min/ave/max  =	     0.63895	     0.76692	     0.76699
+Radiant Fraction is 0.36
+DILUPBiCG:  Solving for h, Initial residual = 0.25872, Final residual = 7.1486e-09, No Iterations 2
+GAMG:  Solving for p_rgh, Initial residual = 0.0074177, Final residual = 5.2465e-05, No Iterations 5
+diagonal:  Solving for rho, Initial residual = 0, Final residual = 0, No Iterations 0
+time step continuity errors : sum local = 5.9427e-07, global = -3.3031e-07, cumulative = 2.123e-07
+GAMG:  Solving for p_rgh, Initial residual = 0.0034347, Final residual = 7.7518e-07, No Iterations 6
+diagonal:  Solving for rho, Initial residual = 0, Final residual = 0, No Iterations 0
+time step continuity errors : sum local = 1.5805e-09, global = 2.6446e-10, cumulative = 2.1256e-07
+DILUPBiCG:  Solving for k, Initial residual = 0.96907, Final residual = 3.2329e-06, No Iterations 1
+ExecutionTime = 1.46 s  ClockTime = 2 s
+
+fieldMinMax fieldMinMax output:
+    min(T) = 298.15 at position (1.9 0.1 -2)
+    max(T) = 342.85 at position (0.1 0.1 0.1)
+    min(dQ) = 3.5546e-136 at position (-1.9 2.9 -1.9)
+    max(dQ) = 6.2065e+05 at position (0.1 0.1 -0.1)
+
+Courant Number mean: 0.002194 max: 0.10297
+deltaT = 0.088278
+Time = 0.382056
+
+diagonal:  Solving for rho, Initial residual = 0, Final residual = 0, No Iterations 0
+DILUPBiCG:  Solving for Ux, Initial residual = 0.042146, Final residual = 4.8593e-11, No Iterations 2
+DILUPBiCG:  Solving for Uy, Initial residual = 0.057853, Final residual = 3.5828e-10, No Iterations 2
+DILUPBiCG:  Solving for Uz, Initial residual = 0.049052, Final residual = 6.732e-11, No Iterations 2
+DILUPBiCG:  Solving for O2, Initial residual = 0.10447, Final residual = 2.5549e-09, No Iterations 2
+DILUPBiCG:  Solving for H2O, Initial residual = 0.15191, Final residual = 2.3992e-09, No Iterations 2
+DILUPBiCG:  Solving for C3H8, Initial residual = 0.094931, Final residual = 1.7711e-09, No Iterations 2
+DILUPBiCG:  Solving for CO2, Initial residual = 0.15191, Final residual = 2.3992e-09, No Iterations 2
+      O2	min/ave/max  =	     0.17146	     0.23297	     0.23301
+     H2O	min/ave/max  =	 2.3981e-133	  2.6775e-06	   0.0040272
+    C3H8	min/ave/max  =	 4.8077e-132	  0.00012314	     0.22331
+     CO2	min/ave/max  =	 4.3937e-133	  4.9057e-06	   0.0073786
+      N2	min/ave/max  =	     0.59383	     0.76689	     0.76699
+Radiant Fraction is 0.36
+DILUPBiCG:  Solving for h, Initial residual = 0.15266, Final residual = 2.3946e-09, No Iterations 2
+GAMG:  Solving for p_rgh, Initial residual = 0.030527, Final residual = 0.00012418, No Iterations 3
+diagonal:  Solving for rho, Initial residual = 0, Final residual = 0, No Iterations 0
+time step continuity errors : sum local = 2.6476e-07, global = 1.0285e-07, cumulative = 3.1542e-07
+GAMG:  Solving for p_rgh, Initial residual = 0.00082682, Final residual = 4.1789e-07, No Iterations 6
+diagonal:  Solving for rho, Initial residual = 0, Final residual = 0, No Iterations 0
+time step continuity errors : sum local = 1.0158e-09, global = 4.7224e-10, cumulative = 3.1589e-07
+DILUPBiCG:  Solving for k, Initial residual = 0.94843, Final residual = 3.2895e-06, No Iterations 1
+ExecutionTime = 1.71 s  ClockTime = 2 s
+
+fieldMinMax fieldMinMax output:
+    min(T) = 298.15 at position (1.5 0.9 0.3)
+    max(T) = 359.3 at position (0.1 0.1 -0.1)
+    min(dQ) = 5.4327e-128 at position (-1.9 2.9 1.9)
+    max(dQ) = 5.3337e+05 at position (0.1 0.1 -0.1)
+
+Courant Number mean: 0.0024355 max: 0.093911
+deltaT = 0.088278
+Time = 0.470334
+
+diagonal:  Solving for rho, Initial residual = 0, Final residual = 0, No Iterations 0
+DILUPBiCG:  Solving for Ux, Initial residual = 0.048546, Final residual = 1.0376e-10, No Iterations 2
+DILUPBiCG:  Solving for Uy, Initial residual = 0.064259, Final residual = 2.307e-10, No Iterations 2
+DILUPBiCG:  Solving for Uz, Initial residual = 0.058837, Final residual = 1.6042e-10, No Iterations 2
+DILUPBiCG:  Solving for O2, Initial residual = 0.075857, Final residual = 2.1726e-09, No Iterations 2
+DILUPBiCG:  Solving for H2O, Initial residual = 0.11361, Final residual = 1.5649e-09, No Iterations 2
+DILUPBiCG:  Solving for C3H8, Initial residual = 0.06688, Final residual = 1.8605e-09, No Iterations 2
+DILUPBiCG:  Solving for CO2, Initial residual = 0.11361, Final residual = 1.5649e-09, No Iterations 2
+      O2	min/ave/max  =	     0.15624	     0.23296	     0.23301
+     H2O	min/ave/max  =	 5.3775e-131	  4.0733e-06	   0.0050095
+    C3H8	min/ave/max  =	 6.9749e-130	  0.00015997	     0.27866
+     CO2	min/ave/max  =	 9.8527e-131	  7.4631e-06	   0.0091783
+      N2	min/ave/max  =	     0.55091	     0.76687	     0.76699
+Radiant Fraction is 0.36
+DILUPBiCG:  Solving for h, Initial residual = 0.11405, Final residual = 1.5635e-09, No Iterations 2
+GAMG:  Solving for p_rgh, Initial residual = 0.042119, Final residual = 0.00038546, No Iterations 3
+diagonal:  Solving for rho, Initial residual = 0, Final residual = 0, No Iterations 0
+time step continuity errors : sum local = 9.741e-07, global = 5.2797e-07, cumulative = 8.4386e-07
+GAMG:  Solving for p_rgh, Initial residual = 0.00056293, Final residual = 6.7547e-07, No Iterations 6
+diagonal:  Solving for rho, Initial residual = 0, Final residual = 0, No Iterations 0
+time step continuity errors : sum local = 2.7294e-09, global = 1.418e-09, cumulative = 8.4528e-07
+DILUPBiCG:  Solving for k, Initial residual = 0.92426, Final residual = 3.652e-06, No Iterations 1
+ExecutionTime = 1.97 s  ClockTime = 2 s
+
+fieldMinMax fieldMinMax output:
+    min(T) = 298.15 at position (1.5 0.9 0.1)
+    max(T) = 370.97 at position (0.1 0.1 -0.1)
+    min(dQ) = 5.4082e-125 at position (-1.9 2.9 1.9)
+    max(dQ) = 4.684e+05 at position (0.1 0.1 -0.1)
+
+Courant Number mean: 0.0028376 max: 0.087841
+deltaT = 0.088278
+Time = 0.558611
+
+diagonal:  Solving for rho, Initial residual = 0, Final residual = 0, No Iterations 0
+DILUPBiCG:  Solving for Ux, Initial residual = 0.067756, Final residual = 2.6796e-10, No Iterations 2
+DILUPBiCG:  Solving for Uy, Initial residual = 0.079207, Final residual = 4.7205e-10, No Iterations 2
+DILUPBiCG:  Solving for Uz, Initial residual = 0.079716, Final residual = 4.5184e-10, No Iterations 2
+DILUPBiCG:  Solving for O2, Initial residual = 0.060405, Final residual = 1.7386e-09, No Iterations 2
+DILUPBiCG:  Solving for H2O, Initial residual = 0.092814, Final residual = 1.2985e-09, No Iterations 2
+DILUPBiCG:  Solving for C3H8, Initial residual = 0.051491, Final residual = 3.1193e-09, No Iterations 2
+DILUPBiCG:  Solving for CO2, Initial residual = 0.092814, Final residual = 1.2985e-09, No Iterations 2
+      O2	min/ave/max  =	     0.14229	     0.23295	     0.23301
+     H2O	min/ave/max  =	 5.9894e-129	  5.7967e-06	   0.0057902
+    C3H8	min/ave/max  =	 5.7363e-128	   0.0001965	     0.33061
+     CO2	min/ave/max  =	 1.0974e-128	  1.0621e-05	    0.010609
+      N2	min/ave/max  =	      0.5107	     0.76684	     0.76699
+Radiant Fraction is 0.36
+DILUPBiCG:  Solving for h, Initial residual = 0.093166, Final residual = 1.2981e-09, No Iterations 2
+GAMG:  Solving for p_rgh, Initial residual = 0.033333, Final residual = 0.00016606, No Iterations 3
+diagonal:  Solving for rho, Initial residual = 0, Final residual = 0, No Iterations 0
+time step continuity errors : sum local = 6.9843e-07, global = 2.1518e-07, cumulative = 1.0605e-06
+GAMG:  Solving for p_rgh, Initial residual = 0.00067556, Final residual = 5.867e-07, No Iterations 6
+diagonal:  Solving for rho, Initial residual = 0, Final residual = 0, No Iterations 0
+time step continuity errors : sum local = 2.6586e-09, global = 9.741e-10, cumulative = 1.0614e-06
+DILUPBiCG:  Solving for k, Initial residual = 0.8878, Final residual = 4.1051e-06, No Iterations 1
+ExecutionTime = 2.22 s  ClockTime = 3 s
+
+fieldMinMax fieldMinMax output:
+    min(T) = 298.15 at position (1.5 0.9 0.1)
+    max(T) = 379.07 at position (0.1 0.1 -0.1)
+    min(dQ) = 7.8303e-123 at position (-1.9 2.9 1.9)
+    max(dQ) = 4.1753e+05 at position (0.1 0.1 -0.1)
+
+Courant Number mean: 0.003274 max: 0.10922
+deltaT = 0.088278
+Time = 0.646889
+
+diagonal:  Solving for rho, Initial residual = 0, Final residual = 0, No Iterations 0
+DILUPBiCG:  Solving for Ux, Initial residual = 0.065105, Final residual = 4.2902e-10, No Iterations 2
+DILUPBiCG:  Solving for Uy, Initial residual = 0.082688, Final residual = 1.0349e-09, No Iterations 2
+DILUPBiCG:  Solving for Uz, Initial residual = 0.079564, Final residual = 5.6974e-10, No Iterations 2
+DILUPBiCG:  Solving for O2, Initial residual = 0.051046, Final residual = 1.6788e-09, No Iterations 2
+DILUPBiCG:  Solving for H2O, Initial residual = 0.079786, Final residual = 2.1124e-09, No Iterations 2
+DILUPBiCG:  Solving for C3H8, Initial residual = 0.042167, Final residual = 1.7024e-09, No Iterations 2
+DILUPBiCG:  Solving for CO2, Initial residual = 0.079786, Final residual = 2.1124e-09, No Iterations 2
+      O2	min/ave/max  =	      0.1296	     0.23294	     0.23301
+     H2O	min/ave/max  =	 5.5938e-127	  7.9257e-06	   0.0064026
+    C3H8	min/ave/max  =	 4.3312e-126	  0.00023321	     0.37887
+     CO2	min/ave/max  =	 1.0249e-126	  1.4521e-05	    0.011731
+      N2	min/ave/max  =	     0.47339	     0.76681	     0.76699
+Radiant Fraction is 0.36
+DILUPBiCG:  Solving for h, Initial residual = 0.080035, Final residual = 2.1141e-09, No Iterations 2
+GAMG:  Solving for p_rgh, Initial residual = 0.03128, Final residual = 0.00016407, No Iterations 3
+diagonal:  Solving for rho, Initial residual = 0, Final residual = 0, No Iterations 0
+time step continuity errors : sum local = 7.6956e-07, global = 3.1765e-08, cumulative = 1.0932e-06
+GAMG:  Solving for p_rgh, Initial residual = 0.00094578, Final residual = 8.4309e-07, No Iterations 6
+diagonal:  Solving for rho, Initial residual = 0, Final residual = 0, No Iterations 0
+time step continuity errors : sum local = 4.0667e-09, global = 7.8212e-10, cumulative = 1.094e-06
+DILUPBiCG:  Solving for k, Initial residual = 0.83553, Final residual = 1.0156e-09, No Iterations 2
+ExecutionTime = 2.47 s  ClockTime = 3 s
+
+fieldMinMax fieldMinMax output:
+    min(T) = 298.15 at position (1.7 0.9 0.1)
+    max(T) = 384.54 at position (0.1 0.1 -0.1)
+    min(dQ) = 6.4269e-121 at position (-1.9 2.9 1.9)
+    max(dQ) = 4.9532e+05 at position (-0.1 0.3 -0.1)
+
+Courant Number mean: 0.0037508 max: 0.13775
+deltaT = 0.088278
+Time = 0.735167
+
+diagonal:  Solving for rho, Initial residual = 0, Final residual = 0, No Iterations 0
+DILUPBiCG:  Solving for Ux, Initial residual = 0.061801, Final residual = 2.2345e-09, No Iterations 2
+DILUPBiCG:  Solving for Uy, Initial residual = 0.085617, Final residual = 6.7346e-09, No Iterations 2
+DILUPBiCG:  Solving for Uz, Initial residual = 0.079654, Final residual = 4.7822e-09, No Iterations 2
+DILUPBiCG:  Solving for O2, Initial residual = 0.043502, Final residual = 9.291e-09, No Iterations 2
+DILUPBiCG:  Solving for H2O, Initial residual = 0.06488, Final residual = 1.8052e-08, No Iterations 2
+DILUPBiCG:  Solving for C3H8, Initial residual = 0.037022, Final residual = 7.7133e-09, No Iterations 2
+DILUPBiCG:  Solving for CO2, Initial residual = 0.06488, Final residual = 1.8052e-08, No Iterations 2
+      O2	min/ave/max  =	     0.11896	     0.23292	     0.23301
+     H2O	min/ave/max  =	 5.7013e-125	  1.0302e-05	   0.0068492
+    C3H8	min/ave/max  =	 3.7682e-124	  0.00027112	     0.41999
+     CO2	min/ave/max  =	 1.0446e-124	  1.8875e-05	    0.012549
+      N2	min/ave/max  =	     0.44164	     0.76678	     0.76699
+Radiant Fraction is 0.36
+DILUPBiCG:  Solving for h, Initial residual = 0.065075, Final residual = 1.8079e-08, No Iterations 2
+GAMG:  Solving for p_rgh, Initial residual = 0.038437, Final residual = 0.00037723, No Iterations 3
+diagonal:  Solving for rho, Initial residual = 0, Final residual = 0, No Iterations 0
+time step continuity errors : sum local = 1.8697e-06, global = -9.0044e-07, cumulative = 1.9354e-07
+GAMG:  Solving for p_rgh, Initial residual = 0.0027705, Final residual = 8.2967e-07, No Iterations 7
+diagonal:  Solving for rho, Initial residual = 0, Final residual = 0, No Iterations 0
+time step continuity errors : sum local = 2.4688e-09, global = -1.2186e-09, cumulative = 1.9232e-07
+DILUPBiCG:  Solving for k, Initial residual = 0.77228, Final residual = 9.9873e-06, No Iterations 1
+ExecutionTime = 2.72 s  ClockTime = 3 s
+
+fieldMinMax fieldMinMax output:
+    min(T) = 298.15 at position (1.7 0.9 0.1)
+    max(T) = 402.21 at position (-0.1 0.3 -0.1)
+    min(dQ) = 4.8431e-119 at position (-1.9 2.9 1.9)
+    max(dQ) = 5.0771e+05 at position (0.1 0.3 -0.1)
+
+Courant Number mean: 0.0040692 max: 0.16253
+deltaT = 0.088278
+Time = 0.823445
+
+diagonal:  Solving for rho, Initial residual = 0, Final residual = 0, No Iterations 0
+DILUPBiCG:  Solving for Ux, Initial residual = 0.039295, Final residual = 4.4798e-09, No Iterations 2
+DILUPBiCG:  Solving for Uy, Initial residual = 0.077728, Final residual = 2.3015e-08, No Iterations 2
+DILUPBiCG:  Solving for Uz, Initial residual = 0.058854, Final residual = 7.6953e-09, No Iterations 2
+DILUPBiCG:  Solving for O2, Initial residual = 0.037297, Final residual = 2.3422e-07, No Iterations 2
+DILUPBiCG:  Solving for H2O, Initial residual = 0.053048, Final residual = 1.2201e-08, No Iterations 2
+DILUPBiCG:  Solving for C3H8, Initial residual = 0.03333, Final residual = 2.9804e-07, No Iterations 2
+DILUPBiCG:  Solving for CO2, Initial residual = 0.053048, Final residual = 1.2201e-08, No Iterations 2
+      O2	min/ave/max  =	     0.11136	     0.23291	     0.23301
+     H2O	min/ave/max  =	 4.7386e-123	   1.276e-05	   0.0078988
+    C3H8	min/ave/max  =	  2.688e-122	   0.0003097	      0.4496
+     CO2	min/ave/max  =	  8.682e-123	  2.3378e-05	    0.014472
+      N2	min/ave/max  =	     0.41879	     0.76675	     0.76699
+Radiant Fraction is 0.36
+DILUPBiCG:  Solving for h, Initial residual = 0.053212, Final residual = 1.2208e-08, No Iterations 2
+GAMG:  Solving for p_rgh, Initial residual = 0.076197, Final residual = 0.00036388, No Iterations 3
+diagonal:  Solving for rho, Initial residual = 0, Final residual = 0, No Iterations 0
+time step continuity errors : sum local = 1.0968e-06, global = -2.4838e-07, cumulative = -5.6066e-08
+GAMG:  Solving for p_rgh, Initial residual = 0.0024873, Final residual = 6.9387e-07, No Iterations 7
+diagonal:  Solving for rho, Initial residual = 0, Final residual = 0, No Iterations 0
+time step continuity errors : sum local = 2.0452e-09, global = -6.2764e-10, cumulative = -5.6693e-08
+DILUPBiCG:  Solving for k, Initial residual = 0.70123, Final residual = 1.754e-07, No Iterations 2
+ExecutionTime = 2.97 s  ClockTime = 3 s
+
+fieldMinMax fieldMinMax output:
+    min(T) = 298.15 at position (1.7 0.9 0.1)
+    max(T) = 421.48 at position (0.1 0.3 0.1)
+    min(dQ) = 4.2052e-117 at position (-1.9 2.9 1.9)
+    max(dQ) = 4.4292e+05 at position (-0.1 0.3 0.1)
+
+Courant Number mean: 0.0044684 max: 0.1791
+deltaT = 0.088278
+Time = 0.911722
+
+diagonal:  Solving for rho, Initial residual = 0, Final residual = 0, No Iterations 0
+DILUPBiCG:  Solving for Ux, Initial residual = 0.04222, Final residual = 9.9151e-09, No Iterations 2
+DILUPBiCG:  Solving for Uy, Initial residual = 0.082083, Final residual = 1.3939e-08, No Iterations 2
+DILUPBiCG:  Solving for Uz, Initial residual = 0.064213, Final residual = 2.2973e-08, No Iterations 2
+DILUPBiCG:  Solving for O2, Initial residual = 0.033058, Final residual = 1.012e-08, No Iterations 2
+DILUPBiCG:  Solving for H2O, Initial residual = 0.047237, Final residual = 4.6731e-08, No Iterations 2
+DILUPBiCG:  Solving for C3H8, Initial residual = 0.03026, Final residual = 6.4038e-09, No Iterations 2
+DILUPBiCG:  Solving for CO2, Initial residual = 0.047237, Final residual = 4.6731e-08, No Iterations 2
+      O2	min/ave/max  =	     0.10266	     0.23289	     0.23301
+     H2O	min/ave/max  =	 2.4335e-121	  1.5447e-05	   0.0091666
+    C3H8	min/ave/max  =	  1.212e-120	   0.0003468	     0.48591
+     CO2	min/ave/max  =	 4.4586e-121	  2.8302e-05	    0.016795
+      N2	min/ave/max  =	      0.3909	     0.76672	     0.76699
+Radiant Fraction is 0.36
+DILUPBiCG:  Solving for h, Initial residual = 0.047379, Final residual = 4.6651e-08, No Iterations 2
+GAMG:  Solving for p_rgh, Initial residual = 0.086996, Final residual = 0.0005711, No Iterations 3
+diagonal:  Solving for rho, Initial residual = 0, Final residual = 0, No Iterations 0
+time step continuity errors : sum local = 1.7631e-06, global = 7.3837e-07, cumulative = 6.8168e-07
+GAMG:  Solving for p_rgh, Initial residual = 0.0022923, Final residual = 5.7543e-07, No Iterations 7
+diagonal:  Solving for rho, Initial residual = 0, Final residual = 0, No Iterations 0
+time step continuity errors : sum local = 2.7585e-09, global = 1.1565e-09, cumulative = 6.8284e-07
+DILUPBiCG:  Solving for k, Initial residual = 0.60827, Final residual = 2.9532e-08, No Iterations 2
+ExecutionTime = 3.24 s  ClockTime = 4 s
+
+fieldMinMax fieldMinMax output:
+    min(T) = 298.15 at position (1.7 0.9 0.1)
+    max(T) = 437.61 at position (0.1 0.3 0.1)
+    min(dQ) = 2.9938e-115 at position (-1.9 2.9 1.9)
+    max(dQ) = 4.0287e+05 at position (-0.1 0.3 -0.1)
+
+Courant Number mean: 0.0051297 max: 0.22998
+deltaT = 0.088278
+Time = 1
+
+diagonal:  Solving for rho, Initial residual = 0, Final residual = 0, No Iterations 0
+DILUPBiCG:  Solving for Ux, Initial residual = 0.05825, Final residual = 9.5792e-09, No Iterations 2
+DILUPBiCG:  Solving for Uy, Initial residual = 0.089973, Final residual = 2.2613e-08, No Iterations 2
+DILUPBiCG:  Solving for Uz, Initial residual = 0.081176, Final residual = 1.9313e-08, No Iterations 2
+DILUPBiCG:  Solving for O2, Initial residual = 0.030852, Final residual = 2.3522e-08, No Iterations 2
+DILUPBiCG:  Solving for H2O, Initial residual = 0.045232, Final residual = 4.3127e-08, No Iterations 2
+DILUPBiCG:  Solving for C3H8, Initial residual = 0.026851, Final residual = 3.0026e-08, No Iterations 2
+DILUPBiCG:  Solving for CO2, Initial residual = 0.045232, Final residual = 4.3127e-08, No Iterations 2
+      O2	min/ave/max  =	    0.097284	     0.23288	     0.23301
+     H2O	min/ave/max  =	 7.7963e-120	  1.8587e-05	    0.010247
+    C3H8	min/ave/max  =	 3.4441e-119	  0.00038354	     0.50937
+     CO2	min/ave/max  =	 1.4284e-119	  3.4055e-05	    0.018775
+      N2	min/ave/max  =	     0.37292	     0.76669	     0.76699
+Radiant Fraction is 0.36
+DILUPBiCG:  Solving for h, Initial residual = 0.045388, Final residual = 4.3208e-08, No Iterations 2
+GAMG:  Solving for p_rgh, Initial residual = 0.064035, Final residual = 0.00045363, No Iterations 3
+diagonal:  Solving for rho, Initial residual = 0, Final residual = 0, No Iterations 0
+time step continuity errors : sum local = 2.2867e-06, global = 8.9236e-07, cumulative = 1.5752e-06
+GAMG:  Solving for p_rgh, Initial residual = 0.0027443, Final residual = 4.6098e-07, No Iterations 7
+diagonal:  Solving for rho, Initial residual = 0, Final residual = 0, No Iterations 0
+time step continuity errors : sum local = 3.1951e-09, global = 1.484e-09, cumulative = 1.5767e-06
+DILUPBiCG:  Solving for k, Initial residual = 0.49511, Final residual = 6.6929e-07, No Iterations 2
+ExecutionTime = 4.22 s  ClockTime = 6 s +
+
+fieldMinMax fieldMinMax output:
+    min(T) = 298.15 at position (1.7 0.9 0.1)
+    max(T) = 449.84 at position (0.1 0.3 0.1)
+    min(dQ) = 1.3473e-113 at position (-1.9 2.9 1.9)
+    max(dQ) = 4.5057e+05 at position (-0.1 0.5 -0.1)
+
+Courant Number mean: 0.0060633 max: 0.29799
+deltaT = 0.1
+Time = 1.1
+
+diagonal:  Solving for rho, Initial residual = 0, Final residual = 0, No Iterations 0
+DILUPBiCG:  Solving for Ux, Initial residual = 0.079893, Final residual = 7.1144e-11, No Iterations 3
+DILUPBiCG:  Solving for Uy, Initial residual = 0.10942, Final residual = 1.6423e-10, No Iterations 3
+DILUPBiCG:  Solving for Uz, Initial residual = 0.10555, Final residual = 8.9933e-11, No Iterations 3
+DILUPBiCG:  Solving for O2, Initial residual = 0.035506, Final residual = 1.4319e-07, No Iterations 2
+DILUPBiCG:  Solving for H2O, Initial residual = 0.050554, Final residual = 2.5081e-07, No Iterations 2
+DILUPBiCG:  Solving for C3H8, Initial residual = 0.028746, Final residual = 4.8046e-07, No Iterations 2
+DILUPBiCG:  Solving for CO2, Initial residual = 0.050554, Final residual = 2.5081e-07, No Iterations 2
+      O2	min/ave/max  =	    0.093702	     0.23286	     0.23301
+     H2O	min/ave/max  =	 4.8176e-118	  2.2736e-05	    0.011104
+    C3H8	min/ave/max  =	 1.9803e-117	  0.00042889	     0.52612
+     CO2	min/ave/max  =	 8.8268e-118	  4.1657e-05	    0.020344
+      N2	min/ave/max  =	     0.36014	     0.76665	     0.76699
+Radiant Fraction is 0.36
+DILUPBiCG:  Solving for h, Initial residual = 0.05075, Final residual = 2.5084e-07, No Iterations 2
+GAMG:  Solving for p_rgh, Initial residual = 0.068624, Final residual = 0.00044797, No Iterations 3
+diagonal:  Solving for rho, Initial residual = 0, Final residual = 0, No Iterations 0
+time step continuity errors : sum local = 4.1088e-06, global = -6.3979e-07, cumulative = 9.3688e-07
+GAMG:  Solving for p_rgh, Initial residual = 0.0044007, Final residual = 7.5839e-07, No Iterations 7
+diagonal:  Solving for rho, Initial residual = 0, Final residual = 0, No Iterations 0
+time step continuity errors : sum local = 6.8065e-09, global = -2.3536e-09, cumulative = 9.3453e-07
+DILUPBiCG:  Solving for k, Initial residual = 0.42112, Final residual = 2.1692e-06, No Iterations 2
+ExecutionTime = 4.49 s  ClockTime = 6 s
+
+fieldMinMax fieldMinMax output:
+    min(T) = 298.15 at position (1.7 0.9 0.1)
+    max(T) = 458.09 at position (0.1 0.3 0.1)
+    min(dQ) = 3.8165e-112 at position (-1.9 2.9 1.9)
+    max(dQ) = 5.2944e+05 at position (-0.1 0.5 -0.1)
+
+Courant Number mean: 0.0081742 max: 0.42655
+deltaT = 0.1
+Time = 1.2
+
+diagonal:  Solving for rho, Initial residual = 0, Final residual = 0, No Iterations 0
+DILUPBiCG:  Solving for Ux, Initial residual = 0.074133, Final residual = 3.8477e-10, No Iterations 3
+DILUPBiCG:  Solving for Uy, Initial residual = 0.10654, Final residual = 3.01e-10, No Iterations 3
+DILUPBiCG:  Solving for Uz, Initial residual = 0.09993, Final residual = 4.1961e-10, No Iterations 3
+DILUPBiCG:  Solving for O2, Initial residual = 0.035409, Final residual = 2.1068e-07, No Iterations 2
+DILUPBiCG:  Solving for H2O, Initial residual = 0.053052, Final residual = 2.0446e-07, No Iterations 2
+DILUPBiCG:  Solving for C3H8, Initial residual = 0.026912, Final residual = 5.3839e-07, No Iterations 2
+DILUPBiCG:  Solving for CO2, Initial residual = 0.053052, Final residual = 2.0446e-07, No Iterations 2
+      O2	min/ave/max  =	    0.092426	     0.23283	     0.23301
+     H2O	min/ave/max  =	 5.1409e-116	  2.7395e-05	     0.01188
+    C3H8	min/ave/max  =	 2.3986e-115	  0.00047635	     0.53334
+     CO2	min/ave/max  =	 9.4191e-116	  5.0193e-05	    0.021766
+      N2	min/ave/max  =	     0.35468	     0.76661	     0.76699
+Radiant Fraction is 0.36
+DILUPBiCG:  Solving for h, Initial residual = 0.053212, Final residual = 2.044e-07, No Iterations 2
+GAMG:  Solving for p_rgh, Initial residual = 0.076779, Final residual = 0.00073086, No Iterations 3
+diagonal:  Solving for rho, Initial residual = 0, Final residual = 0, No Iterations 0
+time step continuity errors : sum local = 6.8104e-06, global = 1.853e-06, cumulative = 2.7875e-06
+GAMG:  Solving for p_rgh, Initial residual = 0.0048572, Final residual = 9.5873e-07, No Iterations 7
+diagonal:  Solving for rho, Initial residual = 0, Final residual = 0, No Iterations 0
+time step continuity errors : sum local = 1.1585e-08, global = 4.1215e-09, cumulative = 2.7916e-06
+DILUPBiCG:  Solving for k, Initial residual = 0.31912, Final residual = 3.8216e-06, No Iterations 2
+ExecutionTime = 4.74 s  ClockTime = 6 s
+
+fieldMinMax fieldMinMax output:
+    min(T) = 298.15 at position (1.7 0.9 0.1)
+    max(T) = 478.57 at position (0.1 0.5 -0.1)
+    min(dQ) = 2.1897e-110 at position (-1.9 2.9 1.9)
+    max(dQ) = 4.54e+05 at position (-0.1 0.5 -0.1)
+
+Courant Number mean: 0.0099934 max: 0.48477
+deltaT = 0.1
+Time = 1.3
+
+diagonal:  Solving for rho, Initial residual = 0, Final residual = 0, No Iterations 0
+DILUPBiCG:  Solving for Ux, Initial residual = 0.086611, Final residual = 4.6228e-09, No Iterations 3
+DILUPBiCG:  Solving for Uy, Initial residual = 0.10955, Final residual = 1.8338e-09, No Iterations 3
+DILUPBiCG:  Solving for Uz, Initial residual = 0.11237, Final residual = 1.2653e-09, No Iterations 3
+DILUPBiCG:  Solving for O2, Initial residual = 0.037229, Final residual = 2.0378e-07, No Iterations 2
+DILUPBiCG:  Solving for H2O, Initial residual = 0.056832, Final residual = 4.6305e-07, No Iterations 2
+DILUPBiCG:  Solving for C3H8, Initial residual = 0.027294, Final residual = 1.836e-07, No Iterations 2
+DILUPBiCG:  Solving for CO2, Initial residual = 0.056832, Final residual = 4.6305e-07, No Iterations 2
+      O2	min/ave/max  =	    0.093071	     0.23281	     0.23301
+     H2O	min/ave/max  =	 7.3757e-114	  3.3331e-05	    0.013359
+    C3H8	min/ave/max  =	 3.4487e-113	  0.00052513	     0.53184
+     CO2	min/ave/max  =	 1.3514e-113	  6.1068e-05	    0.024477
+      N2	min/ave/max  =	     0.35589	     0.76657	     0.76699
+Radiant Fraction is 0.36
+DILUPBiCG:  Solving for h, Initial residual = 0.056988, Final residual = 4.6339e-07, No Iterations 2
+GAMG:  Solving for p_rgh, Initial residual = 0.089088, Final residual = 0.0008052, No Iterations 3
+diagonal:  Solving for rho, Initial residual = 0, Final residual = 0, No Iterations 0
+time step continuity errors : sum local = 1.0197e-05, global = 3.316e-06, cumulative = 6.1077e-06
+GAMG:  Solving for p_rgh, Initial residual = 0.004512, Final residual = 4.0755e-07, No Iterations 8
+diagonal:  Solving for rho, Initial residual = 0, Final residual = 0, No Iterations 0
+time step continuity errors : sum local = 7.577e-09, global = 2.6706e-09, cumulative = 6.1103e-06
+DILUPBiCG:  Solving for k, Initial residual = 0.24859, Final residual = 4.9987e-06, No Iterations 2
+ExecutionTime = 5 s  ClockTime = 6 s
+
+fieldMinMax fieldMinMax output:
+    min(T) = 298.15 at position (1.7 0.9 0.1)
+    max(T) = 495.71 at position (0.1 0.5 -0.1)
+    min(dQ) = 2.6466e-108 at position (-1.9 2.9 1.9)
+    max(dQ) = 5.4957e+05 at position (0.1 0.7 -0.1)
+
+Courant Number mean: 0.012626 max: 0.56761
+deltaT = 0.1
+Time = 1.4
+
+diagonal:  Solving for rho, Initial residual = 0, Final residual = 0, No Iterations 0
+DILUPBiCG:  Solving for Ux, Initial residual = 0.10274, Final residual = 2.6503e-08, No Iterations 3
+DILUPBiCG:  Solving for Uy, Initial residual = 0.11827, Final residual = 2.2146e-09, No Iterations 3
+DILUPBiCG:  Solving for Uz, Initial residual = 0.1269, Final residual = 1.8576e-09, No Iterations 3
+DILUPBiCG:  Solving for O2, Initial residual = 0.039882, Final residual = 5.3508e-07, No Iterations 2
+DILUPBiCG:  Solving for H2O, Initial residual = 0.059657, Final residual = 7.7866e-07, No Iterations 2
+DILUPBiCG:  Solving for C3H8, Initial residual = 0.029292, Final residual = 5.3869e-07, No Iterations 2
+DILUPBiCG:  Solving for CO2, Initial residual = 0.059657, Final residual = 7.7866e-07, No Iterations 2
+      O2	min/ave/max  =	    0.094851	     0.23278	     0.23301
+     H2O	min/ave/max  =	 1.4675e-111	  4.1123e-05	    0.014483
+    C3H8	min/ave/max  =	 6.8457e-111	  0.00057961	     0.52437
+     CO2	min/ave/max  =	 2.6887e-111	  7.5346e-05	    0.026536
+      N2	min/ave/max  =	     0.36163	     0.76653	     0.76699
+Radiant Fraction is 0.36
+DILUPBiCG:  Solving for h, Initial residual = 0.059795, Final residual = 7.7922e-07, No Iterations 2
+GAMG:  Solving for p_rgh, Initial residual = 0.064279, Final residual = 0.00058963, No Iterations 3
+diagonal:  Solving for rho, Initial residual = 0, Final residual = 0, No Iterations 0
+time step continuity errors : sum local = 1.1561e-05, global = 2.8692e-06, cumulative = 8.9795e-06
+GAMG:  Solving for p_rgh, Initial residual = 0.0061265, Final residual = 9.2276e-07, No Iterations 7
+diagonal:  Solving for rho, Initial residual = 0, Final residual = 0, No Iterations 0
+time step continuity errors : sum local = 2.1345e-08, global = 7.678e-09, cumulative = 8.9872e-06
+DILUPBiCG:  Solving for k, Initial residual = 0.20194, Final residual = 6.6505e-06, No Iterations 2
+ExecutionTime = 5.25 s  ClockTime = 7 s
+
+fieldMinMax fieldMinMax output:
+    min(T) = 298.15 at position (1.7 0.9 0.1)
+    max(T) = 513.45 at position (-0.1 0.7 -0.1)
+    min(dQ) = 3.7973e-106 at position (-1.9 2.9 1.9)
+    max(dQ) = 6.2545e+05 at position (-0.1 0.7 -0.1)
+
+Courant Number mean: 0.01582 max: 0.69933
+deltaT = 0.1
+Time = 1.5
+
+diagonal:  Solving for rho, Initial residual = 0, Final residual = 0, No Iterations 0
+DILUPBiCG:  Solving for Ux, Initial residual = 0.10277, Final residual = 2.4088e-09, No Iterations 3
+DILUPBiCG:  Solving for Uy, Initial residual = 0.11693, Final residual = 1.0112e-08, No Iterations 3
+DILUPBiCG:  Solving for Uz, Initial residual = 0.12691, Final residual = 3.7311e-08, No Iterations 3
+DILUPBiCG:  Solving for O2, Initial residual = 0.042777, Final residual = 1.7578e-08, No Iterations 3
+DILUPBiCG:  Solving for H2O, Initial residual = 0.063105, Final residual = 4.3011e-09, No Iterations 3
+DILUPBiCG:  Solving for C3H8, Initial residual = 0.031941, Final residual = 6.6797e-07, No Iterations 2
+DILUPBiCG:  Solving for CO2, Initial residual = 0.063105, Final residual = 4.3011e-09, No Iterations 3
+      O2	min/ave/max  =	    0.097206	     0.23274	     0.23301
+     H2O	min/ave/max  =	 1.1966e-107	  5.0909e-05	    0.016186
+    C3H8	min/ave/max  =	  4.025e-108	  0.00063668	     0.51289
+     CO2	min/ave/max  =	 2.1924e-107	  9.3275e-05	    0.029656
+      N2	min/ave/max  =	     0.37037	     0.76648	       0.767
+Radiant Fraction is 0.36
+DILUPBiCG:  Solving for h, Initial residual = 0.063227, Final residual = 1.0794e-06, No Iterations 2
+GAMG:  Solving for p_rgh, Initial residual = 0.082764, Final residual = 0.00070521, No Iterations 3
+diagonal:  Solving for rho, Initial residual = 0, Final residual = 0, No Iterations 0
+time step continuity errors : sum local = 1.7055e-05, global = 5.2418e-06, cumulative = 1.4229e-05
+GAMG:  Solving for p_rgh, Initial residual = 0.0059069, Final residual = 7.0418e-07, No Iterations 7
+diagonal:  Solving for rho, Initial residual = 0, Final residual = 0, No Iterations 0
+time step continuity errors : sum local = 2.247e-08, global = 1.11e-08, cumulative = 1.424e-05
+DILUPBiCG:  Solving for k, Initial residual = 0.171, Final residual = 2.5896e-09, No Iterations 3
+ExecutionTime = 5.51 s  ClockTime = 7 s
+
+fieldMinMax fieldMinMax output:
+    min(T) = 298.15 at position (1.7 0.9 0.1)
+    max(T) = 535.29 at position (-0.1 0.7 -0.1)
+    min(dQ) = 7.5221e-104 at position (-1.9 2.9 1.9)
+    max(dQ) = 6.2469e+05 at position (-0.1 0.1 0.1)
+
+Courant Number mean: 0.020177 max: 0.76684
+deltaT = 0.1
+Time = 1.6
+
+diagonal:  Solving for rho, Initial residual = 0, Final residual = 0, No Iterations 0
+DILUPBiCG:  Solving for Ux, Initial residual = 0.11333, Final residual = 3.946e-09, No Iterations 3
+DILUPBiCG:  Solving for Uy, Initial residual = 0.1235, Final residual = 1.0095e-11, No Iterations 4
+DILUPBiCG:  Solving for Uz, Initial residual = 0.13757, Final residual = 4.8532e-09, No Iterations 3
+DILUPBiCG:  Solving for O2, Initial residual = 0.046347, Final residual = 8.632e-09, No Iterations 3
+DILUPBiCG:  Solving for H2O, Initial residual = 0.066854, Final residual = 9.0928e-11, No Iterations 4
+DILUPBiCG:  Solving for C3H8, Initial residual = 0.033609, Final residual = 7.6762e-09, No Iterations 3
+DILUPBiCG:  Solving for CO2, Initial residual = 0.066854, Final residual = 9.0928e-11, No Iterations 4
+      O2	min/ave/max  =	    0.099816	     0.23269	     0.23301
+     H2O	min/ave/max  =	 1.3285e-103	  6.4339e-05	    0.017739
+    C3H8	min/ave/max  =	 6.6391e-104	  0.00070014	      0.4989
+     CO2	min/ave/max  =	 2.4341e-103	  0.00011788	    0.032502
+      N2	min/ave/max  =	     0.38097	     0.76642	       0.767
+Radiant Fraction is 0.36
+DILUPBiCG:  Solving for h, Initial residual = 0.066969, Final residual = 2.7759e-06, No Iterations 2
+GAMG:  Solving for p_rgh, Initial residual = 0.071556, Final residual = 0.00069047, No Iterations 3
+diagonal:  Solving for rho, Initial residual = 0, Final residual = 0, No Iterations 0
+time step continuity errors : sum local = 2.3021e-05, global = 6.2581e-06, cumulative = 2.0498e-05
+GAMG:  Solving for p_rgh, Initial residual = 0.0076235, Final residual = 6.4534e-07, No Iterations 7
+diagonal:  Solving for rho, Initial residual = 0, Final residual = 0, No Iterations 0
+time step continuity errors : sum local = 2.6863e-08, global = 1.4462e-08, cumulative = 2.0513e-05
+DILUPBiCG:  Solving for k, Initial residual = 0.15173, Final residual = 4.3839e-09, No Iterations 3
+ExecutionTime = 5.77 s  ClockTime = 7 s
+
+fieldMinMax fieldMinMax output:
+    min(T) = 298.15 at position (1.9 1.1 0.1)
+    max(T) = 557.49 at position (-0.1 0.9 -0.1)
+    min(dQ) = 4.4137e-101 at position (-1.9 2.9 1.9)
+    max(dQ) = 7.9529e+05 at position (-0.1 0.9 0.1)
+
+Courant Number mean: 0.025841 max: 0.91918
+deltaT = 0.08
+Time = 1.68
+
+diagonal:  Solving for rho, Initial residual = 0, Final residual = 0, No Iterations 0
+DILUPBiCG:  Solving for Ux, Initial residual = 0.090911, Final residual = 2.1072e-09, No Iterations 3
+DILUPBiCG:  Solving for Uy, Initial residual = 0.098749, Final residual = 9.3474e-09, No Iterations 3
+DILUPBiCG:  Solving for Uz, Initial residual = 0.11003, Final residual = 1.9513e-09, No Iterations 3
+DILUPBiCG:  Solving for O2, Initial residual = 0.041528, Final residual = 3.0079e-09, No Iterations 3
+DILUPBiCG:  Solving for H2O, Initial residual = 0.058674, Final residual = 3.1502e-09, No Iterations 3
+DILUPBiCG:  Solving for C3H8, Initial residual = 0.030006, Final residual = 2.4064e-09, No Iterations 3
+DILUPBiCG:  Solving for CO2, Initial residual = 0.058674, Final residual = 3.1502e-09, No Iterations 3
+      O2	min/ave/max  =	     0.10198	     0.23265	     0.23301
+     H2O	min/ave/max  =	 2.9662e-102	  7.8307e-05	     0.01942
+    C3H8	min/ave/max  =	 4.3816e-102	  0.00075399	     0.48622
+     CO2	min/ave/max  =	 5.4346e-102	  0.00014347	    0.035582
+      N2	min/ave/max  =	     0.39054	     0.76638	       0.767
+Radiant Fraction is 0.36
+DILUPBiCG:  Solving for h, Initial residual = 0.058758, Final residual = 1.4434e-06, No Iterations 2
+GAMG:  Solving for p_rgh, Initial residual = 0.070167, Final residual = 0.00064436, No Iterations 3
+diagonal:  Solving for rho, Initial residual = 0, Final residual = 0, No Iterations 0
+time step continuity errors : sum local = 1.8094e-05, global = 6.2672e-06, cumulative = 2.678e-05
+GAMG:  Solving for p_rgh, Initial residual = 0.0046913, Final residual = 7.6355e-07, No Iterations 7
+diagonal:  Solving for rho, Initial residual = 0, Final residual = 0, No Iterations 0
+time step continuity errors : sum local = 3.2202e-08, global = 1.624e-08, cumulative = 2.6796e-05
+DILUPBiCG:  Solving for k, Initial residual = 0.11071, Final residual = 1.9747e-06, No Iterations 2
+ExecutionTime = 6.02 s  ClockTime = 7 s
+
+fieldMinMax fieldMinMax output:
+    min(T) = 298.15 at position (1.9 1.1 -0.1)
+    max(T) = 578.58 at position (0.1 0.9 0.1)
+    min(dQ) = 7.2802e-97 at position (-1.9 2.9 1.9)
+    max(dQ) = 8.4115e+05 at position (-0.1 0.1 0.1)
+
+Courant Number mean: 0.025904 max: 0.77698
+deltaT = 0.08
+Time = 1.76
+
+diagonal:  Solving for rho, Initial residual = 0, Final residual = 0, No Iterations 0
+DILUPBiCG:  Solving for Ux, Initial residual = 0.10864, Final residual = 5.0189e-09, No Iterations 3
+DILUPBiCG:  Solving for Uy, Initial residual = 0.11018, Final residual = 8.6658e-12, No Iterations 4
+DILUPBiCG:  Solving for Uz, Initial residual = 0.12719, Final residual = 2.8586e-09, No Iterations 3
+DILUPBiCG:  Solving for O2, Initial residual = 0.04286, Final residual = 1.1012e-08, No Iterations 3
+DILUPBiCG:  Solving for H2O, Initial residual = 0.059669, Final residual = 1.3441e-08, No Iterations 3
+DILUPBiCG:  Solving for C3H8, Initial residual = 0.030453, Final residual = 8.8585e-09, No Iterations 3
+DILUPBiCG:  Solving for CO2, Initial residual = 0.059669, Final residual = 1.3441e-08, No Iterations 3
+      O2	min/ave/max  =	     0.10373	     0.23259	     0.23301
+     H2O	min/ave/max  =	 8.7624e-101	  9.6596e-05	    0.020998
+    C3H8	min/ave/max  =	 2.4324e-100	  0.00081498	     0.47466
+     CO2	min/ave/max  =	 1.6054e-100	  0.00017698	    0.038472
+      N2	min/ave/max  =	     0.39922	     0.76632	       0.767
+Radiant Fraction is 0.36
+DILUPBiCG:  Solving for h, Initial residual = 0.059758, Final residual = 3.336e-06, No Iterations 2
+GAMG:  Solving for p_rgh, Initial residual = 0.056431, Final residual = 0.00046625, No Iterations 3
+diagonal:  Solving for rho, Initial residual = 0, Final residual = 0, No Iterations 0
+time step continuity errors : sum local = 2.0037e-05, global = 2.3095e-06, cumulative = 2.9106e-05
+GAMG:  Solving for p_rgh, Initial residual = 0.0072039, Final residual = 6.7633e-07, No Iterations 7
+diagonal:  Solving for rho, Initial residual = 0, Final residual = 0, No Iterations 0
+time step continuity errors : sum local = 3.1293e-08, global = 1.1081e-08, cumulative = 2.9117e-05
+DILUPBiCG:  Solving for k, Initial residual = 0.10638, Final residual = 1.5672e-06, No Iterations 2
+ExecutionTime = 6.27 s  ClockTime = 8 s
+
+fieldMinMax fieldMinMax output:
+    min(T) = 298.15 at position (1.9 1.1 -0.1)
+    max(T) = 601.91 at position (0.1 1.1 0.1)
+    min(dQ) = 4.7971e-95 at position (-1.9 2.9 1.9)
+    max(dQ) = 9.3578e+05 at position (-0.1 0.1 0.1)
+
+Courant Number mean: 0.031678 max: 0.88087
+deltaT = 0.08
+Time = 1.84
+
+diagonal:  Solving for rho, Initial residual = 0, Final residual = 0, No Iterations 0
+DILUPBiCG:  Solving for Ux, Initial residual = 0.10081, Final residual = 4.1162e-09, No Iterations 3
+DILUPBiCG:  Solving for Uy, Initial residual = 0.10555, Final residual = 1.1799e-08, No Iterations 3
+DILUPBiCG:  Solving for Uz, Initial residual = 0.12076, Final residual = 6.3684e-09, No Iterations 3
+DILUPBiCG:  Solving for O2, Initial residual = 0.047139, Final residual = 2.3838e-08, No Iterations 3
+DILUPBiCG:  Solving for H2O, Initial residual = 0.063057, Final residual = 2.2477e-08, No Iterations 3
+DILUPBiCG:  Solving for C3H8, Initial residual = 0.032386, Final residual = 1.678e-08, No Iterations 3
+DILUPBiCG:  Solving for CO2, Initial residual = 0.063057, Final residual = 2.2477e-08, No Iterations 3
+      O2	min/ave/max  =	     0.10541	     0.23252	     0.23301
+     H2O	min/ave/max  =	  2.3248e-98	  0.00011935	    0.022718
+    C3H8	min/ave/max  =	  7.3992e-98	  0.00087749	     0.46278
+     CO2	min/ave/max  =	  4.2594e-98	  0.00021867	    0.041623
+      N2	min/ave/max  =	     0.40811	     0.76626	       0.767
+Radiant Fraction is 0.36
+DILUPBiCG:  Solving for h, Initial residual = 0.063121, Final residual = 4.194e-06, No Iterations 2
+GAMG:  Solving for p_rgh, Initial residual = 0.064822, Final residual = 0.00052403, No Iterations 3
+diagonal:  Solving for rho, Initial residual = 0, Final residual = 0, No Iterations 0
+time step continuity errors : sum local = 2.5227e-05, global = 6.8058e-06, cumulative = 3.5922e-05
+GAMG:  Solving for p_rgh, Initial residual = 0.0067538, Final residual = 6.3897e-07, No Iterations 7
+diagonal:  Solving for rho, Initial residual = 0, Final residual = 0, No Iterations 0
+time step continuity errors : sum local = 3.7709e-08, global = 2.1518e-08, cumulative = 3.5944e-05
+DILUPBiCG:  Solving for k, Initial residual = 0.10357, Final residual = 1.8484e-06, No Iterations 2
+ExecutionTime = 6.52 s  ClockTime = 8 s
+
+fieldMinMax fieldMinMax output:
+    min(T) = 298.15 at position (1.9 1.1 -0.1)
+    max(T) = 622.16 at position (-0.1 1.1 -0.1)
+    min(dQ) = 2.6589e-93 at position (-1.9 2.9 1.9)
+    max(dQ) = 1.0343e+06 at position (-0.1 0.1 0.1)
+
+Courant Number mean: 0.038959 max: 0.93538
+deltaT = 0.053333
+Time = 1.89333
+
+diagonal:  Solving for rho, Initial residual = 0, Final residual = 0, No Iterations 0
+DILUPBiCG:  Solving for Ux, Initial residual = 0.066526, Final residual = 1.1048e-09, No Iterations 3
+DILUPBiCG:  Solving for Uy, Initial residual = 0.069929, Final residual = 3.6263e-09, No Iterations 3
+DILUPBiCG:  Solving for Uz, Initial residual = 0.079972, Final residual = 2.1932e-09, No Iterations 3
+DILUPBiCG:  Solving for O2, Initial residual = 0.033294, Final residual = 3.2999e-09, No Iterations 3
+DILUPBiCG:  Solving for H2O, Initial residual = 0.043842, Final residual = 3.8403e-09, No Iterations 3
+DILUPBiCG:  Solving for C3H8, Initial residual = 0.022834, Final residual = 4.9667e-09, No Iterations 3
+DILUPBiCG:  Solving for CO2, Initial residual = 0.043842, Final residual = 3.8403e-09, No Iterations 3
+      O2	min/ave/max  =	     0.10627	     0.23247	     0.23301
+     H2O	min/ave/max  =	  2.3514e-97	  0.00013892	    0.023647
+    C3H8	min/ave/max  =	  7.0021e-97	  0.00092331	     0.45505
+     CO2	min/ave/max  =	  4.3082e-97	  0.00025453	    0.043326
+      N2	min/ave/max  =	     0.41386	     0.76622	       0.767
+Radiant Fraction is 0.36
+DILUPBiCG:  Solving for h, Initial residual = 0.043886, Final residual = 1.485e-06, No Iterations 2
+GAMG:  Solving for p_rgh, Initial residual = 0.048468, Final residual = 0.00040436, No Iterations 3
+diagonal:  Solving for rho, Initial residual = 0, Final residual = 0, No Iterations 0
+time step continuity errors : sum local = 1.1032e-05, global = 3.985e-06, cumulative = 3.9929e-05
+GAMG:  Solving for p_rgh, Initial residual = 0.0040027, Final residual = 4.4005e-07, No Iterations 7
+diagonal:  Solving for rho, Initial residual = 0, Final residual = 0, No Iterations 0
+time step continuity errors : sum local = 1.6861e-08, global = 7.0482e-09, cumulative = 3.9936e-05
+DILUPBiCG:  Solving for k, Initial residual = 0.066804, Final residual = 6.9054e-07, No Iterations 2
+ExecutionTime = 6.78 s  ClockTime = 8 s
+
+fieldMinMax fieldMinMax output:
+    min(T) = 298.15 at position (1.9 1.3 0.1)
+    max(T) = 635.99 at position (-0.1 1.3 -0.1)
+    min(dQ) = 8.0971e-91 at position (-1.9 2.9 1.9)
+    max(dQ) = 1.1434e+06 at position (-0.1 0.1 0.1)
+
+Courant Number mean: 0.030339 max: 0.6591
+deltaT = 0.053333
+Time = 1.94667
+
+diagonal:  Solving for rho, Initial residual = 0, Final residual = 0, No Iterations 0
+DILUPBiCG:  Solving for Ux, Initial residual = 0.078332, Final residual = 3.0736e-09, No Iterations 3
+DILUPBiCG:  Solving for Uy, Initial residual = 0.077745, Final residual = 2.917e-09, No Iterations 3
+DILUPBiCG:  Solving for Uz, Initial residual = 0.091406, Final residual = 3.9426e-09, No Iterations 3
+DILUPBiCG:  Solving for O2, Initial residual = 0.034747, Final residual = 8.377e-09, No Iterations 3
+DILUPBiCG:  Solving for H2O, Initial residual = 0.044013, Final residual = 7.057e-09, No Iterations 3
+DILUPBiCG:  Solving for C3H8, Initial residual = 0.023406, Final residual = 4.3547e-09, No Iterations 3
+DILUPBiCG:  Solving for CO2, Initial residual = 0.044013, Final residual = 7.057e-09, No Iterations 3
+      O2	min/ave/max  =	     0.10662	      0.2324	     0.23301
+     H2O	min/ave/max  =	   2.411e-96	  0.00016184	    0.025086
+    C3H8	min/ave/max  =	  6.7479e-96	  0.00097019	     0.44903
+     CO2	min/ave/max  =	  4.4174e-96	  0.00029652	    0.045963
+      N2	min/ave/max  =	     0.41827	     0.76617	       0.767
+Radiant Fraction is 0.36
+DILUPBiCG:  Solving for h, Initial residual = 0.04407, Final residual = 2.7975e-06, No Iterations 2
+GAMG:  Solving for p_rgh, Initial residual = 0.042655, Final residual = 0.00030997, No Iterations 3
+diagonal:  Solving for rho, Initial residual = 0, Final residual = 0, No Iterations 0
+time step continuity errors : sum local = 1.2e-05, global = 2.8978e-06, cumulative = 4.2834e-05
+GAMG:  Solving for p_rgh, Initial residual = 0.0044894, Final residual = 5.5116e-07, No Iterations 7
+diagonal:  Solving for rho, Initial residual = 0, Final residual = 0, No Iterations 0
+time step continuity errors : sum local = 2.4e-08, global = 9.0705e-09, cumulative = 4.2843e-05
+DILUPBiCG:  Solving for k, Initial residual = 0.06733, Final residual = 5.3767e-06, No Iterations 2
+ExecutionTime = 7.03 s  ClockTime = 8 s
+
+fieldMinMax fieldMinMax output:
+    min(T) = 298.15 at position (1.9 1.3 0.1)
+    max(T) = 658.3 at position (-0.1 1.3 -0.1)
+    min(dQ) = 7.6547e-90 at position (-1.9 2.9 1.9)
+    max(dQ) = 1.2088e+06 at position (-0.1 0.1 0.1)
+
+Courant Number mean: 0.035127 max: 0.69809
+deltaT = 0.053333
+Time = 2
+
+diagonal:  Solving for rho, Initial residual = 0, Final residual = 0, No Iterations 0
+DILUPBiCG:  Solving for Ux, Initial residual = 0.076558, Final residual = 6.0209e-09, No Iterations 3
+DILUPBiCG:  Solving for Uy, Initial residual = 0.075877, Final residual = 3.5433e-09, No Iterations 3
+DILUPBiCG:  Solving for Uz, Initial residual = 0.089948, Final residual = 5.7061e-09, No Iterations 3
+DILUPBiCG:  Solving for O2, Initial residual = 0.036005, Final residual = 7.7103e-09, No Iterations 3
+DILUPBiCG:  Solving for H2O, Initial residual = 0.045212, Final residual = 9.9129e-09, No Iterations 3
+DILUPBiCG:  Solving for C3H8, Initial residual = 0.024021, Final residual = 2.2679e-08, No Iterations 3
+DILUPBiCG:  Solving for CO2, Initial residual = 0.045212, Final residual = 9.9129e-09, No Iterations 3
+      O2	min/ave/max  =	     0.10669	     0.23233	     0.23301
+     H2O	min/ave/max  =	  3.7532e-95	  0.00018897	    0.026402
+    C3H8	min/ave/max  =	  9.9505e-95	   0.0010201	      0.4439
+     CO2	min/ave/max  =	  6.8766e-95	  0.00034623	    0.048374
+      N2	min/ave/max  =	     0.42198	     0.76612	       0.767
+Radiant Fraction is 0.36
+DILUPBiCG:  Solving for h, Initial residual = 0.045251, Final residual = 3.6236e-06, No Iterations 2
+GAMG:  Solving for p_rgh, Initial residual = 0.044241, Final residual = 0.00033366, No Iterations 3
+diagonal:  Solving for rho, Initial residual = 0, Final residual = 0, No Iterations 0
+time step continuity errors : sum local = 1.4792e-05, global = -2.6864e-07, cumulative = 4.2574e-05
+GAMG:  Solving for p_rgh, Initial residual = 0.0053992, Final residual = 6.1746e-07, No Iterations 7
+diagonal:  Solving for rho, Initial residual = 0, Final residual = 0, No Iterations 0
+time step continuity errors : sum local = 2.8681e-08, global = 5.982e-09, cumulative = 4.258e-05
+DILUPBiCG:  Solving for k, Initial residual = 0.067928, Final residual = 2.8768e-06, No Iterations 2
+ExecutionTime = 7.98 s  ClockTime = 10 s +
+
+fieldMinMax fieldMinMax output:
+    min(T) = 298.15 at position (1.9 1.3 0.1)
+    max(T) = 670.08 at position (-0.1 1.3 -0.1)
+    min(dQ) = 7.3694e-89 at position (-1.9 2.9 1.9)
+    max(dQ) = 1.2693e+06 at position (-0.1 0.1 0.1)
+
+End
+

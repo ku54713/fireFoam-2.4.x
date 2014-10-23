@@ -1,0 +1,1 @@
+rsync -ravz /home/meredithk/Zhou_in_rack_data/post_shadow_drop/drop_elo11pnear/lookup.foam.* .

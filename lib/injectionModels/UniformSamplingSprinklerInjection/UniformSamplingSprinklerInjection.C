@@ -1032,7 +1032,7 @@ void Foam::UniformSamplingSprinklerInjection<CloudType>::sampleInjectionTable
             scalar aziSkip = 360./scalar(nAzi_);
             sampleAziIndicies[i] = label(theta)/aziSkip;
             scalar eleSkip = 90./(scalar(nEle_)-1.);
-            sampleEleIndicies[i] = label(phi)/eleSkip;
+            sampleEleIndicies[i] = label(phi)/eleSkip; // this always skews away from 90
         }
     }
     else{
@@ -1061,7 +1061,8 @@ void Foam::UniformSamplingSprinklerInjection<CloudType>::sampleInjectionTable
         // sampleAvgVelMag_[nc] = avgVelMag_[linearIndex]; // m/s
         sampleAvgVelMag_[nc] = velMag_; // m/s
 
-        scalar volumetricFlowRate = sampleAvgFlux_[nc]*sampleArea_[nc];
+        // scalar volumetricFlowRate = sampleAvgFlux_[nc]*sampleArea_[nc];
+        scalar volumetricFlowRate = sampleAvgFlux_[nc];
         sumVolumetricFlowRate += volumetricFlowRate; // L/s
     }
 
@@ -1072,7 +1073,8 @@ void Foam::UniformSamplingSprinklerInjection<CloudType>::sampleInjectionTable
 
     scalar conversionLiterPerM3 = 1000.0;
     forAll(sampleAziIndicies,nc){
-        scalar volumetricFlowRate = sampleAvgFlux_[nc]*sampleArea_[nc]/ratio; // L/s
+        // scalar volumetricFlowRate = sampleAvgFlux_[nc]*sampleArea_[nc]/ratio; // L/s
+        scalar volumetricFlowRate = sampleAvgFlux_[nc]/ratio; // L/s
         // sumVolumetricFlowRate += volumetricFlowRate; // L/s
 
         scalar volumeToInject = volumetricFlowRate*injectionDeltaT/conversionLiterPerM3; // m3

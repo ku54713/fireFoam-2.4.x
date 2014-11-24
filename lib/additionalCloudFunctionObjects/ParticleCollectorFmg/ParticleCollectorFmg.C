@@ -451,6 +451,7 @@ void Foam::ParticleCollectorFmg<CloudType>::write()
 
     forAll(faces_, faceI)
     {
+        // kvm, massFlowRate_ calculation is wrong when resetOnWrite set to false
         massFlowRate_[faceI] =
             alpha*massFlowRate_[faceI] + beta*mass_[faceI]/timeElapsed;
         massTotal_[faceI] += mass_[faceI];

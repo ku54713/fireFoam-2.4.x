@@ -5,14 +5,12 @@
         type uniformSamplingSprinklerInjection; // K200
         lookupTableCoeffs
         {
-            // sample size should ideally not be larger than the number of elements in the lookup table
-            sampleSize      500; // per sprinkler, per injection time
             tableDirectory  table_K200_120gpm;
         }
 
         SOI             0.0;
         duration        100; //0.005;
-        parcelsPerSecond 30000;  // per one sprinkler
+        parcelsPerSecond 25000;  // per one sprinkler
 
         positionList
             ( 

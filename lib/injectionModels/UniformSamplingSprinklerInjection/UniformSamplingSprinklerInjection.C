@@ -74,6 +74,7 @@ Foam::UniformSamplingSprinklerInjection<CloudType>::UniformSamplingSprinklerInje
     tetPtI_(-1),
     totalParcels_(0),
     direction_(this->coeffDict().lookup("direction")),
+    centralCoreAngle_(this->coeffDict().template lookupOrDefault<scalar>("centralCoreAngle",90.0)),
     armDirection_(this->coeffDict().lookup("armDirection")),
     parcelDirVec_(direction_),
     parcelsPerSecond_
@@ -147,6 +148,8 @@ Foam::UniformSamplingSprinklerInjection<CloudType>::UniformSamplingSprinklerInje
     sampleParcelParticles_()
 {
 
+    Info << "centralCoreAngle: " << centralCoreAngle_ << nl;
+
     readTableData();
 
     idealFlowRate_ = computeIdealFlowRate(); // L/s
@@ -163,6 +166,10 @@ Foam::UniformSamplingSprinklerInjection<CloudType>::UniformSamplingSprinklerInje
     // Normalise direction vector
     direction_ /= mag(direction_);
 
+    // Dynamically set sampleSize_ based on time step
+    // This will result in particles being injected at each timestep
+    sampleSize_ = round(parcelsPerSecond_*injectionDeltaT_);
+    setSampleSizes();
     totalParcels_ = sampleSize_;
 
     // writeVolumeFluxSprinklerInjectionProfile();
@@ -210,6 +217,7 @@ Foam::UniformSamplingSprinklerInjection<CloudType>::UniformSamplingSprinklerInje
     tetPtI_(im.tetPtI_),
     totalParcels_(im.totalParcels_),
     direction_(im.direction_),
+    centralCoreAngle_(im.centralCoreAngle_),
     armDirection_(im.armDirection_),
     parcelDirVec_(im.parcelDirVec_),
     parcelsPerSecond_(im.parcelsPerSecond_),
@@ -337,6 +345,12 @@ Foam::label Foam::UniformSamplingSprinklerInjection<CloudType>::parcelsToInject
     // injectionDeltaT_ = this->injectionDeltaT_;
     injectionDeltaT_ = time1-time0;
 
+    // Dynamically set sampleSize_ based on time step
+    // This will result in particles being injected at each timestep
+    sampleSize_ = round(parcelsPerSecond_*injectionDeltaT_);
+    setSampleSizes();
+    totalParcels_ = sampleSize_;
+
     if ((time0 >= 0.0) && (time0 < duration_))
     {
         label numberparcels =
@@ -458,10 +472,15 @@ void Foam::UniformSamplingSprinklerInjection<CloudType>::setPositionAndCell
     }
     reduce(variationEle,maxOp<scalar>());
     reduce(variationAzi,maxOp<scalar>());
-//    scalar variationEle = 0.0;
-//    scalar variationAzi = 0.0;
+    variationEle = 0.0;
+    variationAzi = 0.0;
     scalar elevationAngle = sampleEle_[parcelI]+variationEle;
     scalar azimuthalAngle = sampleAzi_[parcelI]+variationAzi;
+    
+    /*Allow central jet to cover a range of angles*/
+    if (elevationAngle > centralCoreAngle_){
+        elevationAngle = 90.0;
+    }
 
     setParcelDirVec(elevationAngle,azimuthalAngle);
 
@@ -809,7 +828,6 @@ void Foam::UniformSamplingSprinklerInjection<CloudType>::readTableData()
 
     Info << "Reading sprinkler injection lookup table data\n";
 
-    sampleSize_ = readLabel(this->coeffDict().subDict("lookupTableCoeffs").lookup("sampleSize"));
     tableDirectory_ = this->coeffDict().subDict("lookupTableCoeffs").template lookupOrDefault< word >("tableDirectory","");
     fileName dirName;
     if(Pstream::parRun()){

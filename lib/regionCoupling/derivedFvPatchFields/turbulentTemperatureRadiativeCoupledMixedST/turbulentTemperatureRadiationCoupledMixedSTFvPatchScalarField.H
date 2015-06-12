@@ -161,19 +161,6 @@ private:
         //- Emissivity
         scalarField emissivity_;
 
-        //- how to obtain radiative flux
-        enum operationMode
-        {
-            radFromNeighbour,
-            radFromMe,
-            noRad,
-            unknown
-        };
-        static const NamedEnum<operationMode, 4> operationModeNames;
-
-        //- Previous iteration mode
-        operationMode oldMode_;
-
         //- Retrieve film model from the database
         const filmModelType& filmModel() const;
 
@@ -182,6 +169,20 @@ private:
 
 
 public:
+
+        //- how to obtain radiative flux
+        enum operationMode
+        {
+            radFromNeighbour,
+            radFromMe,
+            noRad,
+            unknown
+        };
+
+        //- Previous iteration mode
+        operationMode oldMode_;
+
+        static const NamedEnum<operationMode, 4> operationModeNames;
 
     //- Runtime type information
     TypeName("compressible::turbulentTemperatureRadiationCoupledMixedST");

@@ -46,15 +46,15 @@
     // create fileds for mixture fraction
     volScalarField ft
     (
-        IOobject
-        (
-            "ft",
-            runTime.timeName(),
-            mesh,
-            IOobject::NO_READ,
-            IOobject::AUTO_WRITE
-        ),
-        (fu*s-O2+YO2Inf)/(s+YO2Inf)
+     IOobject
+     (
+      "ft",
+      runTime.timeName(),
+      mesh,
+      IOobject::NO_READ,
+      IOobject::AUTO_WRITE
+     ),
+     (fu*s-O2+YO2Inf)/(s+YO2Inf)
     );
 
     // create fileds for patch integration of HRR

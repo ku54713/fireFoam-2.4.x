@@ -1,3 +1,6 @@
+2015-06-12: Version 15.06.12
+	Removed sampleSize input from uniformSamplingSprinklerInjection model
+
 2014-11-24: Version 1.0.9
 	Updated uniformSamplingSprinklerInjection model
 

@@ -104,6 +104,10 @@ namespace Foam
 
         //- Sprinkler Spray Inject Center direction []
         vector direction_;
+        
+        //- Minimum angle of central core jet
+        scalar centralCoreAngle_;
+
         //- One Sprinkler Frame Arm direction []
         vector armDirection_;
         vector parcelDirVec_;

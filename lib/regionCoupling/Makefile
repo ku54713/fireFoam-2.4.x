@@ -1,2 +1,2 @@
 default:
-	$(FILM_SRC)/Allwmake
+	wmake libso

@@ -69,7 +69,7 @@ if (adjustTimeStep)
             maxDeltaT
         )
     );
-    Info<< "deltaT = " <<  runTime.deltaTValue() << endl;
+    // Info<< "deltaT = " <<  runTime.deltaTValue() << endl;
 
 }
 

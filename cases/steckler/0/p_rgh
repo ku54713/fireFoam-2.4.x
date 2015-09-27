@@ -1,7 +1,7 @@
 /*--------------------------------*- C++ -*----------------------------------*\
 | =========                 |                                                 |
 | \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
-|  \\    /   O peration     | Version:  2.2.x                                 |
+|  \\    /   O peration     | Version:  2.4.x                                 |
 |   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
 |    \\/     M anipulation  |                                                 |
 \*---------------------------------------------------------------------------*/
@@ -36,31 +36,31 @@ boundaryField
     }
     base
     {
-        type            buoyantPressure;
+        type            fixedFluxPressure;
         gradient        uniform 0;
         value           uniform 101325;
     }
     burner
     {
-        type            buoyantPressure;
+        type            fixedFluxPressure;
         gradient        uniform 0;
         value           uniform 101325;
     }
     floor
     {
-        type            buoyantPressure;
+        type            fixedFluxPressure;
         gradient        uniform 0;
         value           uniform 101325;
     }
     baffle1DWall_master
     {
-        type            buoyantPressure;
+        type            fixedFluxPressure;
         gradient        uniform 0;
         value           uniform 101325;
     }
     baffle1DWall_slave
     {
-        type            buoyantPressure;
+        type            fixedFluxPressure;
         gradient        uniform 0;
         value           uniform 101325;
     }

@@ -52,7 +52,7 @@ addToRunTimeSelectionTable
 
 rampingRadiation::rampingRadiation
 (
-    const surfaceFilmModel& owner,
+    surfaceFilmModel& owner,
     const dictionary& dict
 )
 :
@@ -83,10 +83,10 @@ rampingRadiation::rampingRadiation
         // dimensionedScalar("one", dimless, 1.0)//,
         // zeroGradientFvPatchScalarField::typeName
     ),
-    absorptivity_(readScalar(coeffs_.lookup("absorptivity"))),
-    // initialValue_(readScalar(coeffs_.lookup("initialValue"))),
-    rampTimeInterval_(readScalar(coeffs_.lookup("rampTimeInterval"))),
-    rampStep_(readScalar(coeffs_.lookup("rampStep"))),
+    absorptivity_(readScalar(coeffDict_.lookup("absorptivity"))),
+    // initialValue_(readScalar(coeffDict_.lookup("initialValue"))),
+    rampTimeInterval_(readScalar(coeffDict_.lookup("rampTimeInterval"))),
+    rampStep_(readScalar(coeffDict_.lookup("rampStep"))),
     rampStartTime_(0.0),
     Qin_
     (
@@ -102,8 +102,8 @@ rampingRadiation::rampingRadiation
         dimensionedScalar("zero", dimMass/pow3(dimTime), 0.0),
         zeroGradientFvPatchScalarField::typeName
         ),
-    timeStart_(readScalar(coeffs_.lookup("timeStart"))),
-    duration_(readScalar(coeffs_.lookup("duration")))
+    timeStart_(readScalar(coeffDict_.lookup("timeStart"))),
+    duration_(readScalar(coeffDict_.lookup("duration")))
 {
     mask_ = pos(mask_ - 0.5);
     rampStartTime_=max(timeStart_,owner.time().value());

@@ -704,7 +704,6 @@ void reactingOneDim21::evolveRegion()
     {
         solidChemistry_->solve
         (
-            time().value() - time().deltaTValue(),
             time().deltaTValue()
         );
     }

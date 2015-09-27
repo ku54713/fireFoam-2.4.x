@@ -125,7 +125,7 @@ void Foam::filmHeightInletVelocityWavyFvPatchVectorField::updateCoeffs()
     const fvPatchField<scalar>& deltafp =
         patch().lookupPatchField<volScalarField, scalar>(deltafName_);
 
-    vectorField n = patch().nf();
+    vectorField n(patch().nf());
 
     static label seed=0;
     static Random ranGen_(seed);//kvm

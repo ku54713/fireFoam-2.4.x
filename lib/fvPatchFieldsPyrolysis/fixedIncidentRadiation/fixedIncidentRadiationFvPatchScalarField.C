@@ -50,7 +50,7 @@ fixedIncidentRadiationFvPatchScalarField
 )
 :
     fixedGradientFvPatchScalarField(p, iF),
-    temperatureCoupledBase(patch(), "undefined", "undefined-K"),
+    temperatureCoupledBase(patch(), "undefined", "undefined", "undefined-K"),
     QrIncident_(p.size(), 0.0)
 {}
 
@@ -58,15 +58,15 @@ fixedIncidentRadiationFvPatchScalarField
 fixedIncidentRadiationFvPatchScalarField::
 fixedIncidentRadiationFvPatchScalarField
 (
-    const fixedIncidentRadiationFvPatchScalarField& ptf,
+    const fixedIncidentRadiationFvPatchScalarField& psf,
     const fvPatch& p,
     const DimensionedField<scalar, volMesh>& iF,
     const fvPatchFieldMapper& mapper
 )
 :
-    fixedGradientFvPatchScalarField(ptf, p, iF, mapper),
-    temperatureCoupledBase(patch(), ptf.KMethod(), ptf.kappaName()),
-    QrIncident_(ptf.QrIncident_)
+    fixedGradientFvPatchScalarField(psf, p, iF, mapper),
+    temperatureCoupledBase(patch(), psf),
+    QrIncident_(psf.QrIncident_)
 {}
 
 
@@ -104,7 +104,7 @@ fixedIncidentRadiationFvPatchScalarField
 )
 :
     fixedGradientFvPatchScalarField(psf, iF),
-    temperatureCoupledBase(patch(), psf.KMethod(), psf.kappaName()),
+    temperatureCoupledBase(patch(), psf),
     QrIncident_(psf.QrIncident_)
 {}
 
@@ -116,7 +116,7 @@ fixedIncidentRadiationFvPatchScalarField
 )
 :
     fixedGradientFvPatchScalarField(ptf),
-    temperatureCoupledBase(patch(), ptf.KMethod(), ptf.kappaName()),
+    temperatureCoupledBase(patch(), ptf),
     QrIncident_(ptf.QrIncident_)
 {}
 
@@ -135,19 +135,19 @@ void fixedIncidentRadiationFvPatchScalarField::autoMap
 
 void fixedIncidentRadiationFvPatchScalarField::rmap
 (
-    const fvPatchScalarField& ptf,
+    const fvPatchScalarField& psf,
     const labelList& addr
 )
 {
-    fixedGradientFvPatchScalarField::rmap(ptf, addr);
+    fixedGradientFvPatchScalarField::rmap(psf, addr);
 
-    const fixedIncidentRadiationFvPatchScalarField& thftptf =
+    const fixedIncidentRadiationFvPatchScalarField& thftpsf =
         refCast<const fixedIncidentRadiationFvPatchScalarField>
         (
-            ptf
+            psf
         );
 
-    QrIncident_.rmap(thftptf.QrIncident_, addr);
+    QrIncident_.rmap(thftpsf.QrIncident_, addr);
 }
 
 
@@ -158,7 +158,7 @@ void fixedIncidentRadiationFvPatchScalarField::updateCoeffs()
         return;
     }
     
-    scalarField intFld = patchInternalField();
+    scalarField intFld(patchInternalField());
     
     const radiation::radiationModel& radiation =
         db().lookupObject<radiation::radiationModel>("radiationProperties");

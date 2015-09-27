@@ -53,8 +53,7 @@ boundaryField
 
     region0_to_panelRegion_panel
     {
-//	type			fixedFluxBuoyantPressure;
-	type			buoyantPressure;
+	type			fixedFluxPressure;
 	value			$internalField;
     }
 }

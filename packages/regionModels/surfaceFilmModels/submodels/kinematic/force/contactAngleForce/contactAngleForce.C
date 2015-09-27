@@ -28,6 +28,7 @@ License
 #include "fvcGrad.H"
 #include "unitConversion.H"
 #include "fvPatchField.H"
+#include "patchDist.H"
 #include "zeroGradientFvPatchFields.H"
 #include "kinematicSingleLayer.H"
 
@@ -45,22 +46,51 @@ namespace surfaceFilmModels
 defineTypeNameAndDebug(contactAngleForce, 0);
 addToRunTimeSelectionTable(force, contactAngleForce, dictionary);
 
+// * * * * * * * * * * * * Private Member Functions  * * * * * * * * * * * * //
+
+void contactAngleForce::initialise()
+{
+    const wordReList zeroForcePatches(coeffDict_.lookup("zeroForcePatches"));
+
+    if (zeroForcePatches.size())
+    {
+        const polyBoundaryMesh& pbm = owner_.regionMesh().boundaryMesh();
+        scalar dLim = readScalar(coeffDict_.lookup("zeroForceDistance"));
+
+        Info<< "        Assigning zero contact force within " << dLim
+            << " of patches:" << endl;
+
+        labelHashSet patchIDs = pbm.patchSet(zeroForcePatches);
+
+        forAllConstIter(labelHashSet, patchIDs, iter)
+        {
+            label patchI = iter.key();
+            Info<< "            " << pbm[patchI].name() << endl;
+        }
+
+        patchDist dist(owner_.regionMesh(), patchIDs);
+
+        mask_ = pos(dist - dimensionedScalar("dLim", dimLength, dLim));
+    }
+}
+
+
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
 contactAngleForce::contactAngleForce
 (
-    const surfaceFilmModel& owner,
+    surfaceFilmModel& owner,
     const dictionary& dict
 )
 :
     force(typeName, owner, dict),
-    Ccf_(readScalar(coeffs_.lookup("Ccf"))),
+    Ccf_(readScalar(coeffDict_.lookup("Ccf"))),
     rndGen_(label(0), -1),
     distribution_
     (
         distributionModels::distributionModel::New
         (
-            coeffs_.subDict("contactAngleDistribution"),
+            coeffDict_.subDict("contactAngleDistribution"),
             rndGen_
         )
     ),
@@ -68,7 +98,7 @@ contactAngleForce::contactAngleForce
     (
         distributionModels::distributionModel::New
         (
-            coeffs_.subDict("timeIntervalDistribution"),
+            coeffDict_.subDict("timeIntervalDistribution"),
             rndGen_
         )
     ),
@@ -76,15 +106,15 @@ contactAngleForce::contactAngleForce
     (
         IOobject
         (
-            typeName + "_mask",
-            owner.time().timeName(),
-            owner.regionMesh(),
+            typeName + "_contactForceMask",
+            owner_.time().timeName(),
+            owner_.regionMesh(),
             // IOobject::MUST_READ,
             IOobject::READ_IF_PRESENT,
             IOobject::AUTO_WRITE
         ),
-        owner.regionMesh(),
-        dimensionedScalar("one", dimless, 1.0)//,
+        owner_.regionMesh(),
+        dimensionedScalar("mask", dimless, 1.0)
         // zeroGradientFvPatchScalarField::typeName
      ),
     contactAngle_
@@ -172,6 +202,7 @@ contactAngleForce::contactAngleForce
         zeroGradientFvPatchScalarField::typeName
      )
 {
+    initialise();
     // mask for zero-ing out contact angle
     // mask_ = pos(mask_-0.5);
     forAll(contactAngleOld_,cellI){
@@ -187,10 +218,12 @@ contactAngleForce::contactAngleForce
     Info << "dx " << sqrt(film.magSf()[0]) << nl;
 }
 
+
 // * * * * * * * * * * * * * * * * Destructor  * * * * * * * * * * * * * * * //
 
 contactAngleForce::~contactAngleForce()
 {}
+
 
 // * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * * //
 
@@ -206,12 +239,12 @@ tmp<fvVectorMatrix> contactAngleForce::correct(volVectorField& U)
             IOobject
             (
                 typeName + "_contactForce",
-                film.time().timeName(),
-                film.regionMesh(),
+                owner_.time().timeName(),
+                owner_.regionMesh(),
                 IOobject::NO_READ,
                 IOobject::NO_WRITE
             ),
-            film.regionMesh(),
+            owner_.regionMesh(),
             dimensionedVector("zero", dimForce/dimArea, vector::zero),
             // eliminate contact-line at boundaries
             zeroGradientFvPatchVectorField::typeName
@@ -239,13 +272,13 @@ tmp<fvVectorMatrix> contactAngleForce::correct(volVectorField& U)
 
     vectorField& force = tForce().internalField();
 
-    const labelUList& own = film.regionMesh().owner();
-    const labelUList& nbr = film.regionMesh().neighbour();
+    const labelUList& own = owner_.regionMesh().owner();
+    const labelUList& nbr = owner_.regionMesh().neighbour();
 
-    const scalarField& magSf = film.magSf();
+    const scalarField& magSf = owner_.magSf();
 
-    const volScalarField& alpha = film.alpha();
-    const volScalarField& sigma = film.sigma();
+    const volScalarField& alpha = owner_.alpha();
+    const volScalarField& sigma = owner_.sigma();
     const volScalarField& deltaf = film.delta();
 
     volVectorField gradAlpha(fvc::grad(alpha));
@@ -336,7 +369,7 @@ tmp<fvVectorMatrix> contactAngleForce::correct(volVectorField& U)
     // force /= magSf;
     tForce().correctBoundaryConditions();
 
-    if (film.regionMesh().time().outputTime())
+    if (owner_.regionMesh().time().outputTime())
     {
         tForce().write();
         nHits_.internalField() = nHits;

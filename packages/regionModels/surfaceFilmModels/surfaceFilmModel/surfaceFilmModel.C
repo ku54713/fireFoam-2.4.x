@@ -2,7 +2,7 @@
   =========                 |
   \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
    \\    /   O peration     |
-    \\  /    A nd           | Copyright (C) 2011 OpenFOAM Foundation
+    \\  /    A nd           | Copyright (C) 2011-2013 OpenFOAM Foundation
      \\/     M anipulation  |
 -------------------------------------------------------------------------------
 License
@@ -30,30 +30,6 @@ License
 
 namespace Foam
 {
-    template<>
-    const char* NamedEnum
-    <
-        regionModels::surfaceFilmModels::surfaceFilmModel::thermoModelType,
-        2
-    >::names[] =
-    {
-        "constant",
-        "singleComponent"
-    };
-}
-
-const Foam::NamedEnum
-<
-    Foam::regionModels::surfaceFilmModels::surfaceFilmModel::thermoModelType,
-    2
->
-Foam::regionModels::surfaceFilmModels::surfaceFilmModel::thermoModelTypeNames_;
-
-
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
-
-namespace Foam
-{
 namespace regionModels
 {
 namespace surfaceFilmModels
@@ -72,8 +48,6 @@ bool surfaceFilmModel::read()
     {
         diagnostics_ = coeffs_.lookupOrDefault<Switch>("diagnostics",false);
         pyrCoupled_ = coeffs_.lookupOrDefault<Switch>("pyrolysisCoupled",false);
-        thermoModel_ =
-            thermoModelTypeNames_.read(coeffs_.lookup("thermoModel"));
         return true;
     }
     else
@@ -89,14 +63,14 @@ surfaceFilmModel::surfaceFilmModel
 (
     const word& modelType,
     const fvMesh& mesh,
-    const dimensionedVector& g
+    const dimensionedVector& g,
+    const word& regionType
 )
-:
-    singleLayerRegion(mesh, "surfaceFilm", modelType),
+ :
+    singleLayerRegion(mesh, regionType, modelType),
     pyrCoupled_(false),
     diagnostics_(false),
-    g_(g),
-    thermoModel_(tmConstant)
+    g_(g)
 {
     if (active_)
     {

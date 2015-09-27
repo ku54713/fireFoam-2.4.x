@@ -423,7 +423,6 @@ actions
         name    f0;
         type    faceSet;
         action  subset;
-        source  normalToFace;
         source  boxToFace;
         sourceInfo
         {

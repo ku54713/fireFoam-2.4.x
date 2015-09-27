@@ -41,7 +41,7 @@ EXE_LIBS = \
          -lpatchFieldsFireFOAM  \
          -lcombustionModelsEDC  \
          -lgreyMeanAbsorptionEmission_FMG  \
-         -ladditionalCloudFunctionObjects22x \
+         -ladditionalCloudFunctionObjectsFF \
          -lsplashingModels \
 	     -lrtiSampling \
          -lfvPatchFieldsPyrolysis \
@@ -70,9 +70,9 @@ EXE_LIBS = \
     -lpyrolysisModels \
     -lfieldFunctionObjects \
     -L$(FOAM_USER_LIBBIN) \
-        -lsurfaceFilmModels22x \
+        -lsurfaceFilmModelsFF \
         /*-lsolidChemistryModel_FMG*/ \
         -lpyrolysisModels_FMG2.1 \
-        -lregionCoupling22x \
-        -llagrangianIntermediate22x \
+        -lregionCouplingFF \
+        -llagrangianIntermediateFF \
         -lnewInjectionModels  

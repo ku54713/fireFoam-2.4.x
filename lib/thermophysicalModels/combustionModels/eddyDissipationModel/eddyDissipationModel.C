@@ -113,7 +113,7 @@ void eddyDissipationModel<CombThermoType, ThermoType>::correct()
                 * max(rtTurb(),rtDiff());
 */
 
-            volScalarField rt = max(rtTurb(),rtDiff()); 
+            volScalarField rt(max(rtTurb(),rtDiff())); 
 
             this->wFuel_ ==
                   this->rho()

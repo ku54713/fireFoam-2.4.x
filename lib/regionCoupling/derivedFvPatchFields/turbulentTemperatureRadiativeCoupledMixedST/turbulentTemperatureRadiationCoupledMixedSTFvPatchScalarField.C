@@ -48,29 +48,29 @@ namespace Foam
 namespace compressible
 {
 
-template<>
-const char*
-NamedEnum
-<
-    turbulentTemperatureRadiationCoupledMixedSTFvPatchScalarField::
-    operationMode,
-    4
->::names[] =
-{
-    "radiative_flux_from_neighbouring_region",
-    "radiative_flux_from_this_region",
-    "no_radiation_contribution",
-    "unknown"
-};
+// template<>
+// const char*
+// NamedEnum
+// <
+//     turbulentTemperatureRadiationCoupledMixedSTFvPatchScalarField::
+//     operationMode,
+//     4
+// >::names[] =
+// {
+//     "radiative_flux_from_neighbouring_region",
+//     "radiative_flux_from_this_region",
+//     "no_radiation_contribution",
+//     "unknown"
+// };
 
-const NamedEnum
-<
-    turbulentTemperatureRadiationCoupledMixedSTFvPatchScalarField::
-    operationMode,
-    4
->
-turbulentTemperatureRadiationCoupledMixedSTFvPatchScalarField::
-operationModeNames;
+// const NamedEnum
+// <
+//     turbulentTemperatureRadiationCoupledMixedSTFvPatchScalarField::
+//     operationMode,
+//     4
+// >
+// turbulentTemperatureRadiationCoupledMixedSTFvPatchScalarField::
+// operationModeNames;
 
 
 // * * * * * * * * * * * * * Private Member Functions  * * * * * * * * * * * //
@@ -146,7 +146,7 @@ turbulentTemperatureRadiationCoupledMixedSTFvPatchScalarField
 )
 :
     mixedFvPatchScalarField(p, iF),
-    temperatureCoupledBase(patch(), "undefined", "undefined-K"),
+    temperatureCoupledBase(patch(), "undefined", "undefined", "undefined-K"),
     radiationCoupledBase(p, "undefined", scalarField::null()),
     filmRegionName_("surfaceFilmProperties"),
     pyrolysisRegionName_("pyrolysisProperties"),
@@ -177,7 +177,7 @@ turbulentTemperatureRadiationCoupledMixedSTFvPatchScalarField
 )
 :
     mixedFvPatchScalarField(psf, p, iF, mapper),
-    temperatureCoupledBase(patch(), psf.KMethod(), psf.kappaName()),
+    temperatureCoupledBase(patch(), psf),
     radiationCoupledBase
     (
         p,
@@ -284,7 +284,7 @@ turbulentTemperatureRadiationCoupledMixedSTFvPatchScalarField
 )
 :
     mixedFvPatchScalarField(psf, iF),
-    temperatureCoupledBase(patch(), psf.KMethod(), psf.kappaName()),
+    temperatureCoupledBase(patch(), psf),
     radiationCoupledBase
     (
         psf.patch(),
@@ -352,7 +352,7 @@ updateCoeffs()
     scalarField KDeltaNbr(nbrK*nbrPatch.deltaCoeffs());
     mpp.distribute(KDeltaNbr);
 
-    scalarField nbrConvFlux = KDeltaNbr*(intFld - nbrIntFld);
+    scalarField nbrConvFlux(KDeltaNbr*(intFld - nbrIntFld));
 
     scalarField nbrTotalFlux = nbrConvFlux;
     // scalarList nbrRadField(nbrPatch.size(), 0.0);
@@ -370,7 +370,7 @@ updateCoeffs()
     if(neighbourFieldRadiativeName_ != "none") //nbr Radiation Qr
     {
 
-        scalarField nbrConvFlux = convectiveCoefficient_*(intFld - nbrIntFld);
+        scalarField nbrConvFlux(convectiveCoefficient_*(intFld - nbrIntFld));
         
         const label filmPatchI =
             pyrolysis.nbrCoupledPatchID(film, patchI);

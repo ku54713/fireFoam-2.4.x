@@ -161,7 +161,7 @@ void Foam::constHTemperatureFvPatchScalarField::updateCoeffs()
     const solidThermo& thermo =
         mesh.lookupObject<solidThermo>("thermophysicalProperties");
 
-    scalarField K_ = thermo.kappa(patch().index());
+    scalarField K_(thermo.kappa(patch().index()));
 
 
 

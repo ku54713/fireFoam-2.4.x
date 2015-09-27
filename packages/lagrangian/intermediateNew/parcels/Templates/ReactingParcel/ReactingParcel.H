@@ -2,7 +2,7 @@
   =========                 |
   \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
    \\    /   O peration     |
-    \\  /    A nd           | Copyright (C) 2011-2013 OpenFOAM Foundation
+    \\  /    A nd           | Copyright (C) 2011-2014 OpenFOAM Foundation
      \\/     M anipulation  |
 -------------------------------------------------------------------------------
 License
@@ -40,6 +40,7 @@ SourceFiles
 
 #include "particle.H"
 #include "SLGThermo.H"
+#include "demandDrivenEntry.H"
 
 #define DEBUG(x) {                                              \
         std::streamsize p = std::cout.precision();              \
@@ -94,13 +95,10 @@ public:
         // Private data
 
             //- Minimum pressure [Pa]
-            scalar pMin_;
+            demandDrivenEntry<scalar> pMin_;
 
             //- Constant volume flag - e.g. during mass transfer
-            Switch constantVolume_;
-
-            //- Vaporisation temperature [K]
-            scalar Tvap_;
+            demandDrivenEntry<bool> constantVolume_;
 
 
     public:
@@ -113,32 +111,8 @@ public:
             //- Copy constructor
             constantProperties(const constantProperties& cp);
 
-            //- Constructor from dictionary
-            constantProperties
-            (
-                const dictionary& parentDict,
-                const bool readFields = true
-            );
-
-            //- Construct from components
-            constantProperties
-            (
-                const label parcelTypeId,
-                const scalar rhoMin,
-                const scalar rho0,
-                const scalar minParticleMass,
-                const scalar youngsModulus,
-                const scalar poissonsRatio,
-                const scalar T0,
-                const scalar TMin,
-                const scalar TMax,
-                const scalar Cp0,
-                const scalar epsilon0,
-                const scalar f0,
-                const scalar pMin,
-                const Switch& constantVolume,
-                const scalar Tvap
-            );
+            //- Construct from dictionary
+            constantProperties(const dictionary& parentDict);
 
 
         // Access
@@ -147,10 +121,7 @@ public:
             inline scalar pMin() const;
 
             //- Return const access to the constant volume flag
-            inline Switch constantVolume() const;
-
-            //- Return const access to the vaporisation temperature
-            inline scalar Tvap() const;
+            inline bool constantVolume() const;
     };
 
 
@@ -356,25 +327,25 @@ public:
 
         // Access
 
-            //- Return const access to initial mass
+            //- Return const access to initial particle mass [kg]
             inline scalar mass0() const;
 
-            //- Return const access to mass fractions of mixture
+            //- Return const access to mass fractions of mixture []
             inline const scalarField& Y() const;
 
-            //- Return the owner cell pressure
+            //- Return the owner cell pressure [Pa]
             inline scalar pc() const;
 
-            //- Return reference to the owner cell pressure
+            //- Return reference to the owner cell pressure [Pa]
             inline scalar& pc();
 
 
         // Edit
 
-            //- Return access to initial mass
+            //- Return access to initial particle mass [kg]
             inline scalar& mass0();
 
-            //- Return access to mass fractions of mixture
+            //- Return access to mass fractions of mixture []
             inline scalarField& Y();
 
 

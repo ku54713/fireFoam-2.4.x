@@ -2,7 +2,7 @@
   =========                 |
   \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
    \\    /   O peration     |
-    \\  /    A nd           | Copyright (C) 2011 OpenFOAM Foundation
+    \\  /    A nd           | Copyright (C) 2011-2013 OpenFOAM Foundation
      \\/     M anipulation  |
 -------------------------------------------------------------------------------
 License
@@ -25,25 +25,28 @@ Application
     fireFoam
 
 Description
-    Transient solver for fires and turbulent diffusion flames with
-    reacting Lagrangian parcels, surface film and pyrolysis modeling.
+    Transient PIMPLE solver for Fires and turbulent diffusion flames with
+    reacting Lagrangian parcels, surface film and pyrolysis modelling.
 
 \*---------------------------------------------------------------------------*/
 
 #include "fvCFD.H"
 #include "turbulenceModel.H"
-#include "psiCombustionModel.H"
 #include "basicReactingCloud.H"
 #include "surfaceFilmModel.H"
+#include "pyrolysisModelCollection.H"
 #include "radiationModel.H"
 #include "SLGThermo.H"
 #include "solidChemistryModel.H"
-#include "pyrolysisModelCollection.H"
-#include "MULES.H"
+#include "psiCombustionModel.H"
+#include "pimpleControl.H"
+#include "fvIOoptionList.H"
+#include "fixedFluxPressureFvPatchScalarField.H"
+
+#include "singleStepCombustion.H"
+#include "thermoPhysicsTypes.H"
 #include "IOmanip.H"
 
-#include "singleStepReactingMixture.H"
-#include "thermoPhysicsTypes.H"
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 int main(int argc, char *argv[])
@@ -53,92 +56,71 @@ int main(int argc, char *argv[])
     #include "createTime.H"
     #include "createMesh.H"
     #include "readGravitationalAcceleration.H"
-    #include "initContinuityErrs.H"
     #include "createFields.H"
-//    #include "createFieldsSoot.H"
-    #include "createPyrolysisModel.H"
-    #include "createRadiationModel.H"
+    #include "createFvOptions.H"
     #include "createClouds.H"
     #include "createSurfaceFilmModel.H"
+    #include "createPyrolysisModel.H"
+    #include "createRadiationModel.H"
+    #include "initContinuityErrs.H"
     #include "readTimeControls.H"
     #include "compressibleCourantNo.H"
     #include "setInitialDeltaT.H"
     #include "readPyrolysisTimeControls.H"
 
-    // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+    pimpleControl pimple(mesh);
 
-    Info<< "\nStarting time loop\n" << nl;
+    // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+    Info<< "\nStarting time loop\n" << endl;
 
     while (runTime.run())
     {
-        #include "readPISOControls.H"
         #include "readTimeControls.H"
         #include "compressibleCourantNo.H"
         #include "solidRegionDiffusionNo.H"
         #include "setMultiRegionDeltaT.H"
-        // #include "setDeltaT.H"
-        #include "readMultivarMULEControls.H"
+        #include "setDeltaT.H"
 
         runTime++;
-        Info<< "Time = " << runTime.timeName() << nl << nl;
+
+        Info<< "Time = " << runTime.timeName() << nl << endl;
 
         parcels.evolve();
 
         surfaceFilm.evolve();
 
+        pyrolysis.evolve();
+
         if (solvePrimaryRegion)
         {
             #include "rhoEqn.H"
 
-            // --- Pressure-velocity PIMPLE corrector loop
-            for (int oCorr=0; oCorr<nOuterCorr; oCorr++)
+            // --- PIMPLE loop
+            while (pimple.loop())
             {
                 #include "UEqn.H"
-                /*if (solveSoot)
-                {
-                    #include "computeQr.H"
-                }*/
-                #include "mvConvection.H"
-                #include "YhsEqn.H"
+                #include "YEEqn.H"
 
-                // --- PISO loop
-                for (int corr=0; corr<nCorr; corr++)
+                // --- Pressure corrector loop
+                while (pimple.correct())
                 {
-                    #include "p_rghEqn.H"
+                    #include "pEqn.H"
                 }
 
-                 //turbulence->correct();
-
-                 if (oCorr == nOuterCorr-1)
-                 {
-                     #include "infoOutput.H"
-
-                     /*if (solveSoot)
-                     {
-                         #include "computeHp.H"
-                     }*/
-                 }
-
-                 turbulence->correct();
-             }
-
-             rho = thermo.rho();
-             kappa = thermo.Cp()*thermo.alpha();
-             cp = thermo.Cp();
-
-             if(solvePyrolysisRegion){
-                 pyrolysis.evolve();
-             }
-
-             runTime.write();
-        }
-        else
-        {
-            if(solvePyrolysisRegion){
-                pyrolysis.evolve();
+                if (pimple.turbCorr())
+                {
+                    turbulence->correct();
+                }
             }
-            runTime.write();
+
+            rho = thermo.rho();
+
+            #include "infoOutput.H"
+
         }
+
+        runTime.write();
 
         Info<< "ExecutionTime = " << runTime.elapsedCpuTime() << " s"
             << "  ClockTime = " << runTime.elapsedClockTime() << " s";
@@ -147,18 +129,11 @@ int main(int argc, char *argv[])
         {
             Info<< " +";
         }
-        Info<< nl << nl;
+        Info<< nl << endl;
 
     }
 
-    Info<< "End\n" << nl;
-
-    // explicit abort necessary to keep solver from hanging on
-    // double-linked list error
-    if(Pstream::parRun()){
-        Foam::sleep(1);
-    }
-    abort();
+    Info<< "End" << endl;
 
     return(0);
 }

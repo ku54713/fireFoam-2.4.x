@@ -1,3 +1,13 @@
+        tmp<fv::convectionScheme<scalar> > mvConvection
+        (
+            fv::convectionScheme<scalar>::New
+            (
+                mesh,
+                fields,
+                phi,
+                mesh.divScheme("div(phi,Yi_h)")
+            )
+        );
 
         if (thermo.composition().contains("O2")) 
         {
@@ -41,7 +51,7 @@
 
 
         hc = thermo.hc();  
-        h = hs + hc;
+        h = thermo.he() + hc;
 
         phiFt = mvConvection->interpolate(phi,ft)*phi
                  - fvc::interpolate(turbulence->alphaEff())*fvc::snGrad(ft)*mesh.magSf();
@@ -55,8 +65,8 @@
         phiHc = phi*mvConvection->interpolate(phi,hc)
                  - fvc::interpolate(turbulence->alphaEff())*fvc::snGrad(hc)*mesh.magSf();
 
-        phiHs = phi*mvConvection->interpolate(phi,hs)
-                 - fvc::interpolate(turbulence->alphaEff())*fvc::snGrad(hs)*mesh.magSf();
+        phiHs = phi*mvConvection->interpolate(phi,thermo.he())
+                 - fvc::interpolate(turbulence->alphaEff())*fvc::snGrad(thermo.he())*mesh.magSf();
 
         phiH  = phi*mvConvection->interpolate(phi,h)
                  - fvc::interpolate(turbulence->alphaEff())*fvc::snGrad(h)*mesh.magSf();

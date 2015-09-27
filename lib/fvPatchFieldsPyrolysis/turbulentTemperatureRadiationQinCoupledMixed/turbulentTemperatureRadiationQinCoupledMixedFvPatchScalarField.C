@@ -59,7 +59,7 @@ turbulentTemperatureRadiationQinCoupledMixedFvPatchScalarField
 )
 :
     mixedFvPatchScalarField(p, iF),
-    temperatureCoupledBase(patch(), "undefined", "undefined-K"),    
+    temperatureCoupledBase(patch(), "undefined", "undefined", "undefined-K"),
     radiationCoupledBase(p, "undefined", scalarField::null()),
     neighbourFieldName_("undefined-neighbourFieldName"),
     neighbourFieldRadiativeName_("undefined-neigbourFieldRadiativeName")
@@ -73,22 +73,22 @@ turbulentTemperatureRadiationQinCoupledMixedFvPatchScalarField
 turbulentTemperatureRadiationQinCoupledMixedFvPatchScalarField::
 turbulentTemperatureRadiationQinCoupledMixedFvPatchScalarField
 (
-    const turbulentTemperatureRadiationQinCoupledMixedFvPatchScalarField& ptf,
+    const turbulentTemperatureRadiationQinCoupledMixedFvPatchScalarField& psf,
     const fvPatch& p,
     const DimensionedField<scalar, volMesh>& iF,
     const fvPatchFieldMapper& mapper
 )
 :
-    mixedFvPatchScalarField(ptf, p, iF, mapper),
-    temperatureCoupledBase(patch(), ptf.KMethod(), ptf.kappaName()),    
+    mixedFvPatchScalarField(psf, p, iF, mapper),
+    temperatureCoupledBase(patch(), psf),    
     radiationCoupledBase
     (
         p,
-        ptf.emissivityMethod(),
-        ptf.emissivity_
+        psf.emissivityMethod(),
+        psf.emissivity_
     ),
-    neighbourFieldName_(ptf.neighbourFieldName_),
-    neighbourFieldRadiativeName_(ptf.neighbourFieldRadiativeName_)
+    neighbourFieldName_(psf.neighbourFieldName_),
+    neighbourFieldRadiativeName_(psf.neighbourFieldRadiativeName_)
 {}
 
 
@@ -153,7 +153,7 @@ turbulentTemperatureRadiationQinCoupledMixedFvPatchScalarField
 )
 :
     mixedFvPatchScalarField(wtcsf, iF),
-    temperatureCoupledBase(patch(), wtcsf.KMethod(), wtcsf.kappaName()),  
+    temperatureCoupledBase(patch(), wtcsf),  
     radiationCoupledBase
     (
         wtcsf.patch(),
@@ -186,7 +186,7 @@ updateCoeffs()
         nbrMesh
     ).boundary()[mpp.samplePolyPatch().index()];
 
-    scalarField intFld = patchInternalField();
+    scalarField intFld(patchInternalField());
 
     const turbulentTemperatureRadiationQinCoupledMixedFvPatchScalarField&
         nbrField =
@@ -202,17 +202,17 @@ updateCoeffs()
         );
 
     // Swap to obtain full local values of neighbour internal field
-    scalarField nbrIntFld = nbrField.patchInternalField();
+    scalarField nbrIntFld(nbrField.patchInternalField());
     mpp.distribute(nbrIntFld);
 
     // Swap to obtain full local values of neighbour K*delta
-    scalarField nbrKDelta = nbrField.kappa(nbrField)*nbrPatch.deltaCoeffs();    
+    scalarField nbrKDelta(nbrField.kappa(nbrField)*nbrPatch.deltaCoeffs());
     
     mpp.distribute(nbrKDelta);
 
 
     //scalarField nbrConvFlux = nbrKDelta*(*this - nbrIntFld);
-    scalarField nbrConvFlux = nbrKDelta*(intFld - nbrIntFld);
+    scalarField nbrConvFlux(nbrKDelta*(intFld - nbrIntFld));
 
     scalarField nbrTotalFlux = nbrConvFlux;
 

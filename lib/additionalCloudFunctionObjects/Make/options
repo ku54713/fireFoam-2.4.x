@@ -30,8 +30,8 @@ EXE_INC = \
 
 EXE_LIBS = \
     -L$(FOAM_USER_LIBBIN) \
-        -llagrangianIntermediate22x \
-        -lsurfaceFilmModels22x \
+        -llagrangianIntermediateFF \
+        -lsurfaceFilmModelsFF \
     -lregionModels \
     -lfiniteVolume \
     -lmeshTools \

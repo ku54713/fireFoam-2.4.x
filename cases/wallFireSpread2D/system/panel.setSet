@@ -1,2 +1,2 @@
-faceSet panel new boxToFace (-0.1 -0.1 0.09)(0.01 2.51 0.61)
+faceSet panel new boxToFace (-0.1 0.09 -0.1 )(0.01 0.61 2.51 )
 faceZoneSet panel new setToFaceZone panel

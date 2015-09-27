@@ -25,6 +25,13 @@ solvers
         relTol          0;
     };
 
+    rhoFinal
+    {
+        $rho;
+        tolerance       1e-6;
+        relTol          0;
+    };
+
     p_rgh
     {
         solver              GAMG;
@@ -119,6 +126,13 @@ solvers
         relTol          0;
     };
 
+    kFinal 
+    {
+        $k;
+        tolerance       1e-8;
+        relTol          0;
+    };
+
     "h|hFinal"
     {
         solver          PBiCG;
@@ -149,17 +163,12 @@ solvers
 
 }
 
-PISO
+PIMPLE
 {
     momentumPredictor yes;
     nOuterCorrectors  1;
     nCorrectors       2;
     nNonOrthogonalCorrectors 0;
-}
-
-MULES
-{
-    bMULES     no;
 }
 
 relaxationFactors

@@ -2,7 +2,7 @@
   =========                 |
   \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
    \\    /   O peration     |
-    \\  /    A nd           | Copyright (C) 2011-2012 OpenFOAM Foundation
+    \\  /    A nd           | Copyright (C) 2011-2014 OpenFOAM Foundation
      \\/     M anipulation  |
 -------------------------------------------------------------------------------
 License
@@ -52,6 +52,7 @@ namespace surfaceFilmModels
 {
 
 // Forward declaration of classes
+class filmViscosityModel;
 class heatTransferModel;
 class phaseChangeModel;
 class massAbsorptionModel;
@@ -87,11 +88,6 @@ protected:
 
             //- Reference to the SLGThermo
             const SLGThermo& thermo_;
-
-            // Single component
-
-                //- Id of component in thermo database
-                label liquidId_;
 
 
             // Fields
@@ -144,10 +140,12 @@ protected:
             //- Activation flag
             bool hydrophilic_;
 
-            //- Length scale applied to deltaWet_ for dry faces, typically 0.5
+            //- Length scale applied to deltaWet_ to determine when a wet
+            //  surface becomes dry, typically 0.5
             scalar hydrophilicDryScale_;
 
-            //- Length scale applied to deltaWet_ for wet faces, typically 0.001
+            //- Length scale applied to deltaWet_ to determine when a dry
+            //  surface becomes wet, typically 0.001
             scalar hydrophilicWetScale_;
 
         // Conduction heat transfer model
@@ -181,6 +179,9 @@ protected:
 
 
         // Sub-models
+
+            //- Viscosity model
+            autoPtr<filmViscosityModel> viscosity_;
 
             //- Heat transfer coefficient bewteen film surface and primary
             //  region [W/m2/K]
@@ -261,6 +262,7 @@ public:
             const word& modelType,
             const fvMesh& mesh,
             const dimensionedVector& g,
+            const word& regionType,
             const bool readFields = true
         );
 
@@ -275,11 +277,6 @@ public:
 
             //- Return const reference to the SLGThermo object
             inline const SLGThermo& thermo() const;
-
-            // Single component
-
-                //- Return the Id of component in thermo database
-                inline label liquidId() const;
 
 
             // Fields
@@ -430,7 +427,7 @@ public:
        // I-O
 
             //- Provide some feedback
-            virtual void info() const;
+            virtual void info();
 };
 
 

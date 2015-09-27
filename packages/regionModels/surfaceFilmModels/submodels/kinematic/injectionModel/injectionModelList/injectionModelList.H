@@ -2,7 +2,7 @@
   =========                 |
   \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
    \\    /   O peration     |
-    \\  /    A nd           | Copyright (C) 2011 OpenFOAM Foundation
+    \\  /    A nd           | Copyright (C) 2011-2014 OpenFOAM Foundation
      \\/     M anipulation  |
 -------------------------------------------------------------------------------
 License
@@ -37,6 +37,7 @@ SourceFiles
 
 #include "PtrList.H"
 #include "injectionModel.H"
+#include "filmSubModelBase.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -53,20 +54,15 @@ namespace surfaceFilmModels
 
 class injectionModelList
 :
-    public PtrList<injectionModel>
+    public PtrList<injectionModel>,
+    public filmSubModelBase
 {
 private:
 
     // Private data
 
-        //- Reference to the owner surface film model
-        const surfaceFilmModel& owner_;
-
-        //- Dictionary
-        dictionary dict_;
-
-        //- Cumulative mass injected total
-        scalar injectedMassTotal_;
+        //- List of mass injected per patch
+        scalarField massInjected_;
 
 
     // Private Member Functions
@@ -83,12 +79,12 @@ public:
     // Constructors
 
         //- Construct null
-        injectionModelList(const surfaceFilmModel& owner);
+        injectionModelList(surfaceFilmModel& owner);
 
         //- Construct from type name, dictionary and surface film model
         injectionModelList
         (
-            const surfaceFilmModel& owner,
+            surfaceFilmModel& owner,
             const dictionary& dict
         );
 
@@ -113,7 +109,7 @@ public:
         // I-O
 
             //- Provide some info
-            void info(Ostream& os) const;
+            virtual void info(Ostream& os);
 };
 
 

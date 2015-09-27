@@ -1,7 +1,7 @@
 /*--------------------------------*- C++ -*----------------------------------*\
 | =========                 |                                                 |
 | \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
-|  \\    /   O peration     | Version:  2.2.x                                 |
+|  \\    /   O peration     | Version:  2.4.x                                 |
 |   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
 |    \\/     M anipulation  |                                                 |
 \*---------------------------------------------------------------------------*/
@@ -40,18 +40,18 @@ boundaryField
     }
     base
     {
-        type            buoyantPressure;
+        type            fixedFluxPressure;
         value           $internalField;
     }
     burner          
     {
-        type            buoyantPressure;
-        value            $internalField;
+        type            fixedFluxPressure;
+        value           $internalField;
     }
     "(region0_to.*)"
     {
-        type            buoyantPressure;
-        value            $internalField;
+        type            fixedFluxPressure;
+        value           $internalField;
     }
 }
 

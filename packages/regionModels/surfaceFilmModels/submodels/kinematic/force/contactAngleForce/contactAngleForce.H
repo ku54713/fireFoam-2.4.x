@@ -74,7 +74,7 @@ private:
 
         const autoPtr<distributionModels::distributionModel> timeIntervalDistribution_;
 
-        //- Contact angle mask
+        //- Mask over which force is applied
         volScalarField mask_;
 
         //- Static contact angle
@@ -86,6 +86,9 @@ private:
         volScalarField nHits_;
 
     // Private member functions
+
+        //- Initialise
+        void initialise();
 
         //- Disallow default bitwise copy construct
         contactAngleForce(const contactAngleForce&);
@@ -105,7 +108,7 @@ public:
         //- Construct from surface film model
         contactAngleForce
         (
-            const surfaceFilmModel& owner,
+            surfaceFilmModel& owner,
             const dictionary& dict
         );
 

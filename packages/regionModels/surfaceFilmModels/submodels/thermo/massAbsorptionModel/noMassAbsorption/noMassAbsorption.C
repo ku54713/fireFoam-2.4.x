@@ -44,7 +44,7 @@ addToRunTimeSelectionTable(massAbsorptionModel, noMassAbsorption, dictionary);
 
 noMassAbsorption::noMassAbsorption
 (
-    const surfaceFilmModel& owner,
+    surfaceFilmModel& owner,
     const dictionary&
 )
 :

@@ -1,4 +1,4 @@
-#log.fireFoam original/log.fireFoam
+./log.fireFoam original/log.fireFoam
 ./postProcessing/lagrangian/reactingCloud1/facePostProcessing/0/facePostProcessing_sampleFaces1.dat original/facePostProcessing_sampleFaces1.dat
 ./postProcessing/lagrangian/reactingCloud1/facePostProcessing/0/facePostProcessing_sampleFaces2.dat original/facePostProcessing_sampleFaces2.dat
 ./postProcessing/lagrangian/reactingCloud1/particleCollectorFmg/0/particleCollectorFmg.dat original/particleCollectorFmgMass.dat

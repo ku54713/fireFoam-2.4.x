@@ -1,4 +1,4 @@
-    Info<< "Creating combustion model\n" << nl;
+    Info<< "Creating combustion model\n" << endl;
 
     autoPtr<combustionModels::psiCombustionModel> combustion
     (
@@ -8,15 +8,14 @@
         )
     );
 
-    Info<< "Reading thermophysical properties\n" << nl;
+    Info<< "Reading thermophysical properties\n" << endl;
 
-    //hsCombustionThermo& thermo = combustion->thermo();
     psiReactionThermo& thermo = combustion->thermo();
+    thermo.validate(args.executable(), "h", "e");
 
     SLGThermo slgThermo(mesh, thermo);
 
     basicMultiComponentMixture& composition = thermo.composition();
-
     PtrList<volScalarField>& Y = composition.Y();
 
     const word inertSpecie(thermo.lookup("inertSpecie"));
@@ -38,12 +37,79 @@
     );
 
     volScalarField& p = thermo.p();
-    //volScalarField& hs = thermo.hs();
-    volScalarField& hs = thermo.he();
     const volScalarField& T = thermo.T();
     const volScalarField& psi = thermo.psi();
 
-    Info<< "Reading field p_rgh\n" << endl;
+    Info<< "\nReading field U\n" << endl;
+    volVectorField U
+    (
+        IOobject
+        (
+            "U",
+            runTime.timeName(),
+            mesh,
+            IOobject::MUST_READ,
+            IOobject::AUTO_WRITE
+        ),
+        mesh
+    );
+
+    #include "compressibleCreatePhi.H"
+
+    Info<< "Creating turbulence model\n" << endl;
+    autoPtr<compressible::turbulenceModel> turbulence
+    (
+        compressible::turbulenceModel::New
+        (
+            rho,
+            U,
+            phi,
+            thermo
+        )
+    );
+
+    // Set the turbulence into the combustion model
+    combustion->setTurbulence(turbulence());
+
+    volScalarField dQ
+    (
+        IOobject
+        (
+            "dQ",
+            runTime.timeName(),
+            mesh,
+            IOobject::NO_READ,
+            IOobject::AUTO_WRITE
+        ),
+        mesh,
+        dimensionedScalar("dQ", dimEnergy/dimTime/dimVolume, 0.0)
+    );
+
+
+    Info<< "Creating field dpdt\n" << endl;
+    volScalarField dpdt
+    (
+        IOobject
+        (
+            "dpdt",
+            runTime.timeName(),
+            mesh
+        ),
+        mesh,
+        dimensionedScalar("dpdt", p.dimensions()/dimTime, 0)
+    );
+
+
+    #include "infoFieldsOutput.H"
+
+    Info<< "Creating field kinetic energy K\n" << endl;
+    volScalarField K("K", 0.5*magSqr(U));
+
+
+    Info<< "Calculating field g.h\n" << endl;
+    volScalarField gh("gh", g & mesh.C());
+
+    surfaceScalarField ghf("ghf", g & mesh.Cf());
 
     volScalarField p_rgh
     (
@@ -58,82 +124,11 @@
         mesh
     );
 
-    Info<< "Reading field U\n" << endl;
-
-    volVectorField U
-    (
-        IOobject
-        (
-            "U",
-            runTime.timeName(),
-            mesh,
-            IOobject::MUST_READ,
-            IOobject::AUTO_WRITE
-        ),
-        mesh
-    );
-
-#include "compressibleCreatePhi.H"
-
-Info<< "Creating turbulence model\n" << nl;
-autoPtr<compressible::turbulenceModel> turbulence
-(
-    compressible::turbulenceModel::New(rho, U, phi, thermo)
-);
-
-// Set the turbulence into the combustion model
-combustion->setTurbulence(turbulence());
-
-/*
-IOdictionary combustionProperties
-(
-    IOobject
-    (
-        "combustionProperties",
-        runTime.constant(),
-        mesh,
-        IOobject::MUST_READ,
-        IOobject::NO_WRITE
-    )
-);
-*/
-
-volScalarField dQ
-(
-    IOobject
-    (
-            "dQ",
-            runTime.timeName(),
-            mesh,
-            IOobject::NO_READ,
-            IOobject::AUTO_WRITE
-    ),
-    mesh,
-    dimensionedScalar("dQ", dimMass/pow3(dimTime)/dimLength, 0.0)
-);
-
-
-#include "infoFieldsOutput.H"
-
-
-Info<< "Creating field DpDt\n" << nl;
-volScalarField DpDt =
-   fvc::DDt(surfaceScalarField("phiU", phi/fvc::interpolate(rho)), p);
-
-
-Info<< "Calculating field g.h\n" << nl;
-volScalarField gh("gh", g & mesh.C());
-
-    surfaceScalarField ghf("ghf", g & mesh.Cf());
-
-    p = p_rgh + rho*gh;
     thermo.correct();
     rho = thermo.rho();
 
     // Force p_rgh to be consistent with p
     p_rgh = p - rho*gh;
-
-    dimensionedScalar initialMass = fvc::domainIntegrate(rho);
 
     multivariateSurfaceInterpolationScheme<scalar>::fieldTable fields;
 
@@ -141,7 +136,7 @@ volScalarField gh("gh", g & mesh.C());
     {
         fields.add(Y[i]);
     }
-    fields.add(hs);
+    fields.add(thermo.he());
 
     IOdictionary additionalControlsDict
     (

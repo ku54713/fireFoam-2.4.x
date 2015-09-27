@@ -1,3 +1,3 @@
 makeParcelCloudFunctionObjects.C
 
-LIB = $(FOAM_USER_LIBBIN)/libadditionalCloudFunctionObjects22x
+LIB = $(FOAM_USER_LIBBIN)/libadditionalCloudFunctionObjectsFF

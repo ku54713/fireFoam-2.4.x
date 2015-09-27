@@ -43,10 +43,10 @@ defineRunTimeSelectionTable(massAbsorptionModel, dictionary);
 
 massAbsorptionModel::massAbsorptionModel
 (
-    const surfaceFilmModel& owner
+    surfaceFilmModel& owner
 )
 :
-    subModelBase(owner),
+    filmSubModelBase(owner),
     latestMassAbs_(0.0),
     totalMassAbs_(0.0)
 {}
@@ -54,12 +54,12 @@ massAbsorptionModel::massAbsorptionModel
 
 massAbsorptionModel::massAbsorptionModel
 (
-    const word& type,
-    const surfaceFilmModel& owner,
+    const word& modelType,
+    surfaceFilmModel& owner,
     const dictionary& dict
 )
 :
-    subModelBase(type, owner, dict),
+    filmSubModelBase(owner, dict, typeName, modelType),
     latestMassAbs_(0.0),
     totalMassAbs_(0.0)
 {}
@@ -81,6 +81,11 @@ void massAbsorptionModel::correct
     volScalarField& dEnergy
 )
 {
+    if (!active())
+    {
+        return;
+    }
+
     correctModel
     (
         dt,

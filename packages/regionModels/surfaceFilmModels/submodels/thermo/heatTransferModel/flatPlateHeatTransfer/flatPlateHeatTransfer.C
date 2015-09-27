@@ -71,12 +71,12 @@ scalar flatPlateHeatTransfer::Nu
 
 flatPlateHeatTransfer::flatPlateHeatTransfer
 (
-    const surfaceFilmModel& owner,
+    surfaceFilmModel& owner,
     const dictionary& dict
 )
 :
     heatTransferModel(typeName, owner, dict),
-    L_(readScalar(coeffs_.lookup("L"))),
+    L_(readScalar(coeffDict_.lookup("L"))),
     htcConvFilm_
     (
         IOobject

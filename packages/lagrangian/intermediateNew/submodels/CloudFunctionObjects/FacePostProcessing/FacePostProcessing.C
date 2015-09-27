@@ -2,7 +2,7 @@
   =========                 |
   \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
    \\    /   O peration     |
-    \\  /    A nd           | Copyright (C) 2011-2013 OpenFOAM Foundation
+    \\  /    A nd           | Copyright (C) 2011-2014 OpenFOAM Foundation
      \\/     M anipulation  |
 -------------------------------------------------------------------------------
 License
@@ -50,10 +50,8 @@ void Foam::FacePostProcessing<CloudType>::makeLogFile
 
         if (Pstream::master())
         {
-            const fileName logDir = this->outputDir()/this->owner().time().timeName();
-
             // Create directory if does not exist
-            mkDir(logDir);
+            mkDir(this->outputTimeDir());
 
             // Open new file at start up
             outputFilePtr_.set
@@ -61,12 +59,12 @@ void Foam::FacePostProcessing<CloudType>::makeLogFile
                 zoneI,
                 new OFstream
                 (
-                    logDir/(type() + '_' + zoneName + ".dat")
+                    this->outputTimeDir()/(type() + '_' + zoneName + ".dat")
                 )
             );
 
             outputFilePtr_[zoneI]
-                << "# Source    : " << this->modelName() << nl
+                << "# Source    : " << type() << nl
                 << "# Face zone : " << zoneName << nl
                 << "# Faces     : " << nFaces << nl
                 << "# Area      : " << totArea << nl
@@ -204,7 +202,7 @@ void Foam::FacePostProcessing<CloudType>::write()
 
                 writer->write
                 (
-                    this->outputDir()/time.timeName(),
+                    this->outputTimeDir(),
                     fZone.name(),
                     allPoints,
                     allFaces,
@@ -215,7 +213,7 @@ void Foam::FacePostProcessing<CloudType>::write()
 
                 writer->write
                 (
-                    this->outputDir()/time.timeName(),
+                    this->outputTimeDir(),
                     fZone.name(),
                     allPoints,
                     allFaces,

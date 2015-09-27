@@ -57,12 +57,12 @@ addToRunTimeSelectionTable
 
 standardMassAbsorption::standardMassAbsorption
 (
-    const surfaceFilmModel& owner,
+    surfaceFilmModel& owner,
     const dictionary& dict
 )
 :
     massAbsorptionModel(typeName, owner, dict),
-    deltaMin_(readScalar(coeffs_.lookup("deltaMin"))),
+    deltaMin_(readScalar(coeffDict_.lookup("deltaMin"))),
     massAbsorption_
     (
         IOobject

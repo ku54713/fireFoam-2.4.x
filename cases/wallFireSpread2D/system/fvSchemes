@@ -1,8 +1,8 @@
 /*--------------------------------*- C++ -*----------------------------------*\
 | =========                 |                                                 |
 | \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
-|  \\    /   O peration     | Version:  1.6                                   |
-|   \\  /    A nd           | Web:      http://www.openfoam.org               |
+|  \\    /   O peration     | Version:  2.4.x                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
 |    \\/     M anipulation  |                                                 |
 \*---------------------------------------------------------------------------*/
 FoamFile
@@ -40,6 +40,7 @@ divSchemes
 //    div(phi,U)      Gauss linear;
     div(phi,U)      Gauss filteredLinear2V 0.2 0.05;
     div(phi,k)      Gauss limitedLinear 1;
+    div(phi,K)      Gauss limitedLinear 1;
     flux(phi,O2)  Gauss limitedLinear01 1;
     flux(phi,C3H8)  Gauss limitedLinear01 1;
     flux(phi,H2O)  Gauss limitedLinear01 1;
@@ -47,7 +48,7 @@ divSchemes
     div(phi,hs)  Gauss limitedLinear 1;
 
 
-    div(phi,Yi_hs) Gauss multivariateSelection
+    div(phi,Yi_h) Gauss multivariateSelection
     {
         O2              limitedLinear01 1;
         N2              limitedLinear01 1;
@@ -57,7 +58,7 @@ divSchemes
         CH2O            limitedLinear01 1;
         H2O             limitedLinear01 1;
         CO2             limitedLinear01 1;
-        h              limitedLinear 1;
+        h               limitedLinear   1;
     };
     //div((muEff*dev2(grad(U).T()))) Gauss linear;
     div((muEff*dev2(T(grad(U))))) Gauss linear;      

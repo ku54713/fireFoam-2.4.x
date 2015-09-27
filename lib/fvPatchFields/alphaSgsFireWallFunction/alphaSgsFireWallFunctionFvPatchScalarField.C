@@ -191,12 +191,12 @@ void alphaSgsFireWallFunctionFvPatchScalarField::evaluate
     const scalarField Cpw = thermo.Cp()().boundaryField()[patchI];
 //    const scalarField Cpw = thermo.Cp(Tw, patchI);
 
-    const scalarField T = Tw.patchInternalField();
+    const scalarField T(Tw.patchInternalField());
 
-    const scalarField magGradTw = max(mag(Tw.snGrad()), VSMALL);
+    const scalarField magGradTw(max(mag(Tw.snGrad()), VSMALL));
 //    const scalarField magGradTw = mag(Tw.snGrad());
 
-    const scalarField gradTw = Tw.snGrad();
+    const scalarField gradTw(Tw.snGrad());
 
 
 //    const scalarField& ry = patch().deltaCoeffs();

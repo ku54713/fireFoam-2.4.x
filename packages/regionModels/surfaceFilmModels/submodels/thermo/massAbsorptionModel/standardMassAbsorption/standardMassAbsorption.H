@@ -94,7 +94,7 @@ public:
         //- Construct from surface film model
         standardMassAbsorption
         (
-            const surfaceFilmModel& owner,
+            surfaceFilmModel& owner,
             const dictionary& dict
         );
 

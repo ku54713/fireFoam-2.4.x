@@ -1,7 +1,7 @@
 /*--------------------------------*- C++ -*----------------------------------*\
 | =========                 |                                                 |
 | \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
-|  \\    /   O peration     | Version:  2.2.x                                 |
+|  \\    /   O peration     | Version:  2.4.x                                 |
 |   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
 |    \\/     M anipulation  |                                                 |
 \*---------------------------------------------------------------------------*/
@@ -23,6 +23,22 @@ regionName       filmRegion;
 
 thermoSingleLayerCoeffs
 {
+    filmThermoModel liquid;
+
+    liquidCoeffs
+    {
+        useReferenceValues  no;
+        liquid      H2O;
+    }
+
+    filmViscosityModel liquid;
+
+    turbulence  laminar;
+    laminarCoeffs
+    {
+        Cf          0.005;
+    }
+
     pyrolysisCoupled true;
     thermoModel singleComponent; // constant
     liquid      H2O;
@@ -33,7 +49,7 @@ thermoSingleLayerCoeffs
     Cf          0.005;
 
     forces ( 
-            surfaceShear 
+            // surfaceShear 
             thermocapillary 
             contactAngle
            );
@@ -63,12 +79,13 @@ thermoSingleLayerCoeffs
                 variance        0.2;
             }
         }
+        zeroForcePatches ( );
     }
 
-    surfaceShearCoeffs
-    {
-        Cf          0.005;
-    }
+    // surfaceShearCoeffs
+    // {
+    //     Cf          0.005;
+    // }
 
     deltaWet 0.0002;
     hydrophilic true;

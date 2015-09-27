@@ -95,6 +95,8 @@ subModels
     compositionModel singlePhaseMixture;
     
     phaseChangeModel none;
+
+    stochasticCollisionModel none;
     
     postProcessingModel none;
     

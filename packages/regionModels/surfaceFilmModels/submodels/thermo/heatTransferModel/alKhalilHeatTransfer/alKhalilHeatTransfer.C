@@ -46,26 +46,26 @@ addToRunTimeSelectionTable ( heatTransferModel, alKhalilHeatTransfer, dictionary
 
 alKhalilHeatTransfer::alKhalilHeatTransfer
 (
-const surfaceFilmModel& owner,
-const dictionary& dict
+    surfaceFilmModel& owner,
+    const dictionary& dict
 )
 :
-heatTransferModel(typeName, owner, dict),
-c0_(readScalar(coeffs_.lookup("c0"))) ,
-htcConvFilm_
-(
-    IOobject
+    heatTransferModel(typeName, owner, dict),
+    c0_(readScalar(coeffDict_.lookup("c0"))),
+    htcConvFilm_
     (
-        "htcConvWall",
-        owner_.time().timeName(),
+        IOobject
+        (
+            "htcConvWall",
+            owner_.time().timeName(),
+            owner_.regionMesh(),
+            IOobject::NO_READ,
+            IOobject::NO_WRITE
+        ),
         owner_.regionMesh(),
-        IOobject::NO_READ,
-        IOobject::NO_WRITE
-    ),
-    owner_.regionMesh(),
-    dimensionedScalar("zero", dimMass/pow3(dimTime)/dimTemperature, 0.0),
-    zeroGradientFvPatchScalarField::typeName
-)
+        dimensionedScalar("zero", dimMass/pow3(dimTime)/dimTemperature, 0.0),
+        zeroGradientFvPatchScalarField::typeName
+    )
 {}
 
 
@@ -79,46 +79,46 @@ alKhalilHeatTransfer::~alKhalilHeatTransfer()
 
 void alKhalilHeatTransfer::correct()
 {
-/*const thermoSingleLayerFM& film = refCast<const thermoSingleLayerFM>(owner_); //kvm*/
-const thermoSingleLayer& film = refCast<const thermoSingleLayer>(owner_); //kvm
-
-// retrieve fields from film model
-const scalarField& delta = film.delta();
-//const scalarField& T = film.T();
-//const scalarField& Tw = film.Tw();
-const scalarField& rho = film.rho();
-const scalarField& mu = film.mu();
-//const scalarField& magSf = film.magSf();
-const scalarField kappa = film.kappa();
-const vectorField dU = film.Uw() - film.Us();
-
-forAll(htcConvFilm_, cellI)
-{
-    // Film region density [kg/m3]
-    const scalar rhoc = rho[cellI];
-
-    // Film region viscosity [Pa.s]
-    const scalar muc = mu[cellI];
-
-    // Film region thickness [m]
-    const scalar deltac = delta[cellI];
-
-    // Reynolds number
-    const scalar Rec = rhoc*mag(dU[cellI])*deltac/muc;
-
-    // thermal conductivity [W/m/K]
-    const scalar kappac = kappa[cellI];
-
-    // Nusselt number
-    //const scalar Nu = 2.63+0.000143*Rec; //constant Tw
-    const scalar Nu = 3.20+0.000237*Rec; //constant q"
-
-    // heat transfer coefficient [W/m2/K]
-    const scalar hm = Nu*kappac/(deltac+ROOTVSMALL);
-
-//    htcConvFilm_[cellI]=min(hm,5e4);
-    htcConvFilm_[cellI]=min(hm,1e4);//based on minimum film thickness of 0.0002, k=0.6, NU=3.1, h = Nu k / delta
-}
+    /*const thermoSingleLayerFM& film = refCast<const thermoSingleLayerFM>(owner_); //kvm*/
+    const thermoSingleLayer& film = refCast<const thermoSingleLayer>(owner_); //kvm
+    
+    // retrieve fields from film model
+    const scalarField& delta = film.delta();
+    //const scalarField& T = film.T();
+    //const scalarField& Tw = film.Tw();
+    const scalarField& rho = film.rho();
+    const scalarField& mu = film.mu();
+    //const scalarField& magSf = film.magSf();
+    const scalarField kappa = film.kappa();
+    const vectorField dU = film.Uw() - film.Us();
+    
+    forAll(htcConvFilm_, cellI)
+    {
+        // Film region density [kg/m3]
+        const scalar rhoc = rho[cellI];
+    
+        // Film region viscosity [Pa.s]
+        const scalar muc = mu[cellI];
+    
+        // Film region thickness [m]
+        const scalar deltac = delta[cellI];
+    
+        // Reynolds number
+        const scalar Rec = rhoc*mag(dU[cellI])*deltac/muc;
+    
+        // thermal conductivity [W/m/K]
+        const scalar kappac = kappa[cellI];
+    
+        // Nusselt number
+        //const scalar Nu = 2.63+0.000143*Rec; //constant Tw
+        const scalar Nu = 3.20+0.000237*Rec; //constant q"
+    
+        // heat transfer coefficient [W/m2/K]
+        const scalar hm = Nu*kappac/(deltac+ROOTVSMALL);
+    
+    //    htcConvFilm_[cellI]=min(hm,5e4);
+        htcConvFilm_[cellI]=min(hm,1e4);//based on minimum film thickness of 0.0002, k=0.6, NU=3.1, h = Nu k / delta
+    }
 }
 
 

@@ -2,7 +2,7 @@
   =========                 |
   \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
    \\    /   O peration     |
-    \\  /    A nd           | Copyright (C) 2011-2013 OpenFOAM Foundation
+    \\  /    A nd           | Copyright (C) 2011-2015 OpenFOAM Foundation
      \\/     M anipulation  |
 -------------------------------------------------------------------------------
 License
@@ -31,8 +31,11 @@ License
 #include "zeroGradientFvPatchFields.H"
 #include "mappedFieldFvPatchField.H"
 #include "mapDistribute.H"
+#include "constants.H"
 
 // Sub-models
+#include "filmThermoModel.H"
+#include "filmViscosityModel.H"
 #include "heatTransferModel.H"
 #include "phaseChangeModel.H"
 #include "massAbsorptionModel.H"
@@ -95,58 +98,24 @@ void thermoSingleLayer::resetPrimaryRegionSourceTerms()
 
 void thermoSingleLayer::correctThermoFields()
 {
-    switch (thermoModel_)
+    rho_ == filmThermo_->rho();
+    mu_ == filmThermo_->mu(); // OpenFOAM version mission this, bug, kvm
+    sigma_ == filmThermo_->sigma();
+    Cp_ == filmThermo_->Cp();
+    kappa_ == filmThermo_->kappa();
+
+    forAll(rho_, cellI)
     {
-        case tmConstant:
-        {
-            const dictionary&
-                constDict(coeffs_.subDict("constantThermoCoeffs"));
-            rho_ == dimensionedScalar(constDict.lookup("rho0"));
-            mu_ == dimensionedScalar(constDict.lookup("mu0"));
-            sigma_ == dimensionedScalar(constDict.lookup("sigma0"));
-            Cp_ == dimensionedScalar(constDict.lookup("Cp0"));
-            kappa_ == dimensionedScalar(constDict.lookup("kappa0"));
-
-            break;
-        }
-        case tmSingleComponent:
-        {
-            const liquidProperties& liq =
-                thermo_.liquids().properties()[liquidId_];
-
-            forAll(rho_, cellI)
-            {
-                const scalar T = T_[cellI];
-                const scalar Ts = max(min(Ts_[cellI],Tmax_),Tmin_);
-                const scalar p = pPrimary_[cellI];
-                rho_[cellI] = liq.rho(p, T);
-                mu_[cellI] = liq.mu(p, T);
-                sigma_[cellI] = liq.sigma(p, T);
-                Cp_[cellI] = liq.Cp(p, T);
-                kappa_[cellI] = liq.K(p, T);
-            }
-
-            rho_.correctBoundaryConditions();
-            // const dictionary&
-            //     constDict(coeffs_.subDict("constantThermoCoeffs"));
-            // mu_ == dimensionedScalar(constDict.lookup("mu0"));
-            // rho_ == dimensionedScalar(constDict.lookup("rho0"));
-            mu_.correctBoundaryConditions();
-            sigma_.correctBoundaryConditions();
-            Cp_.correctBoundaryConditions();
-            kappa_.correctBoundaryConditions();
-
-            break;
-        }
-        default:
-        {
-            FatalErrorIn
-            (
-                "void thermoSingleLayer::"
-                "correctThermoFields()"
-            )   << "Unknown thermoType enumeration" << abort(FatalError);
-        }
+        const scalar Ts = max(min(Ts_[cellI],Tmax_),Tmin_);
+        const scalar p = pPrimary_[cellI];
     }
+
+    rho_.correctBoundaryConditions();
+    mu_.correctBoundaryConditions();
+    sigma_.correctBoundaryConditions();
+    Cp_.correctBoundaryConditions();
+    kappa_.correctBoundaryConditions();
+
 }
 
 
@@ -441,6 +410,9 @@ void thermoSingleLayer::solveEnergy()
          );
     
     correctThermoFields();
+
+    // evaluate viscosity from user-model
+    viscosity_->correct(pPrimary_, T_);
 }
 
 
@@ -451,12 +423,12 @@ thermoSingleLayer::thermoSingleLayer
     const word& modelType,
     const fvMesh& mesh,
     const dimensionedVector& g,
+    const word& regionType,
     const bool readFields
 )
 :
-    kinematicSingleLayer(modelType, mesh, g, false),
+    kinematicSingleLayer(modelType, mesh, g, regionType, false),
     thermo_(mesh.lookupObject<SLGThermo>("SLGThermo")),
-    liquidId_(thermo_.liquidId(coeffs_.lookup("liquid"))),
     Cp_
     (
         IOobject
@@ -681,6 +653,7 @@ thermoSingleLayer::thermoSingleLayer
 
     YPrimary_(),
 
+    viscosity_(filmViscosityModel::New(*this, coeffs(), mu_)),
     htcs_
     (
         heatTransferModel::New(*this, coeffs().subDict("upperSurfaceModels"))
@@ -914,7 +887,7 @@ tmp<volScalarField> thermoSingleLayer::primaryMassTrans() const
 }
 
 
-void thermoSingleLayer::info() const
+void thermoSingleLayer::info()
 {
     kinematicSingleLayer::info();
 
@@ -980,8 +953,7 @@ tmp<DimensionedField<scalar, volMesh> > thermoSingleLayer::Srho
     const label i
 ) const
 {
-    const label vapId =
-        thermo_.carrierId(thermo_.liquids().components()[liquidId_]);
+    const label vapId = thermo_.carrierId(filmThermo_->name());
 
     tmp<DimensionedField<scalar, volMesh> > tSrho
     (

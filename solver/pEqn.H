@@ -1,67 +1,71 @@
-bool closedVolume = false;
-
 rho = thermo.rho();
 
 volScalarField rAU(1.0/UEqn.A());
-surfaceScalarField rhorUAf("(rho*(1|A(U)))", fvc::interpolate(rho*rUA));
-U = rUA*UEqn.H();
+surfaceScalarField rhorAUf("rhorAUf", fvc::interpolate(rho*rAU));
 
-surfaceScalarField phiU
+volVectorField HbyA("HbyA", U);
+HbyA = rAU*UEqn.H();
+
+surfaceScalarField phig(-rhorAUf*ghf*fvc::snGrad(rho)*mesh.magSf());
+
+surfaceScalarField phiHbyA
 (
-    fvc::interpolate(rho)
-   *(
-        (fvc::interpolate(U) & mesh.Sf())
-      + fvc::ddtPhiCorr(rUA, rho, U, phi)
+    "phiHbyA",
+    (
+        (fvc::interpolate(rho*HbyA) & mesh.Sf())
+      + rhorAUf*fvc::ddtCorr(rho, U, phi)
     )
+  + phig
 );
 
-phi = phiU + rhorUAf*fvc::interpolate(rho)*(g & mesh.Sf());
+fvOptions.makeRelative(fvc::interpolate(rho), phiHbyA);
 
-for (int nonOrth=0; nonOrth<=nNonOrthCorr; nonOrth++)
+// Update the fixedFluxPressure BCs to ensure flux consistency
+setSnGrad<fixedFluxPressureFvPatchScalarField>
+(
+    p_rgh.boundaryField(),
+    (
+        phiHbyA.boundaryField()
+      - fvOptions.relative(mesh.Sf().boundaryField() & U.boundaryField())
+       *rho.boundaryField()
+    )/(mesh.magSf().boundaryField()*rhorAUf.boundaryField())
+);
+
+while (pimple.correctNonOrthogonal())
 {
-       surfaceScalarField rhorUAf = fvc::interpolate(rho*rUA);
+    fvScalarMatrix p_rghEqn
+    (
+        fvc::ddt(psi, rho)*gh
+      + fvc::div(phiHbyA)
+      + fvm::ddt(psi, p_rgh)
+      - fvm::laplacian(rhorAUf, p_rgh)
+     ==
+        parcels.Srho()
+      + surfaceFilm.Srho()
+      + fvOptions(psi, p_rgh, rho.name())
+    );
 
-        fvScalarMatrix pEqn
-        (
-            fvm::ddt(psi,p)
-          + fvc::div(phi)
-          - fvm::laplacian(rhorUAf, p)
-         ==
-            parcels.Srho()
-          + surfaceFilm.Srho()
-        );
+    fvOptions.constrain(p_rghEqn);
 
-        closedVolume = p.needReference();
+    p_rghEqn.solve(mesh.solver(p_rgh.select(pimple.finalInnerIter())));
 
-        if (corr == nCorr-1 && nonOrth == nNonOrthCorr)
-        {
-            pEqn.solve(mesh.solver(p.name() + "Final"));
-        }
-        else
-        {
-            pEqn.solve(mesh.solver(p.name()));
-        }
-
-        if (nonOrth == nNonOrthCorr)
-        {
-            phi += pEqn.flux();
-        }
+    if (pimple.finalNonOrthogonalIter())
+    {
+        phi = phiHbyA + p_rghEqn.flux();
+        U = HbyA + rAU*fvc::reconstruct((p_rghEqn.flux() + phig)/rhorAUf);
+        U.correctBoundaryConditions();
+        fvOptions.correct(U);
+    }
 }
 
-DpDt = fvc::DDt(surfaceScalarField("phiU", phi/fvc::interpolate(rho)), p);
+p = p_rgh + rho*gh;
 
 #include "rhoEqn.H"
 #include "compressibleContinuityErrs.H"
 
-U += rUA*fvc::reconstruct((phi - phiU)/rhorUAf);
-U.correctBoundaryConditions();
+K = 0.5*magSqr(U);
 
-// For closed-volume cases adjust the pressure and density levels
-// to obey overall mass continuity
-if (closedVolume)
+if (thermo.dpdt())
 {
-    p +=
-        (initialMass - fvc::domainIntegrate(thermo.psi()*p))
-       /fvc::domainIntegrate(thermo.psi());
-    rho = thermo.rho();
+    dpdt = fvc::ddt(p);
 }

@@ -135,6 +135,22 @@ void Foam::inclinedFilmNusseltInletVelocityFvPatchVectorField::updateCoeffs()
 
     const vectorField n(patch().nf());
 
+    // TODO: currently re-evaluating the entire gTan field to return this patch
+    const scalarField gTan(film.gTan()().boundaryField()[patchI] & n);
+
+    if (patch().size() && (max(mag(gTan)) < SMALL))
+    {
+        WarningIn
+        (
+            "void Foam::inclinedFilmNusseltInletVelocityFvPatchVectorField::"
+            "updateCoeffs()"
+        )
+            << "Tangential gravity component is zero.  This boundary condition "
+            << "is designed to operate on patches inclined with respect to "
+            << "gravity"
+            << endl;
+    }
+
     const volVectorField& nHat = film.nHat();
 
     const vectorField nHatp(nHat.boundaryField()[patchI].patchInternalField());
@@ -161,23 +177,7 @@ void Foam::inclinedFilmNusseltInletVelocityFvPatchVectorField::updateCoeffs()
     const volScalarField& rho = film.rho();
     const scalarField rhop(rho.boundaryField()[patchI].patchInternalField());
 
-    const scalarField Re(max(G, 0.0)/mup);
-
-    // TODO: currently re-evaluating the entire gTan field to return this patch
-    const scalarField gTan(film.gTan()().boundaryField()[patchI] & n);
-
-    if (patch().size() && (max(mag(gTan)) < SMALL))
-    {
-        WarningIn
-        (
-            "void Foam::inclinedFilmNusseltInletVelocityFvPatchVectorField::"
-            "updateCoeffs()"
-        )
-            << "Tangential gravity component is zero.  This boundary condition "
-            << "is designed to operate on patches inclined with respect to "
-            << "gravity"
-            << endl;
-    }
+    const scalarField Re(max(G, scalar(0.0))/mup);
 
     operator==(-n*pow(-gTan*mup/(3.0*rhop), 0.33333333)*pow(Re, 0.6666666));
 

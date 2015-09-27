@@ -113,7 +113,7 @@ public:
         //- Construct from surface film model and dictionary
         rampingRadiation
         (
-            const surfaceFilmModel& owner,
+            surfaceFilmModel& owner,
             const dictionary& dict
         );
 

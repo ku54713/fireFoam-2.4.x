@@ -52,7 +52,7 @@ addToRunTimeSelectionTable
 
 constantRadiation::constantRadiation
 (
-    const surfaceFilmModel& owner,
+    surfaceFilmModel& owner,
     const dictionary& dict
 )
 :
@@ -83,7 +83,7 @@ constantRadiation::constantRadiation
         dimensionedScalar("one", dimless, 1.0)//,
         // zeroGradientFvPatchScalarField::typeName
     ),
-    absorptivity_(readScalar(coeffs_.lookup("absorptivity"))),
+    absorptivity_(readScalar(coeffDict_.lookup("absorptivity"))),
     Qin_
     (
         IOobject
@@ -98,8 +98,8 @@ constantRadiation::constantRadiation
         dimensionedScalar("zero", dimMass/pow3(dimTime), 0.0),
         zeroGradientFvPatchScalarField::typeName
         ),
-    timeStart_(readScalar(coeffs_.lookup("timeStart"))),
-    duration_(readScalar(coeffs_.lookup("duration")))
+    timeStart_(readScalar(coeffDict_.lookup("timeStart"))),
+    duration_(readScalar(coeffDict_.lookup("duration")))
 {
     mask_ = pos(mask_ - 0.5);
 }

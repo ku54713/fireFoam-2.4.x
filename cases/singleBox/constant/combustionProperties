@@ -25,6 +25,8 @@ eddyDissipationModelCoeffs
     C_EDC       4.0;
     C_Diff      0; //0.5  //small number to turn off
     C_Stiff     1; //0.5e-10;    //small number to turn off
+}
+
 active  on;
 
 infinitelyFastChemistryCoeffs
@@ -32,7 +34,6 @@ infinitelyFastChemistryCoeffs
     semiImplicit no;
     C       5.0;
 }
-
 
 
 // ************************************************************************* //

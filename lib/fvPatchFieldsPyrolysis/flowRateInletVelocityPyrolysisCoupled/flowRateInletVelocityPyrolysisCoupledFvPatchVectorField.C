@@ -197,9 +197,9 @@ void Foam::flowRateInletVelocityPyrolysisCoupledFvPatchVectorField::updateCoeffs
     const surfaceScalarField& phiName =
         db().lookupObject<surfaceScalarField>(phiName_);
 
-    scalarField U = -phi/patch().magSf();
+    scalarField U(-phi/patch().magSf());
 
-    vectorField n = patch().nf();
+    vectorField n(patch().nf());
 
     if (phiName.dimensions() == dimVelocity*dimArea)
     {
@@ -216,7 +216,7 @@ void Foam::flowRateInletVelocityPyrolysisCoupledFvPatchVectorField::updateCoeffs
 
         if (debug)
         {
-            scalar phi = gSum(rhop*(*this) & patch().Sf());
+            scalar phi(gSum(rhop*(*this) & patch().Sf()));
             Info<< patch().boundaryMesh().mesh().name() << ':'
                 << patch().name() << ':'
                 << this->dimensionedInternalField().name() << " <- "

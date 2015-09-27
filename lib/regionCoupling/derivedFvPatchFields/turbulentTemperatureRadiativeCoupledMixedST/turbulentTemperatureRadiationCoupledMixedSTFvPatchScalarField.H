@@ -182,7 +182,7 @@ public:
         //- Previous iteration mode
         operationMode oldMode_;
 
-        static const NamedEnum<operationMode, 4> operationModeNames;
+        // static const NamedEnum<operationMode, 4> operationModeNames;
 
     //- Runtime type information
     TypeName("compressible::turbulentTemperatureRadiationCoupledMixedST");

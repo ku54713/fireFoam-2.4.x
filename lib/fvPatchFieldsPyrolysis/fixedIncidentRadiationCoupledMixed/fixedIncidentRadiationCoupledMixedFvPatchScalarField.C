@@ -216,7 +216,7 @@ fixedIncidentRadiationCoupledMixedFvPatchScalarField::K() const
         const symmTensorField& KWall =
             patch().lookupPatchField<volSymmTensorField, scalar>(KName_);
 
-        vectorField n = patch().nf();
+        vectorField n(patch().nf());
 
         return n & KWall & n;
     }
@@ -260,7 +260,7 @@ updateCoeffs()
     //const mapDistribute& distMap = mpp.map();
     //const mappedPatchBase& distMap = mpp;
 
-    scalarField intFld = patchInternalField();
+    scalarField intFld(patchInternalField());
 
     const fixedIncidentRadiationCoupledMixedFvPatchScalarField&
     nbrField =  refCast
@@ -273,7 +273,7 @@ updateCoeffs()
         );
 
     // Swap to obtain full local values of neighbour internal field
-    scalarField nbrIntFld = nbrField.patchInternalField();
+    scalarField nbrIntFld(nbrField.patchInternalField());
     mpp.distribute(nbrIntFld);
 
     scalarList radField(nbrPatch.size(),0.0);  
@@ -311,7 +311,7 @@ updateCoeffs()
                 ]
             );
 
-        scalarField nbrTotalFlux = -radField;
+        scalarField nbrTotalFlux(-radField);
 
 /*
         Twall =
@@ -322,7 +322,7 @@ updateCoeffs()
         //hard code for now.
         const scalar sigma_ = 5.67e-8;
 
-        scalarField gradT_ = (QrIncident_*temissivity-temissivity*sigma_*pow(intFld,4))/K();
+        scalarField gradT_((QrIncident_*temissivity-temissivity*sigma_*pow(intFld,4))/K());
 
         forAll(*this, i)
         {

@@ -142,11 +142,11 @@
             IOobject::NO_READ,
             IOobject::NO_WRITE
         ),
-        phi*fvc::interpolate(hs) 
+        phi*fvc::interpolate(thermo.he()) 
     );
 
     // create fileds for surface integration of chemical enthalpy flux
-    volScalarField hc = thermo.hc(); 
+    volScalarField hc(thermo.hc()); 
     surfaceScalarField phiHc
     (
         IOobject
@@ -161,7 +161,7 @@
     );
 
     // create fileds for surface integration of total enthalpy flux
-    volScalarField h = hc + hs;
+    volScalarField h(hc + thermo.he());
     surfaceScalarField phiH
     (
         IOobject

@@ -89,7 +89,7 @@ void Foam::NoSurfaceFilm<CloudType>::setParcelProperties
 
 
 template<class CloudType>
-void Foam::NoSurfaceFilm<CloudType>::info(Ostream&) const
+void Foam::NoSurfaceFilm<CloudType>::info(Ostream&)
 {
     // do nothing
 }

@@ -142,7 +142,7 @@ void Foam::filmHeightInletVelocityFvPatchVectorField::updateCoeffs()
                                        <regionModels::surfaceFilmModels::surfaceFilmModel>
                                        ("surfaceFilmProperties")
                     );
-            volVectorField gTan2=film.gTan();
+            volVectorField gTan2(film.gTan());
             const label patchI = patch().index();
             gTan2.boundaryField()[patchI];
             const fvPatchField<scalar>& mup =

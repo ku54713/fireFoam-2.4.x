@@ -5,34 +5,14 @@
       + turbulence->divDevRhoReff(U)
      ==
         parcels.SU(U)
+      + fvOptions(rho, U)
     );
-     
-    if (oCorr == nOuterCorr-1)
-    {
-        UEqn.relax(1);
-    }
-    else 
-    {
-        UEqn.relax();
-    }
-     
-    if (oCorr == nOuterCorr - 1)
-    {
-        solve
-         (
-             UEqn
-           ==
-             fvc::reconstruct
-             (
-                (
-                  - ghf*fvc::snGrad(rho)
-                  - fvc::snGrad(p_rgh)
-                )*mesh.magSf()
-            ),
-            mesh.solver("UFinal")
-        );
-    }
-    else
+
+    UEqn.relax();
+
+    fvOptions.constrain(UEqn);
+
+    if (pimple.momentumPredictor())
     {
         solve
         (
@@ -46,4 +26,7 @@
                 )*mesh.magSf()
             )
         );
+
+        fvOptions.correct(U);
+        K = 0.5*magSqr(U);
     }

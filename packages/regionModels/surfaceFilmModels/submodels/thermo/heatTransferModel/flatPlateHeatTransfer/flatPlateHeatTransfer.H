@@ -92,7 +92,7 @@ public:
         //- Construct from surface film model and dictionary
         flatPlateHeatTransfer
         (
-            const surfaceFilmModel& owner,
+            surfaceFilmModel& owner,
             const dictionary& dict
         );
 

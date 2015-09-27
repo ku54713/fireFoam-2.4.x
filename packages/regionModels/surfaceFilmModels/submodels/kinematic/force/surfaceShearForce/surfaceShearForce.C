@@ -47,12 +47,12 @@ addToRunTimeSelectionTable(force, surfaceShearForce, dictionary);
 
 surfaceShearForce::surfaceShearForce
 (
-    const surfaceFilmModel& owner,
+    surfaceFilmModel& owner,
     const dictionary& dict
 )
 :
-    force(typeName, owner, dict),
-    Cf_(readScalar(coeffs_.lookup("Cf")))
+    force(owner),
+    Cf_(readScalar(coeffDict_.lookup("Cf")))
 {}
 
 

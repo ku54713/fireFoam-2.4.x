@@ -334,26 +334,26 @@ addLayersControls
     //          - angle to nearest surface < slipFeatureAngle (see below)
     layers
     {
-        sphere.stl_firstSolid
-        {
-            nSurfaceLayers 1;
+        // sphere.stl_firstSolid
+        // {
+        //     nSurfaceLayers 1;
 
-        }
-        maxY
-        {
-            nSurfaceLayers 1;
-            // Per patch layer data
-            expansionRatio      1.3;
-            finalLayerThickness 0.3;
-            minThickness        0.1;
-        }
+        // }
+        // maxY
+        // {
+        //     nSurfaceLayers 1;
+        //     // Per patch layer data
+        //     expansionRatio      1.3;
+        //     finalLayerThickness 0.3;
+        //     minThickness        0.1;
+        // }
 
         // Disable any mesh shrinking and layer addition on any point of
         // a patch by setting nSurfaceLayers to 0
-        frozenPatches
-        {
-            nSurfaceLayers 0;
-        }
+        // frozenPatches
+        // {
+        //     nSurfaceLayers 0;
+        // }
     }
 
     // If points get not extruded do nGrow layers of connected faces that are

@@ -1,27 +1,18 @@
 /*---------------------------------------------------------------------------*\
 | =========                 |                                                 |
 | \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
-|  \\    /   O peration     | Version:  1.4                                   |
-|   \\  /    A nd           | Web:      http://www.openfoam.org               |
+|  \\    /   O peration     | Version:  2.4.x                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
 |    \\/     M anipulation  |                                                 |
 \*---------------------------------------------------------------------------*/
-
-// FoamX Case Dictionary.
-
 FoamFile
 {
-    version         2.0;
-    format          ascii;
-
-    root            "";
-    case            "";
-    instance        "";
-    local           "";
-
-    class           dictionary;
-    object          controlDict;
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      controlDict;
 }
-
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 application     fireFoam;
@@ -102,12 +93,12 @@ functions
         outputInterval  1;
         probeLocations
         (
-            ( 0.0001 0.1 0.8 )
-            ( 0.0001 0.1 1.0 )
-            ( 0.0001 0.1 1.5 )
-            ( 0.1 0.1 0.8 )
-            ( 0.1 0.1 1.0 )
-            ( 0.1 0.1 1.5 )
+            ( 0.0001 0.8 0.1 )
+            ( 0.0001 1.0 0.1 )
+            ( 0.0001 1.5 0.1 )
+            ( 0.1    0.8 0.1 )
+            ( 0.1    1.0 0.1 )
+            ( 0.1    1.5 0.1 )
         );
         fields
         (
@@ -126,7 +117,7 @@ functions
         region        panelRegion;
         probeLocations
         (
-            ( -0.0001 0.1 0.225 )
+            ( -0.0001 0.225 0.1 )
         );
         fields
         (
@@ -145,10 +136,10 @@ functions
         patchName      region0_to_panelRegion_panel;
         probeLocations
         (
-            ( 0 0.1 0.225 )
-            ( 0 0.1 0.325 )
-            ( 0 0.1 0.425 )
-            ( 0 0.1 0.525 )
+            ( 0 0.225 0.1 )
+            ( 0 0.325 0.1 )
+            ( 0 0.425 0.1 )
+            ( 0 0.525 0.1 )
         );
         fields
         (
@@ -166,10 +157,10 @@ functions
         patchName      region0_to_panelRegion_panel;
         probeLocations
         (
-            ( 0 0.1 0.225 )
-            ( 0 0.1 0.325 )
-            ( 0 0.1 0.425 )
-            ( 0 0.1 0.525 )
+            ( 0 0.225 0.1 )
+            ( 0 0.325 0.1 )
+            ( 0 0.425 0.1 )
+            ( 0 0.525 0.1 )
         );
         fields
         (

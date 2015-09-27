@@ -2,7 +2,7 @@
   =========                 |
   \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
    \\    /   O peration     |
-    \\  /    A nd           | Copyright (C) 2011-2013 OpenFOAM Foundation
+    \\  /    A nd           | Copyright (C) 2011-2014 OpenFOAM Foundation
      \\/     M anipulation  |
 -------------------------------------------------------------------------------
 License
@@ -24,6 +24,8 @@ License
 \*---------------------------------------------------------------------------*/
 
 #include "CloudFunctionObject.H"
+#include "cloud.H"
+#include "Pstream.H"
 
 // * * * * * * * * * * * Protected Member Functions  * * * * * * * * * * * * //
 #define DEBUG(x) {                                              \
@@ -56,12 +58,9 @@ void Foam::CloudFunctionObject<CloudType>::write()
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
 template<class CloudType>
-Foam::CloudFunctionObject<CloudType>::CloudFunctionObject
-(
-    CloudType& owner
-)
+Foam::CloudFunctionObject<CloudType>::CloudFunctionObject(CloudType& owner)
 :
-    SubModelBase<CloudType>(owner),
+    CloudSubModelBase<CloudType>(owner),
     outputDir_()
 {}
 
@@ -72,23 +71,25 @@ Foam::CloudFunctionObject<CloudType>::CloudFunctionObject
     const dictionary& dict,
     CloudType& owner,
     const word& modelName,
-    const word& objectType    
+    const word& objectType
 )
 :
-    SubModelBase<CloudType>(modelName, owner, dict, typeName, objectType),
+    CloudSubModelBase<CloudType>(modelName, owner, dict, typeName, objectType),
     outputDir_(owner.mesh().time().path())
 {
+    const fileName relPath =
+        "postProcessing"/cloud::prefix/owner.name()/this->modelName();
+
+
     if (Pstream::parRun())
     {
         // Put in undecomposed case (Note: gives problems for
         // distributed data running)
-        outputDir_ =
-            outputDir_/".."/"postProcessing"/cloud::prefix/owner.name()/this->modelName();
+        outputDir_ = outputDir_/".."/relPath;
     }
     else
     {
-        outputDir_ =
-            outputDir_/"postProcessing"/cloud::prefix/owner.name()/this->modelName();
+        outputDir_ = outputDir_/relPath;
     }
 }
 
@@ -99,7 +100,8 @@ Foam::CloudFunctionObject<CloudType>::CloudFunctionObject
     const CloudFunctionObject<CloudType>& ppm
 )
 :
-    SubModelBase<CloudType>(ppm)
+    CloudSubModelBase<CloudType>(ppm),
+    outputDir_(ppm.outputDir_)
 {}
 
 
@@ -132,7 +134,7 @@ void Foam::CloudFunctionObject<CloudType>::postEvolve()
 template<class CloudType>
 void Foam::CloudFunctionObject<CloudType>::postMove
 (
-    const typename CloudType::parcelType&,
+    typename CloudType::parcelType&,
     const label,
     const scalar,
     const point&,
@@ -173,6 +175,13 @@ template<class CloudType>
 const Foam::fileName& Foam::CloudFunctionObject<CloudType>::outputDir() const
 {
     return outputDir_;
+}
+
+
+template<class CloudType>
+Foam::fileName Foam::CloudFunctionObject<CloudType>::outputTimeDir() const
+{
+    return outputDir_/this->owner().time().timeName();
 }
 
 

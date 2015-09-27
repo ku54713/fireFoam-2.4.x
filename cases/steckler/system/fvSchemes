@@ -1,7 +1,7 @@
 /*--------------------------------*- C++ -*----------------------------------*\
 | =========                 |                                                 |
 | \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
-|  \\    /   O peration     | Version:  2.2.x                                 |
+|  \\    /   O peration     | Version:  2.4.x                                 |
 |   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
 |    \\/     M anipulation  |                                                 |
 \*---------------------------------------------------------------------------*/
@@ -23,7 +23,6 @@ ddtSchemes
 gradSchemes
 {
     default         Gauss linear;
-    grad(p)         Gauss linear;
 }
 
 divSchemes
@@ -34,7 +33,8 @@ divSchemes
     div(phiU,p)     Gauss linear;
     div(phi,h)     Gauss upwind;
     div(phi,k)      Gauss upwind;
-    div(phi,Yi_hs) Gauss multivariateSelection
+    div(phi,K)      Gauss limitedLinear 1;
+    div(phi,Yi_h) Gauss multivariateSelection
     {
         O2              limitedLinear01 1;
         N2              limitedLinear01 1;
@@ -44,7 +44,7 @@ divSchemes
         CH2O            limitedLinear01 1;
         H2O             limitedLinear01 1;
         CO2             limitedLinear01 1;
-        h               limitedLinear 1;
+        h               limitedLinear   1;
     };
     div(phi,epsilon) Gauss upwind;
     div(U)          Gauss linear;

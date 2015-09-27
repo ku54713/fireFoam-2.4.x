@@ -94,8 +94,8 @@ void reactingOneDim21CharOxi::updateCharOxi()
 
         fvPatchScalarField O2 = nbrPatch.lookupPatchField<volScalarField, scalar>("O2");
         scalarField alpha = nbrPatch.lookupPatchField<volScalarField, scalar>("thermo:alpha");    //for now use molecular alpha
-        scalarField O2Int = O2.patchInternalField();
-        scalarField alphaDelta = alpha * nbrPatch.deltaCoeffs();
+        scalarField O2Int(O2.patchInternalField());
+        scalarField alphaDelta(alpha * nbrPatch.deltaCoeffs());
 
         mpp.distribute(O2);
         mpp.distribute(O2Int);
@@ -104,7 +104,7 @@ void reactingOneDim21CharOxi::updateCharOxi()
         phiO2p = - alphaDelta * (O2Int - 0.0) * patch.magSf(); //[kg/s] negative
         phiCO2p = - phiO2p * mWCO2 / mWO2;  // positive, same as phiGas
 
-        scalarField deltaMO2 = - phiO2p * time_.deltaT().value();   //[kg]
+        scalarField deltaMO2(- phiO2p * time_.deltaT().value());   //[kg]
 
         const scalarField& cellV = regionMesh().V();
 

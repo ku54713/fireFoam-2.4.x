@@ -1,7 +1,7 @@
 /*--------------------------------*- C++ -*----------------------------------*\
 | =========                 |                                                 |
 | \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
-|  \\    /   O peration     | Version:  2.2.x                                 |
+|  \\    /   O peration     | Version:  2.4.x                                 |
 |   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
 |    \\/     M anipulation  |                                                 |
 \*---------------------------------------------------------------------------*/
@@ -104,6 +104,8 @@ subModels
 
     compositionModel singlePhaseMixture;
 
+    stochasticCollisionModel none;
+
     phaseChangeModel none;
     
     postProcessingModel none;
@@ -149,13 +151,13 @@ subModels
     
     singlePhaseMixtureCoeffs
     {
-    phases
-    (
-        liquid
-        {
-            H2O 1;
-        }
-    );
+        phases
+        (
+            liquid
+            {
+                H2O 1;
+            }
+        );
     }
     
     liquidEvaporationCoeffs
@@ -205,6 +207,7 @@ cloudFunctions
 
 cloudFunctions
 {
+    // include "fingerTubes";
     particleCollectorFmg
     {
 

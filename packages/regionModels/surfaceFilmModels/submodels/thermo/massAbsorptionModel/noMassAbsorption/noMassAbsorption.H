@@ -74,7 +74,7 @@ public:
     // Constructors
 
         //- Construct from surface film model
-        noMassAbsorption(const surfaceFilmModel& owner, const dictionary& dict);
+        noMassAbsorption(surfaceFilmModel& owner, const dictionary& dict);
 
 
     //- Destructor

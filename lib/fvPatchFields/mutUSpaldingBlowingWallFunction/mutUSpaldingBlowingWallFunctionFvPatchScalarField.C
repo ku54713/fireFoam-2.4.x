@@ -55,7 +55,7 @@ tmp<scalarField> mutUSpaldingBlowingWallFunctionFvPatchScalarField::calcMut() co
     //const scalarField& phiw = turbModel.phi().boundaryField()[patchi];
     const scalarField& phiw = patch().lookupPatchField<surfaceScalarField, scalar>("phi");
 
-    scalarField fuelMassFlux = - phiw/patch().magSf()*rPhi_*1000.0; //convert to g/m2/s, and back to pyrolysate
+    scalarField fuelMassFlux( - phiw/patch().magSf()*rPhi_*1000.0); //convert to g/m2/s, and back to pyrolysate
 
     return max
     (

@@ -1,7 +1,7 @@
 /*--------------------------------*- C++ -*----------------------------------*\
 | =========                 |                                                 |
 | \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
-|  \\    /   O peration     | Version:  2.2.x                                 |
+|  \\    /   O peration     | Version:  2.4.x                                 |
 |   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
 |    \\/     M anipulation  |                                                 |
 \*---------------------------------------------------------------------------*/
@@ -13,6 +13,7 @@ FoamFile
     location    "system";
     object      fvSolution;
 }
+
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 solvers
@@ -23,7 +24,14 @@ solvers
         preconditioner  DIC;
         tolerance       1e-05;
         relTol          0;
-    }
+    };
+
+    rhoFinal
+    {
+        $rho;
+        tolerance       1e-6;
+        relTol          0;
+    };
 
     p_rgh
     {
@@ -67,6 +75,13 @@ solvers
         relTol          0;
     };
 
+    kFinal 
+    {
+        $k;
+        tolerance       1e-8;
+        relTol          0;
+    };
+
 
     p
     {
@@ -91,6 +106,12 @@ solvers
         relTol          0;
     };
 
+    "hFinal"
+    {
+        $h;
+        tolerance       1e-8;
+        relTol          0;
+    };
 
     Ii
     {
@@ -112,16 +133,9 @@ solvers
         relTol          0;
     }
 
-
 }
 
-MULES
-{
-    bMULES	no;//yes;
-    bHsMULES	no;//yes;
-}
-
-PISO
+PIMPLE
 {
     momentumPredictor yes;
     nOuterCorrectors  1;//3;
@@ -136,6 +150,5 @@ relaxationFactors
     hs       0.9;
     k        0.9;
 }
-
 
 // ************************************************************************* //

@@ -73,15 +73,15 @@ scalar standardPhaseChange::Sh
 
 standardPhaseChange::standardPhaseChange
 (
-    const surfaceFilmModel& owner,
+    surfaceFilmModel& owner,
     const dictionary& dict
 )
 :
     phaseChangeModel(typeName, owner, dict),
-    deltaMin_(readScalar(coeffs_.lookup("deltaMin"))),
-    L_(readScalar(coeffs_.lookup("L"))),
-    TbFactor_(coeffs_.lookupOrDefault<scalar>("TbFactor", 1.1)),
-    scaling_(coeffs_.lookupOrDefault<scalar>("scaling",1.0))
+    deltaMin_(readScalar(coeffDict_.lookup("deltaMin"))),
+    L_(readScalar(coeffDict_.lookup("L"))),
+    TbFactor_(coeffDict_.lookupOrDefault<scalar>("TbFactor", 1.1)),
+    scaling_(coeffDict_.lookupOrDefault<scalar>("scaling",1.0))
 {
     Info << "Mass transfer convective scaling set to " << scaling_ << nl;
 }
@@ -103,13 +103,12 @@ void standardPhaseChange::correctModel
     scalarField& dEnergy
 )
 {
-    const thermoSingleLayer& film = refCast<const thermoSingleLayer>(owner_);
+    const thermoSingleLayer& film = filmType<thermoSingleLayer>();
 
     // set local thermo properties
     const SLGThermo& thermo = film.thermo();
-    const label liqId = film.liquidId();
-    const liquidProperties& liq = thermo.liquids().properties()[liqId];
-    const label vapId = thermo.carrierId(thermo.liquids().components()[liqId]);
+    const filmThermoModel& filmThermo = film.filmThermo();
+    const label vapId = thermo.carrierId(filmThermo.name());
 
     // retrieve fields from film model
     const scalarField& delta = film.delta();
@@ -145,7 +144,7 @@ void standardPhaseChange::correctModel
             const scalar pc = max(min(pInf[cellI],101325*1.1),101325*0.9);
 
             // calculate the boiling temperature
-            const scalar Tb = liq.pvInvert(pc);
+            const scalar Tb = filmThermo.Tb(pc);
             // const scalar Tb = 374.8;
 
             // estimate surface temperature based on energy balance
@@ -160,16 +159,16 @@ void standardPhaseChange::correctModel
             const scalar Tloc = min(TbFactor_*Tb, max(200.0, Tsurface));
 
             // saturation pressure [Pa]
-            const scalar pSat = liq.pv(pc, Tloc);
+            const scalar pSat = filmThermo.pv(pc, Tloc);
 
             // latent heat [J/kg]
-            const scalar hVap = liq.hl(pc, Tloc);
+            const scalar hVap = filmThermo.hl(pc, Tloc);
 
             // calculate mass transfer
             if (pSat >= 0.95*pc)
             {
                 // boiling
-                const scalar Cp = liq.Cp(pc, Tloc);
+                const scalar Cp = filmThermo.Cp(pc, Tloc);
                 const scalar Tcorr = 0.25*max(0.0, Tsurface - Tb);
                 // const scalar Tcorr = 0.5*max(0.0, Tloc - Tb);
                 const scalar qCorr = limMass[cellI]*Cp*(Tcorr);
@@ -191,13 +190,13 @@ void standardPhaseChange::correctModel
                 const scalar Wvap = thermo.carrier().W(vapId);
 
                 // molecular weight of liquid [kg/kmol]
-                const scalar Wliq = liq.W();
+                const scalar Wliq = filmThermo.W();
 
                 // vapour mass fraction at interface
                 const scalar Ys = Wliq*pSat/(Wliq*pSat + Wvap*(pc - pSat));
 
                 // vapour diffusivity [m2/s]
-                const scalar Dab = liq.D(pc, Tloc);
+                const scalar Dab = filmThermo.D(pc, Tloc);
 
                 // Schmidt number
                 const scalar Sc = muInfc/(rhoInfc*(Dab + ROOTVSMALL));

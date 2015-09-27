@@ -152,7 +152,7 @@ void Foam::inclinedFilmNusseltHeightFvPatchScalarField::updateCoeffs()
 
     if (patch().size() && (max(mag(gTan)) < SMALL))
     {
-       WarningIn
+        WarningIn
         (
             "void Foam::inclinedFilmNusseltHeightFvPatchScalarField::"
             "updateCoeffs()"
@@ -160,7 +160,7 @@ void Foam::inclinedFilmNusseltHeightFvPatchScalarField::updateCoeffs()
             << "Tangential gravity component is zero.  This boundary condition "
             << "is designed to operate on patches inclined with respect to "
             << "gravity"
-            << nl;
+            << endl;
     }
 
     const volScalarField& mu = film.mu();

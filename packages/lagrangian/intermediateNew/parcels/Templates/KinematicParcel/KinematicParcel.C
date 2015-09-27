@@ -2,7 +2,7 @@
   =========                 |
   \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
    \\    /   O peration     |
-    \\  /    A nd           | Copyright (C) 2011-2013 OpenFOAM Foundation
+    \\  /    A nd           | Copyright (C) 2011-2014 OpenFOAM Foundation
      \\/     M anipulation  |
 -------------------------------------------------------------------------------
 License
@@ -27,6 +27,12 @@ License
 #include "forceSuSp.H"
 #include "IntegrationScheme.H"
 #include "meshTools.H"
+
+// * * * * * * * * * * * * * * Static Data Members * * * * * * * * * * * * * //
+
+template<class ParcelType>
+Foam::label Foam::KinematicParcel<ParcelType>::maxTrackAttempts = 1;
+
 
 // * * * * * * * * * * *  Protected Member Functions * * * * * * * * * * * * //
 
@@ -213,9 +219,6 @@ Foam::KinematicParcel<ParcelType>::KinematicParcel
     d_(p.d_),
     dTarget_(p.dTarget_),
     U_(p.U_),
-    f_(p.f_),
-    angularMomentum_(p.angularMomentum_),
-    torque_(p.torque_),
     rho_(p.rho_),
     age_(p.age_),
     tTurb_(p.tTurb_),
@@ -240,9 +243,6 @@ Foam::KinematicParcel<ParcelType>::KinematicParcel
     d_(p.d_),
     dTarget_(p.dTarget_),
     U_(p.U_),
-    f_(p.f_),
-    angularMomentum_(p.angularMomentum_),
-    torque_(p.torque_),
     rho_(p.rho_),
     age_(p.age_),
     tTurb_(p.tTurb_),
@@ -271,13 +271,18 @@ bool Foam::KinematicParcel<ParcelType>::move
 
     const polyMesh& mesh = td.cloud().pMesh();
     const polyBoundaryMesh& pbMesh = mesh.boundaryMesh();
-    const scalarField& V = mesh.cellVolumes();
+    const scalarField& cellLengthScale = td.cloud().cellLengthScale();
     const scalar maxCo = td.cloud().solution().maxCo();
 
     scalar tEnd = (1.0 - p.stepFraction())*trackTime;
-    const scalar dtMax = tEnd;
+    scalar dtMax = trackTime;
+    if (td.cloud().solution().transient())
+    {
+        dtMax *= maxCo;
+    }
 
-    bool moving = true;
+    bool tracking = true;
+    label nTrackingStalled = 0;
 
     while (td.keepParticle && !td.switchProcessor && tEnd > ROOTVSMALL)
     {
@@ -293,10 +298,10 @@ bool Foam::KinematicParcel<ParcelType>::move
         const label cellI = p.cell();
 
         const scalar magU = mag(U_);
-        if (p.active() && moving && (magU > ROOTVSMALL))
+        if (p.active() && tracking && (magU > ROOTVSMALL))
         {
             const scalar d = dt*magU;
-            const scalar dCorr = min(d, maxCo*cbrt(V[cellI]));
+            const scalar dCorr = min(d, maxCo*cellLengthScale[cellI]);
             dt *=
                 dCorr/d
                *p.trackToFace(p.position() + dCorr*U_/magU, td);
@@ -306,19 +311,37 @@ bool Foam::KinematicParcel<ParcelType>::move
 
         scalar newStepFraction = 1.0 - tEnd/trackTime;
 
-        if
-        (
-            mag(p.stepFraction() - newStepFraction)
-          < particle::minStepFractionTol
-        )
+        if (tracking)
         {
-            moving = false;
+            if
+            (
+                mag(p.stepFraction() - newStepFraction)
+              < particle::minStepFractionTol
+            )
+            {
+                nTrackingStalled++;
+
+                if (nTrackingStalled > maxTrackAttempts)
+                {
+                    tracking = false;
+                }
+            }
+            else
+            {
+                nTrackingStalled = 0;
+            }
         }
 
         p.stepFraction() = newStepFraction;
 
+        bool calcParcel = true;
+        if (!tracking && td.cloud().solution().steadyState())
+        {
+            calcParcel = false;
+        }
+
         // Avoid problems with extremely small timesteps
-        if (dt > ROOTVSMALL)
+        if ((dt > ROOTVSMALL) && calcParcel)
         {
             // Update cell based properties
             p.setCellValues(td, dt, cellI);
@@ -452,12 +475,6 @@ void Foam::KinematicParcel<ParcelType>::transformProperties(const tensor& T)
     ParcelType::transformProperties(T);
 
     U_ = transform(T, U_);
-
-    f_ = transform(T, f_);
-
-    angularMomentum_ = transform(T, angularMomentum_);
-
-    torque_ = transform(T, torque_);
 }
 
 

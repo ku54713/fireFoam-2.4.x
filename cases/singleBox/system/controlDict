@@ -58,7 +58,7 @@ maxDeltaT       0.1;
 libs
 (
     "libfvPatchFieldsPyrolysis.so"
-    "libIOadiosWrite.so"
+    // "libIOadiosWrite.so"
 );
 
 functions
@@ -587,46 +587,46 @@ functions
 //
 //    }
 
-    adiosData
-    {
-        // Write the solution (Eulerian and Lagrangian fields)
-        // into an ADIOS container
-        type                adiosWrite;
-        
-        // Where to load it from
-        functionObjectLibs  ( "libIOadiosWrite.so" );
-        
-        // Volume fields to write
-        objectNames         ( U p T );
-        
-        // Kinematic clouds to write (leave blank to skip)
-        cloudNames          (  );
-        
-        // Attributes to write for particles. Valid choices are:
-        //  - origProc        = Original process (from where it was injected)
-        //  - origId          = ID on orignal process
-        //  - cell            = Current cell (on local process)
-        //  - currProc        = Current process
-        //  - rho             = Particle density
-        //  - d               = Particle diameter
-        //  - age             = Particle age
-        //  - position        = Position in space
-        //  - U               = Particle velocity
-        //  - Us              = Slip velocity Us = U - Uc
-        cloudAttribs        (  );
-        
+    // adiosData
+    // {
+    //     // Write the solution (Eulerian and Lagrangian fields)
+    //     // into an ADIOS container
+    //     type                adiosWrite;
+    //     
+    //     // Where to load it from
+    //     functionObjectLibs  ( "libIOadiosWrite.so" );
+    //     
+    //     // Volume fields to write
+    //     objectNames         ( U p T );
+    //     
+    //     // Kinematic clouds to write (leave blank to skip)
+    //     cloudNames          (  );
+    //     
+    //     // Attributes to write for particles. Valid choices are:
+    //     //  - origProc        = Original process (from where it was injected)
+    //     //  - origId          = ID on orignal process
+    //     //  - cell            = Current cell (on local process)
+    //     //  - currProc        = Current process
+    //     //  - rho             = Particle density
+    //     //  - d               = Particle diameter
+    //     //  - age             = Particle age
+    //     //  - position        = Position in space
+    //     //  - U               = Particle velocity
+    //     //  - Us              = Slip velocity Us = U - Uc
+    //     cloudAttribs        (  );
+    //     
 
-        // Output I/O method (e.g. MPI (default), POSIX, MPI_AGGREGATE)
-        // run 'adios_config -m' to see available methods
-        adiosMethod        MPI;
+    //     // Output I/O method (e.g. MPI (default), POSIX, MPI_AGGREGATE)
+    //     // run 'adios_config -m' to see available methods
+    //     adiosMethod        MPI;
 
-        // Parameters for the selected method, default = ""
-        methodparams       "verbose=4";
-        
-        chunkSize           0;
-        // Write interval (in number of iterations)
-        writeInterval       5;
-    }
+    //     // Parameters for the selected method, default = ""
+    //     methodparams       "verbose=4";
+    //     
+    //     chunkSize           0;
+    //     // Write interval (in number of iterations)
+    //     writeInterval       5;
+    // }
 
 );
 // ************************************************************************* //

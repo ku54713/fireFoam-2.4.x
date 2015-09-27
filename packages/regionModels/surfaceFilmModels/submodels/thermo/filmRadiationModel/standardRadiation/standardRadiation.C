@@ -52,7 +52,7 @@ addToRunTimeSelectionTable
 
 standardRadiation::standardRadiation
 (
-    const surfaceFilmModel& owner,
+     surfaceFilmModel& owner,
     const dictionary& dict
 )
 :
@@ -72,8 +72,8 @@ standardRadiation::standardRadiation
         owner.mappedPushedFieldPatchTypes<scalar>()
     ),
     delta_(owner.delta()),
-    beta_(readScalar(coeffs_.lookup("beta"))),
-    kappaBar_(readScalar(coeffs_.lookup("kappaBar")))
+    beta_(readScalar(coeffDict_.lookup("beta"))),
+    kappaBar_(readScalar(coeffDict_.lookup("kappaBar")))
 {}
 
 

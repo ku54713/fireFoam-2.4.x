@@ -1,8 +1,8 @@
 /*--------------------------------*- C++ -*----------------------------------*\
 | =========                 |                                                 |
 | \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
-|  \\    /   O peration     | Version:  1.6                                   |
-|   \\  /    A nd           | Web:      http://www.openfoam.org               |
+|  \\    /   O peration     | Version:  2.4.x                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
 |    \\/     M anipulation  |                                                 |
 \*---------------------------------------------------------------------------*/
 FoamFile
@@ -23,6 +23,13 @@ solvers
         solver          PCG;
         preconditioner  DIC;
         tolerance       0;
+        relTol          0;
+    };
+
+    rhoFinal
+    {
+        $rho;
+        tolerance       1e-6;
         relTol          0;
     };
 
@@ -124,10 +131,24 @@ solvers
         relTol          0;
     };
 
+    kFinal 
+    {
+        $k;
+        tolerance       1e-8;
+        relTol          0;
+    };
+
     h
     {
         solver          PBiCG;
         preconditioner  DILU;
+        tolerance       1e-8;
+        relTol          0;
+    };
+
+    "hFinal"
+    {
+        $h;
         tolerance       1e-8;
         relTol          0;
     };
@@ -154,13 +175,7 @@ solvers
 
 }
 
-MULES
-{
-    bMULES     no;
-}
-
-
-PISO
+PIMPLE
 {
     momentumPredictor yes;
     nOuterCorrectors  1;
@@ -175,6 +190,5 @@ relaxationFactors
     hs       0.9;
     k        0.9;
 }
-
 
 // ************************************************************************* //

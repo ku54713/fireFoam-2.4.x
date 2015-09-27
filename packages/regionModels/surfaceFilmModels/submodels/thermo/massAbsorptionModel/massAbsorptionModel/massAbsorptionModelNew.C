@@ -38,7 +38,7 @@ namespace surfaceFilmModels
 
 autoPtr<massAbsorptionModel> massAbsorptionModel::New
 (
-    const surfaceFilmModel& model,
+    surfaceFilmModel& model,
     const dictionary& dict
 )
 {

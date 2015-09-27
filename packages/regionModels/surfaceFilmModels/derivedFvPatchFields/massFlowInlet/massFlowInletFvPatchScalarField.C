@@ -158,7 +158,7 @@ void Foam::massFlowInletFvPatchScalarField::updateCoeffs()
         )
         );
     const label patchI = patch().index();
-    volVectorField gTan2=film2.gTan();
+    volVectorField gTan2(film2.gTan());
     gTan2.boundaryField()[patchI];
 
     /*Nusselt solution*/

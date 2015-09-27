@@ -36,7 +36,7 @@ SourceFiles
 #ifndef massAbsorptionModel_H
 #define massAbsorptionModel_H
 
-#include "subModelBase.H"
+#include "filmSubModelBase.H"
 #include "runTimeSelectionTables.H"
 #include "scalarField.H"
 
@@ -55,7 +55,7 @@ namespace surfaceFilmModels
 
 class massAbsorptionModel
 :
-    public subModelBase
+    public filmSubModelBase
 {
 private:
 
@@ -93,7 +93,7 @@ public:
              massAbsorptionModel,
              dictionary,
              (
-                const surfaceFilmModel& owner,
+                surfaceFilmModel& owner,
                 const dictionary& dict
              ),
              (owner, dict)
@@ -102,13 +102,13 @@ public:
     // Constructors
 
         //- Construct null
-        massAbsorptionModel(const surfaceFilmModel& owner);
+        massAbsorptionModel(surfaceFilmModel& owner);
 
         //- Construct from type name, dictionary and surface film model
         massAbsorptionModel
         (
-            const word& type,
-            const surfaceFilmModel& owner,
+            const word& modelType,
+            surfaceFilmModel& owner,
             const dictionary& dict
         );
 
@@ -118,7 +118,7 @@ public:
         //- Return a reference to the selected phase change model
         static autoPtr<massAbsorptionModel> New
         (
-            const surfaceFilmModel& owner,
+            surfaceFilmModel& owner,
             const dictionary& dict
         );
 

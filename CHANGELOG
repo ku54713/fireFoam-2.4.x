@@ -1,3 +1,7 @@
+2015-10-01: Version 15.10.01
+	Implemented dynamic angle sampling to uniformSamplingSpriklerInjection
+	model
+
 2015-09-26: Version 15.09.26
 	Upgraded to OpenFOAM-2.4.x, git hash-id 6067771383352
 

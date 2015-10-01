@@ -462,8 +462,8 @@ void Foam::UniformSamplingSprinklerInjection<CloudType>::setPositionAndCell
     parcelIndex_ = parcelI;
 
     // ideally, this should be a random value within the min/max of sample angle
-    scalar maxEleVar = 2.0;
-    scalar maxAziVar = 2.0;
+    scalar maxEleVar = nEle_/91.;
+    scalar maxAziVar = nAzi_/360.;
     scalar variationEle = -1.0;
     scalar variationAzi = -1.0;
     if(Pstream::master()){
@@ -472,8 +472,8 @@ void Foam::UniformSamplingSprinklerInjection<CloudType>::setPositionAndCell
     }
     reduce(variationEle,maxOp<scalar>());
     reduce(variationAzi,maxOp<scalar>());
-    variationEle = 0.0;
-    variationAzi = 0.0;
+    // variationEle = 0.0;
+    // variationAzi = 0.0;
     scalar elevationAngle = sampleEle_[parcelI]+variationEle;
     scalar azimuthalAngle = sampleAzi_[parcelI]+variationAzi;
     
